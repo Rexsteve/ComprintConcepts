@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Portfolio — Comprint Concepts Limited</title>
+
+<!--
+  SECURITY: All external resources loaded over HTTPS.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet"/>
+
+<style>
+
+/* ══════════════════════════════════════════
+   DESIGN TOKENS — brand colour system.
+   ══════════════════════════════════════════ */
+:root{
+  --brand:#4b024b; --brand-mid:#6b026b; --brand-light:#8f038f;
+  --brand-pale:rgba(75,2,75,0.12); --brand-glow:rgba(75,2,75,0.22);
+  --bg:#0a060a; --bg2:#0f0a0f; --bg3:#130d13; --card:#160e16;
+  --border:rgba(139,3,139,0.16); --border-h:rgba(139,3,139,0.38);
+  --text:#f2eef2; --text-2:#c2b4c2; --text-3:#8a7a8a; --muted:#5a4a5a;
+  --gold:#c8a96e; --nav-bg:rgba(10,6,10,0.80);
+  --tr:0.28s cubic-bezier(.4,0,.2,1);
+}
+[data-theme="light"]{
+  --bg:#faf7fa; --bg2:#f3eef3; --bg3:#ede5ed; --card:#ffffff;
+  --border:rgba(75,2,75,0.10); --border-h:rgba(75,2,75,0.32);
+  --text:#180418; --text-2:#3a1a3a; --text-3:#6a466a; --muted:#9a789a;
+  --gold:#9a6f2a; --nav-bg:rgba(250,247,250,0.84);
+}
+
+/* ══ RESET ══ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.6;transition:background var(--tr),color var(--tr);}
+img{display:block;max-width:100%;}
+a{text-decoration:none;color:inherit;}
+button{cursor:pointer;border:none;background:none;font-family:inherit;}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--brand);border-radius:99px;}
+
+/* ══ NAVIGATION ══ */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 5vw;height:66px;background:var(--nav-bg);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid var(--border);transition:background var(--tr),box-shadow var(--tr);}
+nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
+.nav-logo{display:flex;align-items:center;gap:11px;}
+.logo-box{width:52px;height:52px;border-radius:50%;background:var(--brand);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;}
+.logo-text{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;line-height:1.15;color:var(--text);}
+.logo-text span{display:block;font-family:'DM Sans',sans-serif;font-size:0.58rem;color:var(--text-3);letter-spacing:0.18em;text-transform:uppercase;margin-top:1px;}
+.nav-links{display:flex;align-items:center;gap:28px;}
+.nav-link{font-size:0.8rem;font-weight:500;color:var(--text-3);letter-spacing:0.05em;transition:color var(--tr);position:relative;padding-bottom:2px;}
+.nav-link::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:var(--brand-light);transform:scaleX(0);transform-origin:left;transition:transform 0.25s ease;}
+.nav-link:hover{color:var(--text);}
+.nav-link:hover::after,.nav-link.active::after{transform:scaleX(1);}
+.nav-link.active{color:var(--text);}
+.nav-right{display:flex;align-items:center;gap:10px;}
+.btn-nav{padding:8px 20px;border-radius:99px;background:var(--brand);color:#fff;font-size:0.78rem;font-weight:500;transition:all var(--tr);}
+.btn-nav:hover{background:var(--brand-mid);transform:translateY(-1px);box-shadow:0 6px 20px var(--brand-glow);}
+
+/* ── Glass-bubble theme toggle ── */
+.theme-toggle-wrap{display:flex;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:99px;padding:3px;position:relative;gap:2px;transition:border-color var(--tr);}
+.theme-toggle-wrap:hover{border-color:var(--border-h);}
+.theme-bubble{position:absolute;top:3px;height:calc(100% - 6px);background:rgba(139,3,139,0.18);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-radius:99px;border:1px solid var(--border-h);transition:left 0.3s cubic-bezier(.4,0,.2,1),width 0.3s cubic-bezier(.4,0,.2,1);pointer-events:none;z-index:1;}
+.theme-icon-btn{width:32px;height:32px;border-radius:99px;display:flex;align-items:center;justify-content:center;color:var(--text-3);transition:color var(--tr);position:relative;z-index:2;background:none;border:none;cursor:pointer;}
+.theme-icon-btn.active-icon{color:var(--brand-light);}
+
+.hamburger{display:none;flex-direction:column;gap:5px;width:38px;height:38px;border-radius:9px;background:var(--card);border:1px solid var(--border);align-items:center;justify-content:center;}
+.hamburger span{display:block;width:16px;height:1.5px;background:var(--text-2);border-radius:99px;transition:all .3s;}
+.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+.mobile-drawer{position:fixed;top:66px;left:0;right:0;z-index:190;background:var(--bg2);border-bottom:1px solid var(--border);padding:24px 5vw;display:flex;flex-direction:column;gap:18px;transform:translateY(-110%);transition:transform .35s cubic-bezier(.4,0,.2,1);}
+.mobile-drawer.open{transform:translateY(0);}
+.mobile-drawer .nav-link{font-size:1rem;}
+
+/* ══════════════════════════════════════════
+   HERO SECTION
+   CHANGE: Height significantly reduced.
+   The pf-hero class gets much less padding and the
+   grid layout is replaced with a simpler centered layout.
+   CHANGE: Heading text changed to "Our work speaks for us".
+   ══════════════════════════════════════════ */
+.pf-hero{
+  /* REDUCED: was min-height:72vh with 160px top padding.
+     Now a compact strip with minimal vertical footprint. */
+  padding:100px 6vw 40px;
+  position:relative;overflow:hidden;
+  display:flex;align-items:flex-end;
+}
+/* Gradient background — same brand feel, reduced visual space */
+.pf-hero::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 65% 55% at 75% 28%,rgba(107,2,107,0.30),transparent 55%),
+    radial-gradient(ellipse 40% 40% at 15% 72%,rgba(75,2,75,0.14),transparent 55%),
+    var(--bg);
+}
+/* Dot-grid texture overlay */
+.pf-hero::after{
+  content:'';position:absolute;inset:0;
+  background-image:radial-gradient(circle,rgba(139,3,139,0.06) 1px,transparent 1px);
+  background-size:36px 36px;
+}
+
+/* Simplified hero inner — no side-by-side grid, just left-aligned text */
+.hero-inner{
+  position:relative;z-index:2;
+  max-width:700px;
+}
+.eyebrow{
+  font-size:0.7rem;letter-spacing:0.24em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:14px;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.eyebrow::before{content:'';display:block;width:28px;height:1px;background:var(--gold);}
+
+/* CHANGE: hero heading is now "Our work speaks for us" */
+.pf-hero h1{
+  font-family:'Cormorant Garamond',serif;
+  /* REDUCED: was clamp(3.5rem,8vw,7rem). Now smaller to keep compact. */
+  font-size:clamp(2.4rem,5vw,4.5rem);
+  line-height:1;font-weight:700;margin-bottom:14px;color:var(--text);
+}
+.pf-hero h1 em{
+  color:transparent;
+  -webkit-text-stroke:1px rgba(200,169,110,.75);
+  font-style:normal;
+}
+.pf-hero p{
+  font-size:0.9rem;line-height:1.75;color:var(--text-2);max-width:440px;
+}
+
+/* ── FILTER BAR (sticky category pills) ── */
+.filter-bar{
+  padding:18px 6vw;
+  background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  position:sticky;top:66px;z-index:100;backdrop-filter:blur(14px);
+}
+.filter-btn{
+  padding:9px 18px;border-radius:99px;
+  border:1px solid var(--border);background:var(--card);
+  color:var(--text-3);font-size:0.76rem;font-weight:500;
+  transition:all var(--tr);
+}
+.filter-btn.active,.filter-btn:hover{background:var(--brand);color:#fff;border-color:var(--brand);}
+
+/* ── PORTFOLIO GRID ── */
+.portfolio-section{padding:48px 6vw 100px;}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+.work{
+  position:relative;overflow:hidden;border-radius:20px;
+  background:var(--card);border:1px solid var(--border);
+  min-height:340px;transition:all var(--tr);cursor:pointer;
+}
+.work:hover{transform:translateY(-6px);border-color:var(--border-h);box-shadow:0 20px 50px var(--brand-glow);}
+.work.large{grid-column:span 2;min-height:420px;}
+.work.tall{grid-row:span 2;min-height:auto;}
+.work img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .7s ease;}
+.work:hover img{transform:scale(1.07);}
+
+/* Gradient placeholder backgrounds for cards without real photos yet */
+.bg1{background:linear-gradient(135deg,#170417,#560256);}
+.bg2{background:linear-gradient(135deg,#081322,#13497b);}
+.bg3{background:linear-gradient(135deg,#201006,#7a3e08);}
+.bg4{background:linear-gradient(135deg,#08160a,#2c662d);}
+.bg5{background:linear-gradient(135deg,#24071c,#872e6c);}
+.bg6{background:linear-gradient(135deg,#14091d,#5031a6);}
+
+/* Placeholder inner text */
+.ph-inner{
+  width:100%;height:100%;min-height:340px;
+  display:flex;align-items:center;justify-content:center;
+  color:rgba(255,255,255,.14);font-size:.72rem;
+  letter-spacing:.12em;text-transform:uppercase;
+  text-align:center;padding:20px;
+}
+
+/* Caption overlay that shows on every card */
+.overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,.9) 0%,rgba(0,0,0,.2) 55%,transparent 100%);
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:26px;
+}
+.pf-tag{
+  width:fit-content;padding:5px 12px;border-radius:99px;
+  background:rgba(200,169,110,.14);color:var(--gold);
+  font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;margin-bottom:10px;
+}
+.work-title{font-size:1.05rem;font-weight:500;color:#fff;line-height:1.3;}
+.work-desc{
+  font-size:.78rem;color:rgba(255,255,255,.55);line-height:1.55;
+  margin-top:6px;
+  /* Description hidden by default, slides in on hover */
+  max-height:0;overflow:hidden;
+  transition:max-height .4s ease, opacity .4s ease;
+  opacity:0;
+}
+.work:hover .work-desc{max-height:60px;opacity:1;}
+
+/* "Start a similar project" button that appears on hover */
+.hover-btn{
+  margin-top:12px;display:inline-flex;align-items:center;
+  padding:8px 16px;border-radius:99px;
+  background:rgba(255,255,255,.12);color:#fff;
+  font-size:.73rem;font-weight:500;letter-spacing:.04em;
+  border:1px solid rgba(255,255,255,.22);
+  transition:all var(--tr);cursor:pointer;
+  /* Hidden by default, revealed on hover */
+  opacity:0;transform:translateY(8px);
+  transition:opacity .35s ease, transform .35s ease, background .25s ease;
+}
+.work:hover .hover-btn{opacity:1;transform:translateY(0);}
+.hover-btn:hover{background:var(--brand);border-color:var(--brand);}
+
+/* ══ CTA STRIP ══ */
+.cta-strip{background:var(--brand);padding:80px 6vw;display:flex;justify-content:space-between;align-items:center;gap:40px;flex-wrap:wrap;position:relative;overflow:hidden;}
+.cta-strip::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.035) 1px,transparent 1px);background-size:30px 30px;}
+.cta-strip::after{content:'';position:absolute;top:-60px;right:-60px;width:240px;height:240px;border-radius:50%;background:rgba(255,255,255,.03);}
+.cta-left{position:relative;}
+.cta-left h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.8vw,3.2rem);font-weight:700;color:#fff;line-height:1.05;}
+.cta-left p{font-size:.92rem;color:rgba(255,255,255,.6);margin-top:10px;max-width:400px;line-height:1.72;}
+.cta-right{position:relative;display:flex;gap:12px;flex-wrap:wrap;}
+.btn-white{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:99px;background:#fff;color:var(--brand);font-size:.85rem;font-weight:500;transition:all var(--tr);}
+.btn-white:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.2);}
+.btn-ghost{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:99px;background:transparent;color:rgba(255,255,255,.82);font-size:.85rem;font-weight:400;border:1px solid rgba(255,255,255,.28);transition:all var(--tr);}
+.btn-ghost:hover{border-color:rgba(255,255,255,.65);color:#fff;}
+
+/* ══ FOOTER ══ */
+footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw 28px;}
+.foot-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+.foot-bottom p{font-size:.74rem;color:var(--muted);}
+.foot-links{display:flex;gap:22px;}
+.foot-links a{font-size:.74rem;color:var(--muted);transition:color var(--tr);}
+.foot-links a:hover{color:var(--text);}
+
+/* ══ REVEAL ANIMATION ══ */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.rd1{transition-delay:.08s;}.rd2{transition-delay:.16s;}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:900px){
+  .nav-links,.btn-nav{display:none;}
+  .hamburger{display:flex;}
+  .grid{grid-template-columns:1fr 1fr;}
+  .work.large,.work.tall{grid-column:auto;grid-row:auto;}
+}
+@media(max-width:600px){
+  .grid{grid-template-columns:1fr;}
+  .pf-hero{padding:90px 5vw 30px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     NAVIGATION
+     CHANGES: Home link added, "Clients" → "Clientele",
+     Portfolio is active, glass-bubble theme toggle.
+     ══════════════════════════════════════════ -->
+<nav id="mainNav">
+  <a href="index.html" class="nav-logo">
+    <div class="logo-box">
+      <img src="images/logo.png" alt="Comprint" style="width:100%;height:100%;object-fit:cover;">
+    </div>
+    <div class="logo-text">Comprint<span>Concepts Limited</span></div>
+  </a>
+
+  <div class="nav-links">
+    <a href="index.html"      class="nav-link">Home</a>
+    <a href="index.html#about" class="nav-link">About</a>
+    <a href="services.html"   class="nav-link">Services</a>
+    <a href="portfolio.html"  class="nav-link active">Portfolio</a>
+    <a href="index.html#faq"  class="nav-link">FAQs</a>
+    <!-- CHANGED: "Clients" → "Clientele" -->
+    <a href="clients.html"    class="nav-link">Clientele</a>
+  </div>
+
+  <div class="nav-right">
+    <!-- SECURITY: rel="noopener noreferrer" on all external links -->
+    <a href="https://wa.me/254796333279?text=Hello%20Comprint%2C%20I%27d%20like%20a%20quote."
+       target="_blank" rel="noopener noreferrer" class="btn-nav">Get a Quote</a>
+
+    <!-- Glass-bubble theme toggle -->
+    <div class="theme-toggle-wrap" id="themeToggle" role="group" aria-label="Toggle colour theme">
+      <div class="theme-bubble" id="themeBubble"></div>
+      <button class="theme-icon-btn" id="btnLight" aria-label="Switch to light mode">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+      </button>
+      <button class="theme-icon-btn" id="btnDark" aria-label="Switch to dark mode">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+    </div>
+
+    <button class="hamburger" id="hamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile drawer -->
+<div class="mobile-drawer" id="mobileDrawer">
+  <a href="index.html"      class="nav-link" onclick="closeDrawer()">Home</a>
+  <a href="index.html#about" class="nav-link" onclick="closeDrawer()">About</a>
+  <a href="services.html"   class="nav-link" onclick="closeDrawer()">Services</a>
+  <a href="portfolio.html"  class="nav-link" onclick="closeDrawer()">Portfolio</a>
+  <a href="index.html#faq"  class="nav-link" onclick="closeDrawer()">FAQs</a>
+  <a href="clients.html"    class="nav-link" onclick="closeDrawer()">Clientele</a>
+  <a href="https://wa.me/254796333279" target="_blank" rel="noopener noreferrer"
+     class="btn-nav" style="width:fit-content;margin-top:6px;">Get a Quote</a>
+</div>
+
+<!-- ══════════════════════════════════════════
+     HERO SECTION
+     CHANGES:
+     • Height significantly reduced (less padding, smaller font)
+     • Heading text changed to: "Our work speaks for us"
+     ══════════════════════════════════════════ -->
+<section class="pf-hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Our Portfolio</div>
+    <h1>Our work speaks<br/><em>for us</em></h1>
+    <p>Browse our selection of print and branding projects delivered for clients across Kenya — from corporate campaigns to intimate events.</p>
+  </div>
+</section>
+
+<!-- ── FILTER BAR ── -->
+<div class="filter-bar">
+  <button class="filter-btn active" data-filter="all">All Work</button>
+  <button class="filter-btn" data-filter="corporate">Corporate</button>
+  <button class="filter-btn" data-filter="large-format">Large Format</button>
+  <button class="filter-btn" data-filter="packaging">Packaging</button>
+  <button class="filter-btn" data-filter="events">Events</button>
+  <button class="filter-btn" data-filter="branding">Branding</button>
+  <button class="filter-btn" data-filter="merchandise">Merchandise</button>
+</div>
+
+<!-- ── PORTFOLIO GRID ── -->
+<section class="portfolio-section">
+  <div class="grid">
+
+    <!-- Card 1: tall + corporate branding -->
+    <div class="work tall reveal" data-category="corporate branding">
+      <img src="images/portfolio/corporate_brand_rollout.jpg" alt="Corporate Brand Rollout">
+    <div class="overlay">
+        <div class="pf-tag">Corporate Branding</div>
+        <div class="work-title">Premium Brand Rollout</div>
+        <div class="work-desc">Full corporate identity: brochures, folders, branded stationery, and event signage.</div>
+        <div class="hover-btn" onclick="wa('Corporate Branding Package')">Start a Similar Project</div>
+      </div>
+    </div>
+
+    <!-- Card 2: large + large-format -->
+    <div class="work large reveal rd1" data-category="large-format">
+      <img src="images/portfolio/event_stage_backdrop.jpg" alt="Event Stage Backdrop">
+      <div class="overlay">
+        <div class="pf-tag">Large Format</div>
+        <div class="work-title">Event Stage &amp; Backdrop Printing</div>
+        <div class="work-desc">Stage backdrops, pull-up banners, sponsor walls, and directional signage.</div>
+        <div class="hover-btn" onclick="wa('Stage Backdrop Printing')">Start a Similar Project</div>
+      </div>
+    </div>
+
+    <!-- Card 3: packaging -->
+    <div class="work reveal rd2" data-category="packaging">
+      <img src="images/portfolio/luxury_product_label.jpg" alt="Luxury Product Labels">
+      <div class="overlay">
+        <div class="pf-tag">Packaging</div>
+        <div class="work-title">Luxury Product Labels</div>
+        <div class="work-desc">Custom die-cut packaging and premium label printing for retail.</div>
+        <div class="hover-btn" onclick="wa('Packaging and Labels')">Start a Similar Project</div>
+      </div>
+    </div>
+
+    <!-- Card 4: branding / vehicle wrap -->
+    <div class="work reveal" data-category="branding">
+      REPLACE: <img src="images/portfolio/fleet_vehicle_wrap.jpg" alt="Fleet Vehicle Wrap">
+      <div class="overlay">
+        <div class="pf-tag">Branding</div>
+        <div class="work-title">Fleet Vehicle Wrap</div>
+        <div class="work-desc">Bold, durable vehicle graphics for brand visibility across Nairobi.</div>
+        <div class="hover-btn" onclick="wa('Vehicle Branding')">Start a Similar Project</div>
+      </div>
+    </div>
+
+    <!-- Card 5: large + events -->
+    <div class="work large reveal rd1" data-category="events">
+      <img src="images/portfolio/wedding_vip_event_suite.jpg" alt="Wedding Event Suite">
+      <div class="overlay">
+        <div class="pf-tag">Events</div>
+        <div class="work-title">Wedding &amp; VIP Event Suite</div>
+        <div class="work-desc">Invitations, welcome signage, menus, stage décor, and luxury finishes.</div>
+        <div class="hover-btn" onclick="wa('Event Décor Printing')">Start a Similar Project</div>
+      </div>
+    </div>
+
+    <!-- Card 6: merchandise -->
+    <div class="work reveal rd2" data-category="merchandise">
+      <img src="images/portfolio/apparel_promo_merchandise.jpg" alt="Promo Merchandise">
+      <div class="overlay">
+        <div class="pf-tag">Merchandise</div>
+        <div class="work-title">Apparel &amp; Promo Merchandise</div>
+        <div class="work-desc">Branded apparel, mugs, lanyards, notebooks, and event merchandise.</div>
+        <div class="hover-btn" onclick="wa('Promotional Merchandise')">Start a Similar Project</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ CTA ══ -->
+<div class="cta-strip">
+  <div class="cta-left">
+    <h2>Ready to create<br/>something exceptional?</h2>
+    <p>Whether you're launching a campaign, planning an event, or building your brand — let's make it unforgettable.</p>
+  </div>
+  <div class="cta-right">
+    <!-- CHANGED: Phone number updated to 0796333279 -->
+    <a href="https://wa.me/254796333279?text=Hello%20Comprint%2C%20I%27d%20like%20to%20start%20a%20project."
+       target="_blank" rel="noopener noreferrer" class="btn-white">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Start a Project
+    </a>
+    <a href="services.html" class="btn-ghost">Browse Services</a>
+  </div>
+</div>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="foot-bottom">
+    <p>© 2026 Comprint Concepts Limited · Nairobi, Kenya</p>
+    <div class="foot-links">
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="clients.html">Clientele</a>
+      <!-- CHANGED: Phone updated -->
+      <a href="https://wa.me/254796333279" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════════════
+     JAVASCRIPT
+     ══════════════════════════════════════════ -->
+<script>
+/* ── THEME TOGGLE — GLASS BUBBLE ── */
+const htmlEl     = document.documentElement;
+const btnLight   = document.getElementById('btnLight');
+const btnDark    = document.getElementById('btnDark');
+const bubble     = document.getElementById('themeBubble');
+const toggleWrap = document.getElementById('themeToggle');
+let currentTheme = localStorage.getItem('cp-theme') || 'dark';
+
+function applyTheme(theme) {
+  currentTheme = theme;
+  htmlEl.setAttribute('data-theme', theme);
+  localStorage.setItem('cp-theme', theme);
+  if (theme === 'light') {
+    btnLight.classList.add('active-icon');
+    btnDark.classList.remove('active-icon');
+    positionBubble(btnLight);
+  } else {
+    btnDark.classList.add('active-icon');
+    btnLight.classList.remove('active-icon');
+    positionBubble(btnDark);
+  }
+}
+function positionBubble(activeBtn) {
+  const wrapLeft = toggleWrap.getBoundingClientRect().left;
+  const btnLeft  = activeBtn.getBoundingClientRect().left;
+  bubble.style.left  = (btnLeft - wrapLeft) + 'px';
+  bubble.style.width = activeBtn.offsetWidth + 'px';
+}
+btnLight.addEventListener('click', () => applyTheme('light'));
+btnDark.addEventListener('click',  () => applyTheme('dark'));
+applyTheme(currentTheme);
+window.addEventListener('resize', () => positionBubble(currentTheme === 'light' ? btnLight : btnDark));
+
+/* ── NAV SHADOW ── */
+window.addEventListener('scroll', () => {
+  document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 40);
+});
+
+/* ── MOBILE DRAWER ── */
+const ham    = document.getElementById('hamburger');
+const drawer = document.getElementById('mobileDrawer');
+ham.addEventListener('click', () => {
+  const isOpen = drawer.classList.toggle('open');
+  ham.classList.toggle('open', isOpen);
+});
+function closeDrawer() {
+  drawer.classList.remove('open');
+  ham.classList.remove('open');
+}
+document.addEventListener('click', e => {
+  if (!drawer.contains(e.target) && !ham.contains(e.target)) closeDrawer();
+});
+
+/* ── SCROLL REVEAL ── */
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); }
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+/* ── PORTFOLIO FILTER ──
+   Clicking a filter button shows only cards that include
+   the filter value in their data-category attribute. */
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    /* Mark clicked button as active */
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const f = btn.dataset.filter;
+
+    document.querySelectorAll('.work').forEach(card => {
+      const matches = f === 'all' || card.dataset.category.includes(f);
+      if (matches) {
+        /* Show the card with a smooth fade-in */
+        card.style.display = '';
+        /* Small timeout so display:'' registers before opacity transition */
+        setTimeout(() => { card.style.opacity = '1'; }, 10);
+      } else {
+        /* Fade out, then hide */
+        card.style.opacity = '0';
+        setTimeout(() => { card.style.display = 'none'; }, 280);
+      }
+    });
+  });
+});
+
+/* ── WHATSAPP ENQUIRY ── */
+function wa(service) {
+  const msg = encodeURIComponent(
+    `Hello Comprint, I'm interested in: ${service}. Please send me more details and pricing.`
+  );
+  window.open(`https://wa.me/254796333279?text=${msg}`, '_blank', 'noopener,noreferrer');
+}
+</script>
+</body>
+</html>
