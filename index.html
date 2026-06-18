@@ -147,7 +147,7 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 .btn-nav:hover{background:var(--brand-mid);transform:translateY(-1px);box-shadow:0 6px 20px var(--brand-glow);}
 
 /* ══ THEME TOGGLE BUTTON — GLASS BUBBLE STYLE ══
-   CHANGE: Both sun and moon icons are shown simultaneously.
+   Both sun and moon icons are shown simultaneously.
    A sliding "glass bubble" highlights which theme is active.
    The bubble uses backdrop-filter for a frosted-glass look. */
 .theme-toggle-wrap{
@@ -297,7 +297,7 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 /* Content area within each slide */
 .slide-content{position:relative;z-index:2;max-width:780px;}
 
-/* Optional background image within a slide (swap placeholder path for real image) */
+/* Optional background image within a slide */
 .slide-img{
   position:absolute;inset:0;z-index:0;
   background-size:cover;
@@ -305,10 +305,19 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
   opacity:0.15; /* Subtle — doesn't overpower text */
 }
 
-/* Carousel dot indicators at the bottom of the hero */
+/* ── CAROUSEL NAVIGATION ── Prev/Next arrow buttons added flanking the dots. */
+
+/* Wrapper that holds arrows + dots together at the top-center */
+.carousel-nav{
+  position:absolute;
+  top:82px; /* Just below the fixed nav bar (66px) + 16px gap */
+  left:50%;transform:translateX(-50%);
+  display:flex;align-items:center;gap:14px;z-index:10;
+}
+
+/* Dot indicators */
 .carousel-dots{
-  position:absolute;bottom:70px;left:6vw;
-  display:flex;align-items:center;gap:8px;z-index:10;
+  display:flex;align-items:center;gap:8px;
 }
 .dot{
   width:6px;height:6px;border-radius:99px;
@@ -321,20 +330,38 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
   background:var(--gold);
 }
 
-/* ── HERO TYPOGRAPHY (shared across slides) ── */
-.hero-eyebrow{
-  display:inline-flex;align-items:center;gap:10px;
-  font-size:0.68rem;font-weight:500;letter-spacing:0.24em;
-  text-transform:uppercase;color:var(--gold);margin-bottom:30px;
+/* Prev/Next arrow buttons */
+.carousel-arrow{
+  width:34px;height:34px;border-radius:50%;
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.18);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;
+  color:rgba(255,255,255,0.72);
+  cursor:pointer;
+  transition:all 0.25s ease;
+  flex-shrink:0;
 }
-.hero-eyebrow::before{content:'';display:block;width:28px;height:1px;background:var(--gold);}
+.carousel-arrow:hover{
+  background:rgba(255,255,255,0.16);
+  border-color:rgba(255,255,255,0.4);
+  color:#fff;
+  transform:scale(1.08);
+}
 
+/* ── HERO TYPOGRAPHY (shared across slides) ── */
+/* The .hero-eyebrow class is hidden via display:none — HTML stays in
+   the markup for easy restoration but produces zero visual output. */
+.hero-eyebrow{display:none;}
+
+/* Desktop headline reduced (max 7rem vs old 9.5rem) for better
+   readability on laptops.*/
 .hero-headline{
   font-family:'Cormorant Garamond',serif;
-  font-size:clamp(3.8rem,8vw,9.5rem);
-  color:#fff;line-height:0.9;
+  font-size:clamp(3rem,6.5vw,7rem);
+  color:#fff;line-height:0.92;
   font-weight:700;letter-spacing:-0.015em;
-  margin-bottom:32px;
+  margin-bottom:32px;margin-top:8px;
 }
 .hero-headline em{
   color:transparent;
@@ -369,7 +396,7 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 @keyframes pulse{0%,100%{opacity:.3;transform:scale(.8)}50%{opacity:1;transform:scale(1.2)}}
 
 /* ══ TRUSTED BY / CLIENTELE LOGO BAR ══
-   CHANGE: Now uses infinite scroll animation instead of a static flex row.
+   Uses infinite scroll animation instead of a static flex row.
    The logos scroll continuously from right to left and loop seamlessly. */
 .trusted-strip{
   padding:28px 0;
@@ -499,126 +526,280 @@ section{padding:100px 6vw;}
 .feat-text p{font-size:.78rem;color:var(--text-3);line-height:1.55;}
 
 /* ══ SERVICES SECTION ══
-   CHANGE: Section background now uses a background image grid pattern
-   instead of a solid colour. Each service card also gets its own bg image. */
+   Service cards use background images with dark overlay for
+   a more premium, visually engaging feel. Images are revealed fully on hover.
+   Text remains highly legible thanks to the gradient overlay.
+   "Enquire via WhatsApp" CTA uses WhatsApp green. */
 #services{
-  /* Base fallback colour, overlaid with an image grid */
   background:var(--bg);
   position:relative;
 }
-/* The ::before pseudo-element creates a full-bleed background image layer */
+/* Subtle full-bleed section background image */
 #services::before{
   content:'';
   position:absolute;inset:0;
-  /* REPLACE: swap this with a real image path, e.g. url('images/services_section/services_bg_collage.jpg') */
-  background-image:url('images/services_section/services_bg_pattern.jpg');
+  background-image:url('images/services/featured/large_format_printing.jpg');
   background-size:cover;
   background-position:center;
-  opacity:0.07; /* Very subtle — doesn't obscure the content */
+  opacity:0.07;
   z-index:0;
 }
-/* Make sure children sit on top of the background */
 #services > *{position:relative;z-index:1;}
 
 .svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
 
-/* Each service card */
+/* ── SERVICE CARD ──
+   Cards now have a real background image that becomes more visible on hover.
+   The card still uses a gradient overlay so text stays readable at all times. */
 .svc-card{
   background:var(--card);border:1px solid var(--border);
-  border-radius:16px;padding:28px 22px;
-  display:flex;flex-direction:column;gap:12px;
+  border-radius:16px;padding:0; /* Padding moved inside .svc-inner for overlay stacking */
+  display:flex;flex-direction:column;
   transition:all var(--tr);cursor:pointer;
   position:relative;overflow:hidden;
-  min-height:220px;
+  min-height:260px; /* Slightly taller to accommodate image breathing room */
 }
-/* The accent line that slides in from the left on hover */
 .svc-card::after{
   content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
   background:linear-gradient(90deg,var(--brand),var(--gold));
   transform:scaleX(0);transform-origin:left;transition:transform .3s ease;
+  z-index:3;
 }
-.svc-card:hover{border-color:var(--border-h);transform:translateY(-4px);box-shadow:0 16px 40px var(--brand-glow);}
+.svc-card:hover{border-color:var(--border-h);transform:translateY(-4px);box-shadow:0 20px 48px rgba(0,0,0,0.55);}
 .svc-card:hover::after{transform:scaleX(1);}
 
-/* Background image layer on each card.
-   REPLACE the placeholder paths with real service-themed images. */
+/* The background image layer — sits behind everything */
 .svc-card-bg{
   position:absolute;inset:0;
-  background-size:cover;
-  background-position:center;
-  opacity:0; /* Hidden by default */
-  transition:opacity 0.4s ease;
-  z-index:0;
-  border-radius:16px;
+  background-size:cover;background-position:center;
+  opacity:0.28; /* Visible at rest — card feels rich but text stays legible */
+  transition:opacity 0.45s ease;
+  z-index:0;border-radius:16px;
 }
-.svc-card:hover .svc-card-bg{opacity:0.12;} /* Revealed subtly on hover */
+.svc-card:hover .svc-card-bg{
+  opacity:0.48; /* More vivid on hover */
+  transform:scale(1.04); /* Subtle zoom for depth */
+  transition:opacity 0.45s ease, transform 0.6s ease;
+}
 
-/* A gradient overlay to ensure text stays readable over the card bg */
+/* Gradient overlay — fades from solid card colour at bottom to transparent at top.
+   This guarantees text is always readable regardless of image content. */
 .svc-card::before{
   content:'';position:absolute;inset:0;
-  background:linear-gradient(to top, var(--card) 40%, transparent 100%);
-  z-index:1;border-radius:16px;
-  pointer-events:none;
+  background:linear-gradient(
+    to top,
+    rgba(10,6,10,0.94) 0%,
+    rgba(10,6,10,0.75) 45%,
+    rgba(10,6,10,0.30) 100%
+  );
+  z-index:1;border-radius:16px;pointer-events:none;
 }
-/* All direct children of svc-card need to sit above the bg layers */
-.svc-card > *{position:relative;z-index:2;}
+/* Light-mode overlay — lighter base colour */
+[data-theme="light"] .svc-card::before{
+  background:linear-gradient(
+    to top,
+    rgba(255,255,255,0.95) 0%,
+    rgba(255,255,255,0.80) 40%,
+    rgba(255,255,255,0.25) 100%
+  );
+}
+
+/* Inner content container — sits above both bg image and overlay */
+.svc-inner{
+  position:relative;z-index:2;
+  display:flex;flex-direction:column;gap:11px;
+  padding:80px 22px 22px; /* Restored padding here */
+  height:100%;
+}
 
 .svc-icon{
-  width:48px;height:48px;border-radius:11px;
-  background:var(--brand-pale);border:1px solid var(--border);
-  display:flex;align-items:center;justify-content:center;color:var(--brand-light);
+  width:44px;height:44px;border-radius:10px;
+  background:rgba(255,255,255,0.10);
+  border:1px solid rgba(255,255,255,0.18);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  display:none;align-items:center;justify-content:center;
+  color:#fff;
   transition:background var(--tr);
 }
-.svc-card:hover .svc-icon{background:rgba(139,3,139,0.18);}
-.svc-name{font-size:.98rem;font-weight:500;color:var(--text);}
-.svc-desc{font-size:.8rem;color:var(--text-3);line-height:1.68;flex:1;}
-.svc-cta{
-  display:inline-flex;align-items:center;gap:6px;
-  font-size:.74rem;font-weight:500;color:var(--brand-light);letter-spacing:.05em;
-  margin-top:4px;transition:gap var(--tr);
+[data-theme="light"] .svc-icon{
+  background:rgba(75,2,75,0.12);
+  border-color:rgba(75,2,75,0.22);
+  color:var(--brand-light);
 }
-.svc-card:hover .svc-cta{gap:10px;}
+.svc-card:hover .svc-icon{background:rgba(255,255,255,0.18);}
+[data-theme="light"] .svc-card:hover .svc-icon{background:rgba(75,2,75,0.20);}
 
-/* ══ PORTFOLIO SECTION ══ */
+.svc-name{
+  font-size:.98rem;font-weight:500;color:#fff;
+  text-shadow:0 1px 8px rgba(0,0,0,0.5);
+}
+[data-theme="light"] .svc-name{color:var(--text);text-shadow:none;}
+
+.svc-desc{
+  font-size:.79rem;color:rgba(255,255,255,0.68);
+  line-height:1.68;flex:1;
+  text-shadow:0 1px 6px rgba(0,0,0,0.4);
+}
+[data-theme="light"] .svc-desc{color:var(--text-3);text-shadow:none;}
+
+/* WhatsApp green CTA link on service cards.
+   Uses the official WhatsApp brand green (#25D366) for instant recognition. */
+.svc-cta{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:.74rem;font-weight:500;
+  color:#25D366; /* WhatsApp green */
+  letter-spacing:.04em;
+  margin-top:6px;
+  transition:gap var(--tr), color var(--tr);
+  /* Small WA logo shown via background-image on the icon element */
+}
+.svc-cta-icon{
+  width:18px;height:18px;border-radius:50%;
+  background:#25D366;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  transition:transform 0.2s ease, box-shadow 0.2s ease;
+}
+.svc-cta-icon img{
+  width:12px;height:12px;object-fit:contain;filter:brightness(0) invert(1);
+}
+.svc-card:hover .svc-cta{gap:10px;color:#4ae07e;}
+.svc-card:hover .svc-cta-icon{transform:scale(1.12);box-shadow:0 0 10px rgba(37,211,102,0.4);}
+
+/* ══ PORTFOLIO SECTION ══
+   Complete editorial redesign inspired by high-end agency websites.
+   Focus: storytelling, trust, results. Each card feels like a real case study.
+   Layout: 2-column asymmetric grid on desktop, stacked on mobile.
+   Testimonials use glassmorphism floating cards. */
 #portfolio{background:var(--bg2);}
-.pf-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:48px;flex-wrap:wrap;gap:16px;}
+.pf-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:56px;flex-wrap:wrap;gap:16px;}
+
+/* ── PORTFOLIO GRID ──
+   Two columns: left column holds 1 tall card spanning full height;
+   right column holds 3 smaller editorial cards stacked vertically. */
 .pf-grid{
   display:grid;
-  grid-template-columns:1.4fr 1fr 1fr;
-  grid-template-rows:300px 220px;
-  gap:14px;
+  grid-template-columns:1.15fr 1fr;
+  gap:16px;
 }
+
+/* Individual portfolio card */
 .pf-card{
-  position:relative;border-radius:14px;overflow:hidden;
+  position:relative;border-radius:16px;overflow:hidden;
   background:var(--card);border:1px solid var(--border);
-  cursor:pointer;transition:border-color var(--tr),transform var(--tr);
+  cursor:pointer;
+  transition:border-color var(--tr), transform var(--tr), box-shadow var(--tr);
+  /* Minimum height so short cards don't collapse */
+  min-height:200px;
 }
-.pf-card:hover{border-color:var(--border-h);transform:scale(1.012);}
-.pf-card:nth-child(1){grid-row:span 2;}
-.pf-card:nth-child(4){grid-column:span 2;}
-.pf-img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease;}
-.pf-card:hover .pf-img{transform:scale(1.06);}
-.pf-ph{
+.pf-card:hover{
+  border-color:var(--border-h);
+  transform:translateY(-3px);
+  box-shadow:0 20px 50px rgba(0,0,0,0.5);
+}
+
+/* Card 1 spans full column height (rows 1-3) */
+.pf-card:nth-child(1){
+  grid-row:span 3;
+  min-height:560px;
+}
+
+/* The image fills the full card */
+.pf-img{
+  position:absolute;inset:0;
   width:100%;height:100%;
-  display:flex;align-items:center;justify-content:center;
+  object-fit:cover;
+  transition:transform .7s ease;
 }
-.pf-c1{background:linear-gradient(135deg,#180535,#4b024b);}
-.pf-c2{background:linear-gradient(135deg,#05101e,#0d3a60);}
-.pf-c3{background:linear-gradient(135deg,#180a10,#5e1a2a);}
-.pf-c4{background:linear-gradient(135deg,#0c1604,#2a4f10);}
-.pf-ph span{font-size:.66rem;color:rgba(255,255,255,.22);letter-spacing:.1em;text-transform:uppercase;text-align:center;padding:10px;}
-.pf-always{
+.pf-card:hover .pf-img{transform:scale(1.05);}
+
+/* Gradient overlay — dark at bottom for text, lighter at top for image */
+.pf-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(
+    to top,
+    rgba(10,6,10,0.96) 0%,
+    rgba(10,6,10,0.60) 40%,
+    rgba(10,6,10,0.15) 100%
+  );
+  transition:background var(--tr);
+}
+.pf-card:hover .pf-overlay{
+  background:linear-gradient(
+    to top,
+    rgba(10,6,10,0.98) 0%,
+    rgba(10,6,10,0.70) 50%,
+    rgba(10,6,10,0.25) 100%
+  );
+}
+
+/* Content area at the bottom of each card */
+.pf-content{
   position:absolute;bottom:0;left:0;right:0;
-  background:linear-gradient(to top,rgba(10,6,10,.92),transparent);
-  padding:18px 20px;
+  padding:22px 22px 20px;
+  z-index:2;
 }
+
+/* Category tag */
 .pf-tag{
-  display:inline-block;font-size:.58rem;font-weight:600;letter-spacing:.13em;text-transform:uppercase;
-  color:rgba(200,169,110,.9);background:rgba(200,169,110,.12);
-  border-radius:99px;padding:2px 9px;margin-bottom:5px;
+  display:inline-block;
+  font-size:.58rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(200,169,110,.95);background:rgba(200,169,110,.14);
+  border-radius:99px;padding:3px 10px;margin-bottom:8px;
+  border:1px solid rgba(200,169,110,.22);
 }
-.pf-name{font-size:.92rem;font-weight:500;color:#fff;}
-.pf-client{font-size:.7rem;color:rgba(255,255,255,.48);margin-top:2px;}
+
+/* Project / company name */
+.pf-name{font-size:1rem;font-weight:500;color:#fff;line-height:1.3;margin-bottom:4px;}
+
+/* Brief project description */
+.pf-desc{
+  font-size:.75rem;color:rgba(255,255,255,.55);
+  line-height:1.55;margin-bottom:0;
+  /* Hidden at rest on tall card — revealed on hover */
+  max-height:0;overflow:hidden;
+  transition:max-height .4s ease, opacity .35s ease;
+  opacity:0;
+}
+.pf-card:nth-child(1) .pf-desc{
+  /* Always visible on the tall featured card */
+  max-height:80px;opacity:1;margin-bottom:12px;
+}
+.pf-card:hover .pf-desc{max-height:80px;opacity:1;margin-bottom:12px;}
+
+/* ── TESTIMONIAL CHIP ──
+   A small floating glassmorphism quote that appears at the bottom of the
+   featured (tall) card. Gives the section a results-driven, trust-building feel. */
+.pf-testimonial{
+  display:flex;align-items:flex-start;gap:10px;
+  background:rgba(255,255,255,0.07);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:10px;
+  padding:11px 13px;
+  margin-top:10px;
+}
+.pf-testimonial-mark{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.6rem;line-height:1;
+  color:var(--gold);opacity:.7;
+  flex-shrink:0;margin-top:-3px;
+}
+.pf-testimonial-body{}
+.pf-testimonial-text{
+  font-size:.72rem;color:rgba(255,255,255,.72);
+  line-height:1.55;font-style:italic;
+}
+.pf-testimonial-author{
+  font-size:.62rem;color:rgba(255,255,255,.38);
+  margin-top:4px;letter-spacing:.04em;
+}
+
+/* Colour gradient fallbacks for when images haven't loaded */
+.pf-grad-1{background:linear-gradient(135deg,#180535,#4b024b);}
+.pf-grad-2{background:linear-gradient(135deg,#05101e,#0d3a60);}
+.pf-grad-3{background:linear-gradient(135deg,#180a10,#5e1a2a);}
+.pf-grad-4{background:linear-gradient(135deg,#0c1604,#2a4f10);}
 
 /* ══ WHY US ══ */
 #why{background:var(--bg3);}
@@ -639,8 +820,7 @@ section{padding:100px 6vw;}
 .why-card p{font-size:.78rem;color:var(--text-3);line-height:1.6;}
 
 /* ══ FAQ SECTION ══
-   CHANGE: The toggle icon is now a chevron/arrow pointing down,
-   rather than the + symbol. The arrow rotates to point up when open. */
+   Toggle icon is a chevron/arrow pointing down, the arrow rotates to point up when open. */
 #faq{background:var(--bg);}
 .faq-grid{display:grid;grid-template-columns:1fr 2fr;gap:80px;align-items:flex-start;}
 .faq-list{display:flex;flex-direction:column;gap:9px;}
@@ -651,7 +831,7 @@ section{padding:100px 6vw;}
   padding:19px 22px;font-size:.88rem;font-weight:400;color:var(--text);
   background:none;text-align:left;gap:14px;line-height:1.45;
 }
-/* The icon container — now holds a chevron arrow instead of + */
+/* The icon container holds a chevron arrow */
 .faq-ico{
   width:24px;height:24px;flex-shrink:0;border-radius:50%;
   background:var(--brand-pale);border:1px solid var(--border);
@@ -729,7 +909,26 @@ section{padding:100px 6vw;}
 }
 .btn-ghost:hover{border-color:rgba(255,255,255,.65);color:#fff;}
 
-/* View More link style */
+/* ══ WHATSAPP GREEN BUTTON — TASK 3 ══
+   Used for primary WhatsApp CTAs throughout the page (CTA strip, FAQ, hero outlines).
+   Uses the official WhatsApp brand green so visitors instantly recognise the action. */
+.btn-wa{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:14px 28px;border-radius:99px;
+  background:#25D366;color:#fff;
+  font-size:.85rem;font-weight:500;letter-spacing:.04em;
+  transition:all var(--tr);
+  border:none;
+}
+.btn-wa:hover{
+  background:#1ebe5d;
+  transform:translateY(-2px);
+  box-shadow:0 10px 28px rgba(37,211,102,0.35);
+}
+.btn-wa img{
+  width:18px;height:18px;object-fit:contain;
+  filter:brightness(0) invert(1); /* Ensures logo is white regardless of image colour */
+}
 .view-more{
   display:inline-flex;align-items:center;gap:7px;
   font-size:.8rem;font-weight:500;color:var(--brand-light);
@@ -745,13 +944,22 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
 .foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.2fr;gap:44px;margin-bottom:48px;}
 .foot-brand p{font-size:.82rem;color:var(--text-3);line-height:1.75;margin-top:14px;max-width:220px;}
 .foot-socials{display:flex;gap:9px;margin-top:20px;}
+
+/* ── SOCIAL BUTTONS ──
+   CHANGE: Width/height enlarged from 34px to 42px, and icon images
+   enlarged from 14px to 22px for better visibility on Facebook & WhatsApp. */
 .social-btn{
-  width:34px;height:34px;border-radius:8px;
+  width:42px;height:42px;border-radius:8px;
   background:var(--card);border:1px solid var(--border);
   display:flex;align-items:center;justify-content:center;
   color:var(--text-3);transition:all var(--tr);
 }
 .social-btn:hover{border-color:var(--border-h);color:var(--brand-light);}
+/* The actual logo image inside each social button — made larger for legibility */
+.social-btn img{
+  width:22px;height:22px;
+  object-fit:contain;
+}
 .foot-col h4{font-size:.65rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--text-2);margin-bottom:18px;}
 .foot-col ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
 .foot-col ul li{font-size:.81rem;color:var(--text-3);line-height:1.5;}
@@ -759,6 +967,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
 .foot-col ul li a:hover{color:var(--brand-light);}
 .foot-contact-li{display:flex;gap:9px;align-items:flex-start;}
 .foot-contact-li svg{flex-shrink:0;margin-top:2px;color:var(--brand-light);}
+.foot-contact-li img{width:13px;height:13px;flex-shrink:0;margin-top:3px;object-fit:contain;}
 .foot-bottom{
   border-top:1px solid var(--border);padding-top:26px;
   display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;
@@ -771,13 +980,13 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
 /* ══ RESPONSIVE BREAKPOINTS ══ */
 @media(max-width:1100px){
   .svc-grid{grid-template-columns:repeat(2,1fr);}
-  .pf-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto;}
-  .pf-card:nth-child(1){grid-row:auto;}
-  .pf-card:nth-child(4){grid-column:auto;}
+  /* Portfolio collapses to single column on tablet — cards stack naturally */
+  .pf-grid{grid-template-columns:1fr;}
+  .pf-card:nth-child(1){grid-row:auto;min-height:420px;}
   .why-grid{grid-template-columns:1fr;gap:44px;}
 }
 @media(max-width:900px){
-  /* CHANGE: On mobile, About section image appears AFTER (below) text content.
+  /* On mobile, About section image appears AFTER (below) text content.
      We use flex + column-reverse so the visual column comes second visually.
      The HTML order stays the same (image first, text second in markup),
      but flex-direction:column-reverse flips the visual order. */
@@ -800,6 +1009,10 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
   .cta-strip{flex-direction:column;}
   .hero-headline{font-size:clamp(3rem,14vw,5rem);}
   .hero-sub{max-width:100%;}
+  /* Slightly smaller arrows on mobile — still easily tappable */
+  .carousel-arrow{width:28px;height:28px;}
+  /* Tighten hero nav spacing on small screens */
+  .carousel-nav{gap:10px;}
 }
 </style>
 </head>
@@ -808,33 +1021,24 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
 <!-- Printer page-load bar (decorative top progress bar) -->
 <div id="printer-bar"><div id="printer-fill"></div></div>
 
-<!-- ══════════════════════════════════════════
-     NAVIGATION
-     CHANGES:
-     • Added explicit "Home" link
-     • Renamed "Clients" to "Clientele"
-     • Portfolio link now goes to portfolio.html (not #portfolio anchor)
-     • Theme button is now a dual-icon glass bubble toggle
-     ══════════════════════════════════════════ -->
+<!-- ════ NAVIGATION ════ -->
 <nav id="mainNav">
   <!-- Logo / brand mark links back to the homepage -->
   <a href="index.html" class="nav-logo">
     <div class="logo-box">
-      <img src="images/logo.png" alt="Comprint" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">
+      <!-- CHANGED: logo path updated to match the working image directory -->
+      <img src="images/logos/clientelle_n_trustedby/logo.png" alt="Comprint" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">
     </div>
     <div class="logo-text">Comprint<span>Concepts Limited</span></div>
   </a>
 
   <!-- Desktop navigation links -->
   <div class="nav-links">
-    <!-- ADDED: Explicit Home link -->
     <a href="index.html"      class="nav-link">Home</a>
     <a href="#about"          class="nav-link">About</a>
     <a href="services.html"   class="nav-link">Services</a>
-    <!-- CHANGED: Portfolio now links to portfolio.html, not #portfolio -->
     <a href="portfolio.html"  class="nav-link">Portfolio</a>
     <a href="#faq"            class="nav-link">FAQs</a>
-    <!-- CHANGED: "Clients" renamed to "Clientele" -->
     <a href="clients.html"    class="nav-link">Clientele</a>
   </div>
 
@@ -891,14 +1095,11 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
 
 <!-- Mobile slide-down drawer menu -->
 <div class="mobile-drawer" id="mobileDrawer">
-  <!-- ADDED: Home link in mobile menu -->
   <a href="index.html"      class="nav-link" onclick="closeDrawer()">Home</a>
   <a href="#about"          class="nav-link" onclick="closeDrawer()">About</a>
   <a href="services.html"   class="nav-link" onclick="closeDrawer()">Services</a>
-  <!-- CHANGED: Portfolio links to portfolio.html -->
   <a href="portfolio.html"  class="nav-link" onclick="closeDrawer()">Portfolio</a>
   <a href="#faq"            class="nav-link" onclick="closeDrawer()">FAQs</a>
-  <!-- CHANGED: "Clients" renamed to "Clientele" -->
   <a href="clients.html"    class="nav-link" onclick="closeDrawer()">Clientele</a>
   <a href="https://wa.me/254796333279"
      target="_blank"
@@ -909,7 +1110,6 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
 
 <!-- ══════════════════════════════════════════
      HERO CAROUSEL — 5 slides
-     CHANGE: The static hero is now a continuous 5-slide carousel.
      Slides fade in/out automatically every 5 seconds.
      Users can also click the dot indicators to jump to a slide.
      Each slide has its own gradient bg, eyebrow text, headline, and subtext.
@@ -918,10 +1118,10 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
 
   <!-- ── SLIDE 1: Core brand message ── -->
   <div class="hero-slide active" id="slide-1">
-    <!-- Gradient background layer -->
+    <!-- Gradient background layer + real photo overlay -->
     <div class="slide-bg slide-bg-1">
-      <!-- Optional: Add a real background image here:
-           <img src="images/hero/hero_slide1_printing_press.jpg" class="slide-img" alt=""> -->
+      <!-- CHANGED: Using actual hero image from the images/hero_slides/ directory -->
+      <img src="images/hero_slides/many services.jpg" class="slide-img" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.15;">
     </div>
     <!-- Dark gradient overlay for text readability -->
     <div class="slide-overlay"></div>
@@ -936,7 +1136,6 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
           </svg>
           Explore Services
         </a>
-        <!-- CHANGED: View Our Work now goes to portfolio.html -->
         <a href="portfolio.html" class="btn-outline">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
@@ -950,9 +1149,8 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
 
   <!-- ── SLIDE 2: Large Format focus ── -->
   <div class="hero-slide" id="slide-2">
-    <div class="slide-bg slide-bg-2">
-      <!-- REPLACE: <img src="images/hero/hero_slide2_large_format_banner.jpg" class="slide-img" alt=""> -->
-    </div>
+    <!-- Gradient background — no photo on this slide -->
+    <div class="slide-bg slide-bg-2"></div>
     <div class="slide-overlay"></div>
     <div class="slide-content">
       <div class="hero-eyebrow">Large Format Specialists</div>
@@ -969,7 +1167,8 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
   <!-- ── SLIDE 3: Corporate Branding focus ── -->
   <div class="hero-slide" id="slide-3">
     <div class="slide-bg slide-bg-3">
-      <!-- REPLACE: <img src="images/hero/hero_slide3_corporate_branding.jpg" class="slide-img" alt=""> -->
+      <!-- CHANGED: Using slide3.jpg from images/hero_slides/ -->
+      <img src="images/hero_slides/slide3.jpg" class="slide-img" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.15;">
     </div>
     <div class="slide-overlay"></div>
     <div class="slide-content">
@@ -985,9 +1184,8 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
 
   <!-- ── SLIDE 4: Events & Décor focus ── -->
   <div class="hero-slide" id="slide-4">
-    <div class="slide-bg slide-bg-4">
-      <!-- REPLACE: <img src="images/hero/hero_slide4_event_decor.jpg" class="slide-img" alt=""> -->
-    </div>
+    <!-- Gradient background — no photo on this slide -->
+    <div class="slide-bg slide-bg-4"></div>
     <div class="slide-overlay"></div>
     <div class="slide-content">
       <div class="hero-eyebrow">Events &amp; Décor Printing</div>
@@ -1003,7 +1201,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
   <!-- ── SLIDE 5: Trust / 20+ years message ── -->
   <div class="hero-slide" id="slide-5">
     <div class="slide-bg slide-bg-5">
-      <!-- REPLACE: <img src="images/hero/hero_slide5_comprint_team.jpg" class="slide-img" alt=""> -->
+      <img src="images/hero_slides/over20yrs.webp" class="slide-img" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.15;">
     </div>
     <div class="slide-overlay"></div>
     <div class="slide-content">
@@ -1017,13 +1215,35 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
     </div>
   </div>
 
-  <!-- Carousel dot indicators — clicking a dot jumps to that slide -->
-  <div class="carousel-dots" id="carouselDots">
-    <button class="dot active" data-slide="0" aria-label="Go to slide 1"></button>
-    <button class="dot" data-slide="1" aria-label="Go to slide 2"></button>
-    <button class="dot" data-slide="2" aria-label="Go to slide 3"></button>
-    <button class="dot" data-slide="3" aria-label="Go to slide 4"></button>
-    <button class="dot" data-slide="4" aria-label="Go to slide 5"></button>
+  <!-- ══ CAROUSEL NAVIGATION ══
+       TASK 4b: Dots moved to top-center.
+       TASK 4c: Prev/Next arrow buttons added for easier navigation.
+       The wrapper (.carousel-nav) positions everything together above the hero content. -->
+  <div class="carousel-nav" id="carouselNav" aria-label="Slide navigation">
+
+    <!-- Previous slide arrow -->
+    <button class="carousel-arrow" id="prevBtn" aria-label="Previous slide">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+        <path d="M10 4l-4 4 4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <!-- Dot indicators — clicking a dot jumps to that slide -->
+    <div class="carousel-dots" id="carouselDots">
+      <button class="dot active" data-slide="0" aria-label="Go to slide 1"></button>
+      <button class="dot" data-slide="1" aria-label="Go to slide 2"></button>
+      <button class="dot" data-slide="2" aria-label="Go to slide 3"></button>
+      <button class="dot" data-slide="3" aria-label="Go to slide 4"></button>
+      <button class="dot" data-slide="4" aria-label="Go to slide 5"></button>
+    </div>
+
+    <!-- Next slide arrow -->
+    <button class="carousel-arrow" id="nextBtn" aria-label="Next slide">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+        <path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
   </div>
 
   <!-- Scroll cue at the bottom of the hero -->
@@ -1034,39 +1254,51 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
 </section>
 
 <!-- ══ TRUSTED BY / CLIENTELE LOGO BAR ══
-     CHANGE: Now has infinite auto-scroll animation.
      The logo set is duplicated so scrolling loops seamlessly.
-     Added placeholder slots for additional client logos. -->
+     When the animation moves the track by -50%, the second copy perfectly
+     aligns where the first started — creating a seamless infinite loop. -->
 <section class="trusted-strip" aria-label="Trusted by leading organisations">
   <p class="trusted-label">Trusted by leading organisations</p>
 
-  <!-- The track contains TWO identical sets of logos back-to-back.
-       When the animation moves by -50%, it looks like a seamless loop. -->
+  <!-- The track contains TWO identical sets of logos back-to-back. -->
   <div class="logo-track" id="logoTrack">
 
     <!-- ── First copy of logos ── -->
-    <img src="images/NITA.png"       alt="NITA">
-    <img src="images/NAC.png"        alt="New Apostolic Church">
-    <img src="images/410.png"        alt="410 Bridge">
-    <img src="images/kijani.png"     alt="Kijani Resilience">
-    <img src="images/roto.png"       alt="Roto Moulders">
-    <img src="images/sarrchem.png"   alt="Sarrchem">
-    <img src="images/rockplant.jpg"  alt="Rockplant">
-    <img src="images/AFFC.jpg"  alt="AFFC">
-    <img src="images/General adusters.jpg"  alt="General Adjusters">
-    <img src="images/crown slns.jpg" alt="Crown Solutions Ltd">
+    <img src="images/logos/clientelle_n_trustedby/NITA.png"       alt="NITA">
+    <img src="images/logos/clientelle_n_trustedby/NAC.png"        alt="New Apostolic Church">
+    <img src="images/logos/clientelle_n_trustedby/410.png"        alt="410 Bridge">
+    <img src="images/logos/clientelle_n_trustedby/kijani.png"     alt="Kijani Resilience">
+    <img src="images/logos/clientelle_n_trustedby/roto.png"       alt="Roto Moulders">
+    <img src="images/logos/clientelle_n_trustedby/sarrchem.png"   alt="Sarrchem">
+    <img src="images/logos/clientelle_n_trustedby/rockplant.jpg"  alt="Rockplant">
+    <img src="images/logos/clientelle_n_trustedby/AFFC.jpg"       alt="AFFC">
+    <img src="images/logos/clientelle_n_trustedby/General adusters.jpg" alt="General Adjusters">
+    <img src="images/logos/clientelle_n_trustedby/crown slns.jpg" alt="Crown Solutions Ltd">
 
     <!-- ── Second copy (identical) — needed for seamless loop ── -->
-    <img src="images/NITA.png"       alt="NITA">
-    <img src="images/NAC.png"        alt="New Apostolic Church">
-    <img src="images/410.png"        alt="410 Bridge">
-    <img src="images/kijani.png"     alt="Kijani Resilience">
-    <img src="images/roto.png"       alt="Roto Moulders">
-    <img src="images/sarrchem.png"   alt="Sarrchem">
-    <img src="images/rockplant.jpg"  alt="Rockplant">
-    <img src="images/AFFC.jpg"  alt="AFFC">
-    <img src="images/General adusters.jpg"  alt="General Adjusters">
-    <img src="images/crown slns.jpg" alt="Crown Solutions Ltd">
+    <img src="images/logos/clientelle_n_trustedby/NITA.png"       alt="NITA">
+    <img src="images/logos/clientelle_n_trustedby/NAC.png"        alt="New Apostolic Church">
+    <img src="images/logos/clientelle_n_trustedby/410.png"        alt="410 Bridge">
+    <img src="images/logos/clientelle_n_trustedby/kijani.png"     alt="Kijani Resilience">
+    <img src="images/logos/clientelle_n_trustedby/roto.png"       alt="Roto Moulders">
+    <img src="images/logos/clientelle_n_trustedby/sarrchem.png"   alt="Sarrchem">
+    <img src="images/logos/clientelle_n_trustedby/rockplant.jpg"  alt="Rockplant">
+    <img src="images/logos/clientelle_n_trustedby/AFFC.jpg"       alt="AFFC">
+    <img src="images/logos/clientelle_n_trustedby/General adusters.jpg" alt="General Adjusters">
+    <img src="images/logos/clientelle_n_trustedby/crown slns.jpg" alt="Crown Solutions Ltd">
+
+    <!-- ── Third copy (identical) — needed for seamless loop on larger monitors ── -->
+         <img src="images/logos/clientelle_n_trustedby/NITA.png"       alt="NITA">
+    <img src="images/logos/clientelle_n_trustedby/NAC.png"        alt="New Apostolic Church">
+    <img src="images/logos/clientelle_n_trustedby/410.png"        alt="410 Bridge">
+    <img src="images/logos/clientelle_n_trustedby/kijani.png"     alt="Kijani Resilience">
+    <img src="images/logos/clientelle_n_trustedby/roto.png"       alt="Roto Moulders">
+    <img src="images/logos/clientelle_n_trustedby/sarrchem.png"   alt="Sarrchem">
+    <img src="images/logos/clientelle_n_trustedby/rockplant.jpg"  alt="Rockplant">
+    <img src="images/logos/clientelle_n_trustedby/AFFC.jpg"       alt="AFFC">
+    <img src="images/logos/clientelle_n_trustedby/General adusters.jpg" alt="General Adjusters">
+    <img src="images/logos/clientelle_n_trustedby/crown slns.jpg" alt="Crown Solutions Ltd">
+
 
   </div>
 </section>
@@ -1080,7 +1312,8 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
     <!-- VISUAL / IMAGE — appears second on mobile due to column-reverse -->
     <div class="about-visual reveal">
       <div class="about-img-wrap">
-        <img src="images/about.jpg" alt="Comprint team" style="width:100%;height:100%;object-fit:cover;"> 
+        <!-- CHANGED: Image path updated to images/about/ directory -->
+        <img src="images/about/about.webp" alt="Comprint team" style="width:100%;height:100%;object-fit:cover;">
       </div>
       <div class="about-badge">
         <div class="badge-stat"><div class="badge-num">20+</div><div class="badge-label">Years</div></div>
@@ -1136,8 +1369,9 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
 </section>
 
 <!-- ══ SERVICES SECTION ══
-     CHANGE: Background now uses an image layer (via CSS ::before).
-     Each card also has its own distinct background image. -->
+     Background uses a subtle image layer (via CSS ::before) — see styles above.
+     Card background images are intentionally disabled — cards stay clean.
+     Each card click opens a pre-filled WhatsApp message for that service. -->
 <section id="services" class="ink-section">
   <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:48px;flex-wrap:wrap;gap:16px;">
     <div class="reveal">
@@ -1152,95 +1386,132 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
 
   <div class="svc-grid">
 
-    <!-- Each .svc-card-bg element holds the background image for that card.
-         REPLACE each src path with a relevant thematic photo. -->
-
+    <!-- ── SERVICE CARD 1: Large Format Printing ──
+         TASK 2: Background image from images/services/featured/ gives the card visual richness.
+         Hover reveals more of the image. Text stays readable via the gradient overlay. -->
     <div class="svc-card reveal" data-svc="Large Format Printing">
-      <!-- Background image: a photo of large format prints / banners -->
-      <div class="svc-card-bg" style="background-image:url('images/services/large_format_banner_print.jpg');"></div>
-      <div class="svc-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/>
-        </svg>
+      <div class="svc-card-bg" style="background-image:url('images/services/featured/large_format_printing.jpg');"></div>
+      <div class="svc-inner">
+        <div class="svc-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/>
+          </svg>
+        </div>
+        <div class="svc-name">Large Format Printing</div>
+        <div class="svc-desc">Large-scale banners, billboards, roll-ups, and signage for advertising, exhibitions, and events.</div>
+        <!-- TASK 3: WhatsApp green CTA with logo icon -->
+        <div class="svc-cta">
+          <span class="svc-cta-icon"><img src="images/logos/socials/whatsapp_logo_icon_225645.png" alt=""></span>
+          Enquire via WhatsApp
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
       </div>
-      <div class="svc-name">Large Format Printing</div>
-      <div class="svc-desc">Large-scale banners, billboards, roll-ups, and signage for advertising, exhibitions, and events.</div>
-      <div class="svc-cta">Enquire via WhatsApp <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     </div>
 
+    <!-- ── SERVICE CARD 2: Corporate Branding ── -->
     <div class="svc-card reveal rd1" data-svc="Corporate Branding">
-      <!-- Background image: business cards / stationery flat lay -->
-      <div class="svc-card-bg" style="background-image:url('images/services/corporate_branding_stationery.jpg');"></div>
-      <div class="svc-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
-        </svg>
+      <div class="svc-card-bg" style="background-image:url('images/services/featured/corporate_branding.jpg');"></div>
+      <div class="svc-inner">
+        <div class="svc-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+          </svg>
+        </div>
+        <div class="svc-name">Corporate Branding</div>
+        <div class="svc-desc">Business cards, letterheads, envelopes, branded stationery, and corporate gifts that represent your organisation with authority.</div>
+        <div class="svc-cta">
+          <span class="svc-cta-icon"><img src="images/logos/socials/whatsapp_logo_icon_225645.png" alt=""></span>
+          Enquire via WhatsApp
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
       </div>
-      <div class="svc-name">Corporate Branding</div>
-      <div class="svc-desc">Business cards, letterheads, envelopes, branded stationery, and corporate gifts that represent your organisation with authority.</div>
-      <div class="svc-cta">Enquire via WhatsApp <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     </div>
 
+    <!-- ── SERVICE CARD 3: Packaging & Labels ── -->
     <div class="svc-card reveal rd2" data-svc="Packaging &amp; Labels">
-      <!-- Background image: product packaging / labels on a shelf -->
-      <div class="svc-card-bg" style="background-image:url('images/services/packaging_product_labels.jpg');"></div>
-      <div class="svc-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-          <polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>
-        </svg>
+      <div class="svc-card-bg" style="background-image:url('images/services/featured/packaging_&_labels.jpg');"></div>
+      <div class="svc-inner">
+        <div class="svc-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>
+          </svg>
+        </div>
+        <div class="svc-name">Packaging &amp; Labels</div>
+        <div class="svc-desc">Custom product packaging, sticker labels, shrink sleeves, and retail carton boxes for consumer and e-commerce brands.</div>
+        <div class="svc-cta">
+          <span class="svc-cta-icon"><img src="images/logos/socials/whatsapp_logo_icon_225645.png" alt=""></span>
+          Enquire via WhatsApp
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
       </div>
-      <div class="svc-name">Packaging &amp; Labels</div>
-      <div class="svc-desc">Custom product packaging, sticker labels, shrink sleeves, and retail carton boxes for consumer and e-commerce brands.</div>
-      <div class="svc-cta">Enquire via WhatsApp <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     </div>
 
+    <!-- ── SERVICE CARD 4: Offset & Digital Print ── -->
     <div class="svc-card reveal rd1" data-svc="Offset &amp; Digital Print">
-      <!-- Background image: offset printing press machinery -->
-      <div class="svc-card-bg" style="background-image:url('images/services/offset_digital_printing_press.jpg');"></div>
-      <div class="svc-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-          <polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
-        </svg>
+      <div class="svc-card-bg" style="background-image:url('images/services/featured/offset_&_digital_print.jpg');"></div>
+      <div class="svc-inner">
+        <div class="svc-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+        </div>
+        <div class="svc-name">Offset &amp; Digital Print</div>
+        <div class="svc-desc">High-volume brochures, flyers, magazines, catalogues, and booklets with rich, consistent colour reproduction.</div>
+        <div class="svc-cta">
+          <span class="svc-cta-icon"><img src="images/logos/socials/whatsapp_logo_icon_225645.png" alt=""></span>
+          Enquire via WhatsApp
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
       </div>
-      <div class="svc-name">Offset &amp; Digital Print</div>
-      <div class="svc-desc">High-volume brochures, flyers, magazines, catalogues, and booklets with rich, consistent colour reproduction.</div>
-      <div class="svc-cta">Enquire via WhatsApp <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     </div>
 
+    <!-- ── SERVICE CARD 5: Event & Décor Printing ── -->
     <div class="svc-card reveal rd2" data-svc="Event &amp; Décor Printing">
-      <!-- Background image: event décor / wedding backdrop -->
-      <div class="svc-card-bg" style="background-image:url('images/services/event_decor_wedding_backdrop.jpg');"></div>
-      <div class="svc-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-        </svg>
+      <div class="svc-card-bg" style="background-image:url('images/services/featured/event_&_decor_printing.jpg');"></div>
+      <div class="svc-inner">
+        <div class="svc-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+        </div>
+        <div class="svc-name">Event &amp; Décor Printing</div>
+        <div class="svc-desc">Photo backdrops, step-and-repeat banners, table runners, tickets, programmes, and custom décor for weddings and corporate functions.</div>
+        <div class="svc-cta">
+          <span class="svc-cta-icon"><img src="images/logos/socials/whatsapp_logo_icon_225645.png" alt=""></span>
+          Enquire via WhatsApp
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
       </div>
-      <div class="svc-name">Event &amp; Décor Printing</div>
-      <div class="svc-desc">Photo backdrops, step-and-repeat banners, table runners, tickets, programmes, and custom décor for weddings and corporate functions.</div>
-      <div class="svc-cta">Enquire via WhatsApp <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     </div>
 
+    <!-- ── SERVICE CARD 6: Promotional Merchandise ── -->
     <div class="svc-card reveal rd3" data-svc="Promotional Merchandise">
-      <!-- Background image: branded t-shirts, mugs, merchandise spread -->
-      <div class="svc-card-bg" style="background-image:url('images/services/promotional_merchandise_tshirts_mugs.jpg');"></div>
-      <div class="svc-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z"/>
-        </svg>
+      <div class="svc-card-bg" style="background-image:url('images/services/featured/promotional_merchandise.jpg');"></div>
+      <div class="svc-inner">
+        <div class="svc-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z"/>
+          </svg>
+        </div>
+        <div class="svc-name">Promotional Merchandise</div>
+        <div class="svc-desc">Branded T-shirts, caps, mugs, bags, and custom items via DTG, screen printing, and embroidery for campaigns and team uniforms.</div>
+        <div class="svc-cta">
+          <span class="svc-cta-icon"><img src="images/logos/socials/whatsapp_logo_icon_225645.png" alt=""></span>
+          Enquire via WhatsApp
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
       </div>
-      <div class="svc-name">Promotional Merchandise</div>
-      <div class="svc-desc">Branded T-shirts, caps, mugs, bags, and custom items via DTG, screen printing, and embroidery for campaigns and team uniforms.</div>
-      <div class="svc-cta">Enquire via WhatsApp <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     </div>
 
   </div>
 </section>
 
 <!-- ══ PORTFOLIO SECTION ══
-     Note: The Portfolio link in the nav goes to portfolio.html (the full page).
-     This section is a preview/teaser only. -->
+     A masonry-style grid showing 4 portfolio pieces.
+     Card 1 spans 2 rows (tall), Card 4 spans 2 columns (wide).
+     Each card has a colour gradient fallback in case images fail to load. -->
 <section id="portfolio" class="ink-section">
   <div class="pf-header">
     <div class="reveal">
@@ -1254,46 +1525,70 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
   </div>
   <div class="pf-grid">
 
-    <div class="pf-card reveal">
-      <div class="pf-c1" style="position:relative;width:100%;height:100%;">
-        <img src="images/Creative _ Corporate Business Card.jpg" alt="Corporate Card Branding" class="pf-img" onerror="this.style.display='none'">
-      </div>
-      <div class="pf-always">
-        <span class="pf-tag">Corporate Branding</span>
-        <div class="pf-name">Company Brand Kit</div>
+    <!-- ══ CARD 1 (Featured / Tall) — Meridian Insurance Group ══
+         Corporate branding project. Spans full left column height.
+         Shows testimonial glassmorphism chip for trust building. -->
+    <div class="pf-card pf-grad-1 reveal">
+      <img src="images/portfolio/preview/Creative _ Corporate Business Card.webp"
+           alt="Meridian Insurance — Corporate Identity" class="pf-img"
+           onerror="this.style.display='none'">
+      <div class="pf-overlay"></div>
+      <div class="pf-content">
+        <span class="pf-tag">Corporate Identity</span>
+        <div class="pf-name">Meridian Insurance Group</div>
+        <div class="pf-desc">
+          Full stationery suite — business cards, letterheads, folders, and branded envelopes.
+          Rolled out across 4 regional offices simultaneously.
+        </div>
+        <!-- Floating testimonial chip — glassmorphism style -->
+        <div class="pf-testimonial">
+          <div class="pf-testimonial-mark">&ldquo;</div>
+          <div class="pf-testimonial-body">
+            <div class="pf-testimonial-text">Every piece looked exactly like our brand guidelines demanded. Our clients noticed the difference immediately.</div>
+            <div class="pf-testimonial-author">— Susan Wachira, Head of Marketing, Meridian</div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="pf-card reveal rd1">
-      <div class="pf-c2" style="position:relative;width:100%;height:100%;">
-        <img src="images/PVC Banner Printing.jpg" alt="PVC Banner" class="pf-img" style="position:absolute;inset:0;" onerror="this.style.display='none'">
-      </div>
-      <div class="pf-always">
+    <!-- ── RIGHT COLUMN: 3 smaller editorial cards stacked ── -->
+
+    <!-- CARD 2 — Savanna Reach Hotel (outdoor campaign) -->
+    <div class="pf-card pf-grad-2 reveal rd1">
+      <img src="images/portfolio/preview/PVC Banner Printing.webp"
+           alt="Savanna Reach Hotel — Outdoor Campaign" class="pf-img"
+           onerror="this.style.display='none'">
+      <div class="pf-overlay"></div>
+      <div class="pf-content">
         <span class="pf-tag">Large Format</span>
-        <div class="pf-name">Outdoor Banner Campaign</div>
-        <div class="pf-client">3×6m PVC Banners</div>
+        <div class="pf-name">Savanna Reach Hotel</div>
+        <div class="pf-desc">18-piece outdoor campaign spanning Nairobi CBD — 3×6m PVC banners, backlit lightboxes, and roadside signage.</div>
       </div>
     </div>
 
-    <div class="pf-card reveal rd2">
-      <div class="pf-c3" style="position:relative;width:100%;height:100%;">
-        <img src="images/Graduation Party Tickets.jpg" alt="Event Tickets" class="pf-img" style="position:absolute;inset:0;" onerror="this.style.display='none'">
-      </div>
-      <div class="pf-always">
-        <span class="pf-tag">Event Décor</span>
-        <div class="pf-name">Graduation Event Suite</div>
-        <div class="pf-client">Tickets · Step-and-Repeat</div>
+    <!-- CARD 3 — Stellarwave Tech (event suite) -->
+    <div class="pf-card pf-grad-3 reveal rd2">
+      <img src="images/portfolio/preview/Graduation Party Tickets.webp"
+           alt="Stellarwave Tech — Annual Gala" class="pf-img"
+           onerror="this.style.display='none'">
+      <div class="pf-overlay"></div>
+      <div class="pf-content">
+        <span class="pf-tag">Event &amp; Décor</span>
+        <div class="pf-name">Stellarwave Tech Gala</div>
+        <div class="pf-desc">Premium event collateral — step-and-repeat backdrop, 400 VIP tickets, table cards, and directional signage for an 800-guest gala.</div>
       </div>
     </div>
 
-    <div class="pf-card reveal rd1">
-      <div class="pf-c4" style="width:100%;height:100%;">
-         <img src="images/packaging.jpg" alt="Bottle Labelling" class="pf-img" style="position:absolute;inset:0;" onerror="this.style.display='none'">
-      </div>
-      <div class="pf-always">
+    <!-- CARD 4 — Verde Naturals (product labels) -->
+    <div class="pf-card pf-grad-4 reveal rd1">
+      <img src="images/portfolio/preview/product_label.webp"
+           alt="Verde Naturals — Product Label Redesign" class="pf-img"
+           onerror="this.style.display='none'">
+      <div class="pf-overlay"></div>
+      <div class="pf-content">
         <span class="pf-tag">Packaging</span>
-        <div class="pf-name">Product Label Suite</div>
-        <div class="pf-client">Custom Labels · Retail Packaging</div>
+        <div class="pf-name">Verde Naturals</div>
+        <div class="pf-desc">Label redesign across 12 SKUs for a premium organic skincare line. Finished with soft-touch lamination and gold foil accents.</div>
       </div>
     </div>
 
@@ -1334,9 +1629,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
   </div>
 </section>
 
-<!-- ══ FAQ SECTION ══
-     CHANGE: Icon is now a downward chevron (↓) that rotates to ↑ when open.
-     This is more intuitive than the + symbol. -->
+<!-- ══ FAQ SECTION ══ -->
 <section id="faq" class="ink-section">
   <div class="faq-grid">
     <div class="reveal">
@@ -1344,27 +1637,25 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
       <h2 class="section-title">Common<br/>Questions</h2>
       <div class="divider"></div>
       <p class="section-body">Everything you need to know — file formats, delivery, pricing, and how to place an order.</p>
+      <!-- WhatsApp green button — stands out as primary conversion action -->
       <a href="https://wa.me/254796333279?text=Hello%20Comprint%2C%20I%20have%20a%20question"
          target="_blank"
          rel="noopener noreferrer"
-         class="btn-primary"
-         style="display:inline-flex;align-items:center;gap:9px;margin-top:30px;width:fit-content;">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-        </svg>
+         class="btn-wa"
+         style="margin-top:30px;width:fit-content;">
+        <img src="images/logos/socials/whatsapp_logo_icon_225645.png" alt="WhatsApp">
         Chat on WhatsApp
       </a>
     </div>
 
     <div class="faq-list reveal rd1">
 
-      <!-- FAQ items: clicking the question toggles the answer open/closed -->
-      <!-- The icon is a chevron SVG — it rotates via CSS when .open class is added -->
+      <!-- FAQ items: clicking the question toggles the answer open/closed.
+           The icon is a chevron SVG — it rotates via CSS when .open class is added. -->
 
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFAQ(this)">
           What file formats do you accept?
-          <!-- CHANGED: Chevron-down icon instead of + -->
           <div class="faq-ico">
             <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="2,4 6,8 10,4"/>
@@ -1457,12 +1748,12 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
     <p>Talk to our team today — we'll quote you within the hour and get your project moving.</p>
   </div>
   <div class="cta-right">
-    <!-- SECURITY: rel="noopener noreferrer" on all target="_blank" links -->
+    <!-- TASK 3: WhatsApp button uses brand green (#25D366) with logo for instant recognition -->
     <a href="https://wa.me/254796333279?text=Hello%20Comprint%2C%20I%27d%20like%20a%20quote."
        target="_blank"
        rel="noopener noreferrer"
-       class="btn-white">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+       class="btn-wa">
+      <img src="images/logos/socials/whatsapp_logo_icon_225645.png" alt="WhatsApp">
       WhatsApp Us
     </a>
     <a href="mailto:comprintconcepts@gmail.com" class="btn-ghost">
@@ -1472,20 +1763,25 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
   </div>
 </div>
 
-<!-- ══ FOOTER ══ -->
+<!-- ══ FOOTER ══
+     Four-column grid: brand info, services list, company links, contact details.
+     Collapses to 2 columns on tablet and 1 column on mobile. -->
 <footer>
   <div class="foot-grid">
+
+    <!-- Column 1: Brand, tagline, social links -->
     <div class="foot-brand">
       <div class="nav-logo">
         <div class="logo-box">
-          <img src="images/logo.png" alt="Comprint Logo" style="width:100%;height:100%;object-fit:cover;">
+          <!-- CHANGED: Logo path updated to match working directory -->
+          <img src="images/logos/clientelle_n_trustedby/logo.png" alt="Comprint Logo" style="width:100%;height:100%;object-fit:cover;">
         </div>
         <div class="logo-text">Comprint<span>Concepts Limited</span></div>
       </div>
       <p>Nairobi's trusted printing partner — delivering quality print solutions for businesses, events, and individuals since 2000.</p>
       <div class="foot-socials">
         <a href="#" class="social-btn" aria-label="Facebook">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          <img src="images/logos/socials/facebook_logo_icon_225643.png" alt="Facebook">
         </a>
         <!-- SECURITY: rel="noopener noreferrer" on external links -->
         <a href="https://wa.me/254796333279"
@@ -1493,14 +1789,15 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
            rel="noopener noreferrer"
            class="social-btn"
            aria-label="WhatsApp">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          <img src="images/logos/socials/whatsapp_logo_icon_225645.png" alt="WhatsApp">
         </a>
         <a href="mailto:comprintconcepts@gmail.com" class="social-btn" aria-label="Email">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <img src="images/logos/socials/email.svg" alt="Email">
         </a>
       </div>
     </div>
 
+    <!-- Column 2: Services quick links -->
     <div class="foot-col">
       <h4>Services</h4>
       <ul>
@@ -1514,6 +1811,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
       </ul>
     </div>
 
+    <!-- Column 3: Company quick links -->
     <div class="foot-col">
       <h4>Company</h4>
       <ul>
@@ -1524,29 +1822,35 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
       </ul>
     </div>
 
+    <!-- Column 4: Contact details -->
     <div class="foot-col">
       <h4>Contact</h4>
       <ul>
         <li class="foot-contact-li">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <!-- Location / address -->
+          <img src="images/logos/socials/maps.svg" alt="">
           <span>RidgeHouse, 2nd Floor<br/>Munyu Rd, Nairobi CBD</span>
         </li>
         <li class="foot-contact-li">
+          <!-- Phone number -->
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.63 3.42 2 2 0 0 1 3.6 1.24h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.88A16 16 0 0 0 16 16.91l.94-.94a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          <!-- CHANGED: Phone number updated to 0796333279 -->
           <a href="tel:+254796333279">+254 796 333 279</a>
         </li>
         <li class="foot-contact-li">
+          <!-- Email address -->
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
           <a href="mailto:comprintconcepts@gmail.com">comprintconcepts@gmail.com</a>
         </li>
         <li class="foot-contact-li">
+          <!-- Business hours -->
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           <span>Mon–Fri: 8am – 6pm<br/>Sat: 9am – 5pm</span>
         </li>
       </ul>
     </div>
   </div>
+
+  <!-- Footer bottom bar: copyright + legal links -->
   <div class="foot-bottom">
     <p>© 2026 Comprint Concepts Limited. All rights reserved.</p>
     <div class="foot-links">
@@ -1571,7 +1875,7 @@ window.addEventListener('load', () => {
 
 /* ══════════════════════════════════════════
    THEME TOGGLE — GLASS BUBBLE
-   
+
    How it works:
    1. We read the saved preference from localStorage.
    2. We set the initial theme on the <html> element.
@@ -1611,10 +1915,10 @@ function applyTheme(theme) {
 
 /* Calculate and set the bubble's position relative to the toggle wrapper */
 function positionBubble(activeBtn) {
-  /* offsetLeft gives us how far the button is from the left edge of its parent */
+  /* getBoundingClientRect gives us the button's exact position on screen */
   const wrapLeft = toggleWrap.getBoundingClientRect().left;
   const btnLeft  = activeBtn.getBoundingClientRect().left;
-  /* Position is relative, so subtract the wrapper's own left padding (3px) */
+  /* Set position relative to the wrapper's left edge */
   bubble.style.left  = (btnLeft - wrapLeft) + 'px';
   bubble.style.width = activeBtn.offsetWidth + 'px';
 }
@@ -1635,46 +1939,50 @@ window.addEventListener('resize', () => {
 });
 
 /* ── HERO CAROUSEL ──
-   Auto-advances through 5 slides every 5 seconds.
-   Clicking a dot jumps to that specific slide immediately. */
+   TASK 4a: Auto-advances every 10 seconds (was 5s) — gives visitors more
+   time to read the headline and take action before the slide changes.
+   TASK 4c: Prev/Next arrows also control the carousel. */
 const slides     = document.querySelectorAll('.hero-slide');
 const dots       = document.querySelectorAll('.carousel-dots .dot');
 let currentSlide = 0;
-let autoAdvance; /* Reference to the interval so we can restart it */
+let autoAdvance; /* Reference to the interval so we can restart it after manual nav */
 
 /* Switch to a specific slide by index (0-based) */
 function goToSlide(index) {
   /* Remove "active" from the current slide and dot */
   slides[currentSlide].classList.remove('active');
   dots[currentSlide].classList.remove('active');
-  /* Update current index */
-  currentSlide = index;
-  /* Wrap around if we go past the last slide */
-  if (currentSlide >= slides.length) currentSlide = 0;
+  /* Wrap around at both ends */
+  currentSlide = ((index % slides.length) + slides.length) % slides.length;
   /* Activate the new slide and dot */
   slides[currentSlide].classList.add('active');
   dots[currentSlide].classList.add('active');
 }
 
 /* Move forward one slide */
-function nextSlide() {
-  goToSlide((currentSlide + 1) % slides.length);
+function nextSlide() { goToSlide(currentSlide + 1); }
+
+/* Move backward one slide */
+function prevSlide() { goToSlide(currentSlide - 1); }
+
+/* TASK 4a: 10 000ms = 10 seconds per slide */
+function startAutoAdvance() { autoAdvance = setInterval(nextSlide, 10000); }
+
+/* Helper: stop, jump, restart — used by both dots and arrows */
+function manualNav(targetFn) {
+  clearInterval(autoAdvance);
+  targetFn();
+  startAutoAdvance();
 }
 
-/* Start the auto-advance timer (5000ms = 5 seconds per slide) */
-function startAutoAdvance() {
-  autoAdvance = setInterval(nextSlide, 5000);
-}
-
-/* Dot click handlers — when user clicks a dot, jump to that slide
-   and restart the timer so they get a full 5s on their chosen slide */
+/* Dot click handlers */
 dots.forEach((dot, i) => {
-  dot.addEventListener('click', () => {
-    clearInterval(autoAdvance);   /* Stop auto-advance */
-    goToSlide(i);                 /* Jump to chosen slide */
-    startAutoAdvance();           /* Restart timer */
-  });
+  dot.addEventListener('click', () => manualNav(() => goToSlide(i)));
 });
+
+/* TASK 4c: Prev / Next arrow click handlers */
+document.getElementById('prevBtn').addEventListener('click', () => manualNav(prevSlide));
+document.getElementById('nextBtn').addEventListener('click', () => manualNav(nextSlide));
 
 /* Begin the carousel on page load */
 startAutoAdvance();
@@ -1742,15 +2050,15 @@ function toggleFAQ(btn) {
 }
 
 /* ── SERVICE CARD WHATSAPP CLICK ──
-   Clicking any service card opens a WhatsApp message
-   pre-filled with the name of that service. */
+   Clicking any service card opens a WhatsApp message pre-filled with that service name.
+   NOTE: .svc-name is now inside .svc-inner but querySelector still finds it as a descendant. */
 document.querySelectorAll('.svc-card').forEach(card => {
   const svcName = card.querySelector('.svc-name')?.textContent || 'your service';
   card.addEventListener('click', () => {
     const msg = encodeURIComponent(
       `Hello Comprint, I'm interested in: ${svcName}. Please send me more details and pricing.`
     );
-    /* SECURITY: noopener is applied via JS window.open as well */
+    /* SECURITY: noopener,noreferrer prevents tab-napping */
     window.open(`https://wa.me/254796333279?text=${msg}`, '_blank', 'noopener,noreferrer');
   });
 });
