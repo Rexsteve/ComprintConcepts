@@ -109,22 +109,13 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 .mobile-drawer.open{transform:translateY(0);}
 .mobile-drawer .nav-link{font-size:1rem;}
 
-/* ══════════════════════════════════════════
-   HERO SECTION — REMOVED
-   CHANGE: The large svc-hero section has been fully removed.
-   The page now starts directly with the search bar top-bar.
-   A compact page-title banner replaces it (see below).
-   ══════════════════════════════════════════ */
-
-/* ── COMPACT PAGE HEADER (replaces removed hero) ──
-   A slim, clean strip that names the page without the big hero footprint. */
+/* ── COMPACT PAGE HEADER (replaces removed hero) ── */
 .page-header{
-  padding:100px 6vw 28px; /* Top padding accounts for the fixed nav height */
+  padding:100px 6vw 28px;
   background:var(--bg2);
   border-bottom:1px solid var(--border);
   position:relative;overflow:hidden;
 }
-/* Subtle dot-grid texture behind the header */
 .page-header::after{
   content:'';position:absolute;inset:0;
   background-image:radial-gradient(circle,rgba(139,3,139,0.06) 1px,transparent 1px);
@@ -146,12 +137,7 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 .ph-title em{color:transparent;-webkit-text-stroke:1.5px rgba(200,169,110,0.7);font-style:normal;}
 .ph-sub{font-size:0.88rem;color:var(--text-3);line-height:1.65;max-width:480px;}
 
-/* ══════════════════════════════════════════
-   SEARCH BAR — PRIMARY HEADER ELEMENT
-   CHANGE: The search input is now the prominent element
-   users see first after the page title.
-   It features fuzzy/partial matching as they type.
-   ══════════════════════════════════════════ */
+/* ══ SEARCH BAR / TOP-BAR ══ */
 .top-bar{
   background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);
   padding:18px 6vw;
@@ -159,17 +145,13 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
   position:sticky;top:66px;z-index:100;
   backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
 }
-
-/* The search input wrapper — styled to look prominent and clean */
 .search-box{
   display:flex;align-items:center;gap:10px;
   background:var(--card);border:1px solid var(--border);
   border-radius:99px;padding:11px 20px;
-  /* flex:1 lets it grow to fill available space */
   flex:1;min-width:200px;max-width:380px;
   transition:border-color var(--tr),box-shadow var(--tr);
 }
-/* Highlight the search box when the user clicks inside it */
 .search-box:focus-within{
   border-color:var(--border-h);
   box-shadow:0 0 0 3px var(--brand-pale);
@@ -182,14 +164,7 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 }
 .search-box input::placeholder{color:var(--text-3);}
 
-/* No-results message shown when search finds nothing */
-#noResults{
-  display:none; /* Hidden by default; JS shows it when needed */
-  text-align:center;padding:60px 20px;
-  color:var(--text-3);font-size:0.9rem;
-}
-
-/* Quick-filter pill buttons (category shortcuts) */
+/* Quick-filter pill buttons */
 .quick-links{display:flex;gap:8px;flex-wrap:wrap;}
 .ql-btn{
   padding:8px 16px;border-radius:99px;
@@ -211,8 +186,7 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 .sidebar{
   background:var(--bg2);border-right:1px solid var(--border);
   padding:36px 0;
-  /* sticky keeps the sidebar in view while you scroll through services */
-  position:sticky;top:calc(66px + 65px); /* nav height + top-bar height */
+  position:sticky;top:calc(66px + 65px);
   height:calc(100vh - 131px);
   overflow-y:auto;
 }
@@ -248,7 +222,7 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 /* Category block (groups of service items) */
 .cat-block{margin-bottom:56px;}
 .cat-block:last-child{margin-bottom:0;}
-.cat-block.hidden{display:none;} /* Hidden by filter/search JS */
+.cat-block.hidden{display:none;}
 .cat-header{
   display:flex;align-items:center;gap:14px;
   margin-bottom:22px;padding-bottom:16px;
@@ -266,62 +240,129 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 .items-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
 
 /* ══════════════════════════════════════════
-   SERVICE ITEM CARDS
-   CHANGE: Each card now has a distinct background image.
-   The image is placed in a ::before layer and shown subtly on hover.
-   REPLACE the background-image URLs below with real themed photos.
+   SERVICE ITEM CARDS — TASKS 1, 2, 3
+
+   TASK 1: Icons removed. No .item-icon rendered inside cards.
+   TASK 2: Each card uses a real background image (set via data-bg attribute
+           in HTML, applied by JS on DOMContentLoaded). The image is always
+           partially visible and becomes more prominent on hover.
+   TASK 3: Images use loading="lazy" + decoding="async" on the <img> tags
+           inside the card. The card itself uses contain:layout style and
+           will-change:transform only on hover (applied via JS) to prevent
+           layout shifts and keep scrolling GPU-smooth.
    ══════════════════════════════════════════ */
 .svc-item{
   background:var(--card);border:1px solid var(--border);
-  border-radius:14px;padding:18px 16px;
-  display:flex;flex-direction:column;gap:8px;
-  transition:all var(--tr);cursor:pointer;
+  border-radius:14px;
+  /* TASK 3: contain:layout prevents this card from affecting the layout
+     of neighbouring elements during load — avoids content jumping. */
+  contain:layout;
+  display:flex;flex-direction:column;gap:0;
+  transition:border-color var(--tr),transform var(--tr),box-shadow var(--tr);
+  cursor:pointer;
   position:relative;overflow:hidden;
+  /* Reserve minimum height so the card never collapses before the image loads. */
+  min-height:190px;
 }
-/* The background image layer — hidden until hover */
-.svc-item::before{
-  content:'';
+
+/* ── Card background image layer ──
+   TASK 2: A real <img> is injected by JS (see bottom of file).
+   Using an <img> rather than background-image allows lazy loading + async decode.
+   The image sits behind all text content at z-index:0. */
+.svc-item-bg{
   position:absolute;inset:0;
-  /* Each card gets its own image via inline style on the element.
-     We use a CSS var so JS or inline styles can set it per card. */
-  background-image:var(--card-bg, none);
-  background-size:cover;background-position:center;
-  opacity:0; /* Invisible by default */
-  transition:opacity 0.4s ease;
+  width:100%;height:100%;
+  object-fit:cover;object-position:center;
+  /* TASK 3: opacity transition is the only animated property on this element —
+     GPU-composited, no layout work needed. */
+  opacity:0.28;
+  transition:opacity 0.45s ease, transform 0.55s ease;
   z-index:0;
   border-radius:14px;
 }
-/* Gradient ensures text stays readable over the background image */
+/* On hover: image becomes slightly more vivid and scales in very subtly */
+.svc-item:hover .svc-item-bg{
+  opacity:0.48;
+  transform:scale(1.04);
+}
+
+/* ── Gradient overlay ──
+   Fades from solid card colour at bottom (where text lives) to transparent at top.
+   Guarantees text legibility regardless of image brightness. */
 .svc-item-overlay{
   position:absolute;inset:0;
-  background:linear-gradient(to top, var(--card) 50%, transparent 100%);
+  /* TASK 2: Dark mode and light mode overlays are handled via CSS variables
+     so both themes remain readable over any image. */
+  background:linear-gradient(
+    to top,
+    rgba(10,6,10,0.95) 0%,
+    rgba(10,6,10,0.70) 45%,
+    rgba(10,6,10,0.22) 100%
+  );
   z-index:1;border-radius:14px;pointer-events:none;
-  opacity:0;transition:opacity 0.4s ease;
 }
-/* Reveal image and gradient on hover */
-.svc-item:hover::before{opacity:0.15;}
-.svc-item:hover .svc-item-overlay{opacity:1;}
-/* The bottom accent line */
+/* Light-mode: lighter overlay base so the white card colour shows through */
+[data-theme="light"] .svc-item-overlay{
+  background:linear-gradient(
+    to top,
+    rgba(255,255,255,0.96) 0%,
+    rgba(255,255,255,0.82) 40%,
+    rgba(255,255,255,0.28) 100%
+  );
+}
+
+/* Bottom accent line — sweeps in from left on hover */
 .svc-item::after{
   content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
   background:linear-gradient(90deg,var(--brand),var(--gold));
   transform:scaleX(0);transform-origin:left;transition:transform .3s ease;
   z-index:3;
 }
-.svc-item:hover{border-color:var(--border-h);transform:translateY(-3px);box-shadow:0 12px 30px var(--brand-glow);}
+.svc-item:hover{
+  border-color:var(--border-h);
+  transform:translateY(-3px);
+  box-shadow:0 14px 34px rgba(0,0,0,0.55);
+}
 .svc-item:hover::after{transform:scaleX(1);}
 
-/* All direct children sit above the bg/overlay layers */
-.item-icon,.item-name,.item-desc,.item-cta{position:relative;z-index:2;}
-.item-icon{
-  width:36px;height:36px;border-radius:9px;
-  background:var(--brand-pale);border:1px solid var(--border);
-  display:flex;align-items:center;justify-content:center;color:var(--brand-light);
+/* Inner content wrapper — sits above bg image and overlay */
+.svc-inner-content{
+  position:relative;z-index:2;
+  display:flex;flex-direction:column;gap:7px;
+  padding:18px 16px 16px;
+  height:100%;
 }
-.item-name{font-size:0.86rem;font-weight:500;color:var(--text);line-height:1.3;}
-.item-desc{font-size:0.74rem;color:var(--text-3);line-height:1.55;flex:1;}
-.item-cta{display:inline-flex;align-items:center;gap:5px;font-size:0.7rem;font-weight:500;color:var(--brand-light);margin-top:2px;transition:gap var(--tr);}
-.svc-item:hover .item-cta{gap:8px;}
+
+/* TASK 1: .item-icon class is kept in CSS for backward compatibility but
+   no longer rendered in markup. Cards look cleaner without the icon. */
+
+/* Item text elements — all above the image/overlay layers */
+.item-name{
+  font-size:0.87rem;font-weight:500;
+  /* TASK 2: White text is always legible over the dark gradient overlay */
+  color:#fff;
+  text-shadow:0 1px 6px rgba(0,0,0,0.5);
+  line-height:1.3;
+}
+[data-theme="light"] .item-name{color:var(--text);text-shadow:none;}
+
+.item-desc{
+  font-size:0.74rem;
+  color:rgba(255,255,255,0.65);
+  line-height:1.55;flex:1;
+  text-shadow:0 1px 5px rgba(0,0,0,0.4);
+}
+[data-theme="light"] .item-desc{color:var(--text-3);text-shadow:none;}
+
+/* TASK 3: WhatsApp green CTA — same convention as index.html for consistency */
+.item-cta{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:0.7rem;font-weight:500;
+  color:#25D366; /* WhatsApp green for instant recognition */
+  margin-top:4px;
+  transition:gap var(--tr),color var(--tr);
+}
+.svc-item:hover .item-cta{gap:8px;color:#4ae07e;}
 
 /* Featured / Popular band at the top of the content panel */
 .featured-band{
@@ -341,6 +382,61 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 }
 .pill:hover{background:var(--brand);color:#fff;border-color:var(--brand);}
 
+/* ══════════════════════════════════════════
+   NO RESULTS — TASK 5
+   Premium, conversion-focused experience.
+   Not a flat "no results" message — instead a
+   reassuring CTA that drives WhatsApp enquiries.
+   ══════════════════════════════════════════ */
+#noResults{
+  display:none; /* Hidden by default; JS reveals it when search finds nothing */
+  padding:56px 32px;
+  background:linear-gradient(135deg,var(--bg3),var(--card));
+  border:1px solid var(--border);
+  border-radius:20px;
+  text-align:center;
+}
+.no-results-icon{
+  width:60px;height:60px;border-radius:50%;
+  background:var(--brand-pale);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 22px;color:var(--brand-light);
+}
+.no-results-eyebrow{
+  font-size:0.65rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:12px;
+}
+.no-results-heading{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.6rem,3vw,2.2rem);
+  font-weight:700;color:var(--text);
+  line-height:1.1;margin-bottom:14px;
+}
+.no-results-body{
+  font-size:0.88rem;color:var(--text-2);
+  line-height:1.78;max-width:420px;margin:0 auto 28px;
+}
+/* WhatsApp green CTA button in the no-results panel */
+.no-results-wa{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:14px 28px;border-radius:99px;
+  background:#25D366;color:#fff;
+  font-size:0.85rem;font-weight:500;letter-spacing:0.04em;
+  transition:all var(--tr);
+  margin-right:10px;
+}
+.no-results-wa:hover{background:#1ebe5d;transform:translateY(-2px);box-shadow:0 10px 26px rgba(37,211,102,0.35);}
+.no-results-wa img{width:18px;height:18px;object-fit:contain;filter:brightness(0) invert(1);}
+/* Secondary "browse all" link */
+.no-results-browse{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:0.82rem;color:var(--brand-light);
+  border-bottom:1px solid rgba(139,3,139,0.22);
+  padding-bottom:2px;transition:all var(--tr);cursor:pointer;
+  vertical-align:middle;
+}
+.no-results-browse:hover{color:var(--brand-mid);border-color:var(--brand-mid);}
+
 /* ══ CTA STRIP ══ */
 .cta-strip{
   background:var(--brand);padding:80px 6vw;
@@ -353,8 +449,15 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 .cta-left h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.8vw,3.2rem);font-weight:700;color:#fff;line-height:1.05;}
 .cta-left p{font-size:.92rem;color:rgba(255,255,255,.6);margin-top:10px;max-width:420px;line-height:1.72;}
 .cta-right{position:relative;display:flex;gap:12px;flex-wrap:wrap;}
-.btn-white{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:99px;background:#fff;color:var(--brand);font-size:.85rem;font-weight:500;transition:all var(--tr);}
-.btn-white:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.2);}
+/* TASK 3: CTA strip WhatsApp button uses the green convention */
+.btn-wa-cta{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:14px 28px;border-radius:99px;
+  background:#25D366;color:#fff;
+  font-size:.85rem;font-weight:500;transition:all var(--tr);
+}
+.btn-wa-cta:hover{background:#1ebe5d;transform:translateY(-2px);box-shadow:0 8px 24px rgba(37,211,102,0.3);}
+.btn-wa-cta img{width:18px;height:18px;object-fit:contain;filter:brightness(0) invert(1);}
 .btn-ghost{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:99px;background:transparent;color:rgba(255,255,255,.82);font-size:.85rem;border:1px solid rgba(255,255,255,.28);transition:all var(--tr);}
 .btn-ghost:hover{border-color:rgba(255,255,255,.65);color:#fff;}
 
@@ -377,7 +480,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
   .nav-links,.btn-nav{display:none;}
   .hamburger{display:flex;}
   .services-body{grid-template-columns:1fr;}
-  .sidebar{display:none;} /* Sidebar collapses on mobile — use top-bar pills instead */
+  .sidebar{display:none;}
   .top-bar{top:66px;}
 }
 @media(max-width:640px){
@@ -390,16 +493,15 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
 
 <!-- ══════════════════════════════════════════
      NAVIGATION
-     CHANGES vs original:
-     • Added "Home" link
+     • "Home" link added
      • "Clients" renamed to "Clientele"
-     • Portfolio links to portfolio.html
      • Dual-icon glass-bubble theme toggle
      ══════════════════════════════════════════ -->
 <nav id="mainNav">
   <a href="index.html" class="nav-logo">
     <div class="logo-box">
-      <img src="images/logo.png" alt="Comprint" style="width:100%;height:100%;object-fit:cover;">
+      <!-- CHANGED: Updated logo path to match canonical image directory -->
+      <img src="images/logos/clientelle_n_trustedby/logo.png" alt="Comprint" style="width:100%;height:100%;object-fit:cover;">
     </div>
     <div class="logo-text">Comprint<span>Concepts Limited</span></div>
   </a>
@@ -410,16 +512,13 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
     <a href="services.html"   class="nav-link active">Services</a>
     <a href="portfolio.html"  class="nav-link">Portfolio</a>
     <a href="index.html#faq"  class="nav-link">FAQs</a>
-    <!-- CHANGED: "Clients" → "Clientele" -->
     <a href="clients.html"    class="nav-link">Clientele</a>
   </div>
 
   <div class="nav-right">
-    <!-- SECURITY: rel="noopener noreferrer" prevents tab-napping on target="_blank" -->
     <a href="https://wa.me/254796333279?text=Hello%20Comprint%2C%20I%27d%20like%20a%20quote."
        target="_blank" rel="noopener noreferrer" class="btn-nav">Get a Quote</a>
 
-    <!-- Glass-bubble theme toggle (both icons always visible) -->
     <div class="theme-toggle-wrap" id="themeToggle" role="group" aria-label="Toggle colour theme">
       <div class="theme-bubble" id="themeBubble"></div>
       <button class="theme-icon-btn" id="btnLight" aria-label="Switch to light mode">
@@ -456,11 +555,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
      class="btn-nav" style="width:fit-content;margin-top:6px;">Get a Quote</a>
 </div>
 
-<!-- ══════════════════════════════════════════
-     COMPACT PAGE HEADER
-     CHANGE: The large hero section has been completely removed.
-     This slim header takes its place — much less visual footprint.
-     ══════════════════════════════════════════ -->
+<!-- ══ COMPACT PAGE HEADER ══ -->
 <div class="page-header">
   <div class="page-header-inner">
     <div class="ph-eyebrow">Everything We Offer</div>
@@ -469,21 +564,14 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     TOP BAR — SEARCH IS NOW THE PRIMARY ELEMENT
-     CHANGE: The search box is the first, most prominent thing here.
-     Fuzzy/partial matching is implemented in JS below.
-     ══════════════════════════════════════════ -->
+<!-- ══ TOP BAR — SEARCH + QUICK FILTERS ══ -->
 <div class="top-bar">
-  <!-- Search input — primary element -->
   <div class="search-box">
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
     </svg>
     <input type="text" id="searchInput" placeholder="Search services… e.g. banner, cards, t-shirts" autocomplete="off" aria-label="Search services"/>
   </div>
-
-  <!-- Quick-filter pills for category jumping -->
   <div class="quick-links">
     <button class="ql-btn active" data-target="all">All</button>
     <button class="ql-btn" data-target="banners">Banners</button>
@@ -547,10 +635,35 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
   <!-- ── RIGHT CONTENT PANEL ── -->
   <div class="content-panel" id="contentPanel">
 
-    <!-- No-results message (shown by JS when search finds nothing) -->
+    <!-- ══════════════════════════════════════════
+         NO RESULTS — TASK 5
+         Premium, conversion-focused experience shown when
+         search finds no matches. Drives WhatsApp enquiries.
+         ══════════════════════════════════════════ -->
     <div id="noResults">
-      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto 14px;opacity:.3"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <p>No services match your search. Try a different keyword or <a href="#" onclick="clearSearch()" style="color:var(--brand-light)">browse all services</a>.</p>
+      <div class="no-results-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </div>
+      <div class="no-results-eyebrow">We Print Almost Anything</div>
+      <h2 class="no-results-heading">Not seeing exactly<br/>what you need?</h2>
+      <p class="no-results-body">
+        Comprint offers over 50 custom print, branding, and promotional solutions —
+        and we specialise in projects that go beyond the standard catalogue.
+        Describe your brief and our team will recommend the ideal service, material, and finish.
+      </p>
+      <!-- WhatsApp green CTA with logo -->
+      <a class="no-results-wa"
+         href="https://wa.me/254796333279?text=Hello%20Comprint%2C%20I%20couldn%27t%20find%20the%20service%20I%20need.%20Can%20you%20help%3F"
+         target="_blank" rel="noopener noreferrer">
+        <img src="images/logos/socials/whatsapp_logo_icon_225645.png" alt="WhatsApp">
+        Describe Your Project
+      </a>
+      <span class="no-results-browse" onclick="clearSearch()">
+        Or browse all services
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
     </div>
 
     <!-- FEATURED / MOST POPULAR BAND -->
@@ -572,9 +685,14 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
 
     <!-- ═══════════════════════════════════════
          CATEGORY: BANNERS & SIGNAGE
-         Each .svc-item has a CSS variable --card-bg set inline
-         pointing to a thematic background image.
-         REPLACE each image path with a real photo.
+
+         TASK 1: No .item-icon div rendered inside cards.
+         TASK 2: data-bg attribute holds the image path.
+                 JS reads this and injects a lazy <img> at runtime.
+         TASK 4: data-keywords holds extra search terms so
+                 searching "outdoor", "flag", "backdrop", etc.
+                 finds the right card even if those words aren't
+                 in the visible title or description.
          ═══════════════════════════════════════ -->
     <div class="cat-block reveal" data-cat="banners">
       <div class="cat-header">
@@ -583,62 +701,103 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
         <div class="cat-count">8 services</div>
       </div>
       <div class="items-grid">
-        <div class="svc-item" style="--card-bg:url('images/service_cards/banners_pvc_vinyl_banner.jpg')" onclick="wa('PVC Vinyl Banner Printing')">
+
+        <div class="svc-item"
+             data-bg="images/services/banners_&_signage/pvc_banner.jpg"
+             data-keywords="outdoor advertising large format pvc vinyl flex print signage hoarding"
+             onclick="wa('PVC Vinyl Banner Printing')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/></svg></div>
-          <div class="item-name">PVC Vinyl Banners</div>
-          <div class="item-desc">Outdoor-grade banners for events, shops, and advertising in any size.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">PVC Vinyl Banners</div>
+            <div class="item-desc">Outdoor-grade banners for events, shops, and advertising in any size.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
-        <div class="svc-item" style="--card-bg:url('images/service_cards/banners_rollup_stand.jpg')" onclick="wa('Roll-Up Banner Stands')">
+
+        <div class="svc-item"
+             data-bg="images/services/banners_&_signage/X-Banner_stands.jpg"
+             data-keywords="retractable pull-up exhibition trade fair roll up popup display stand"
+             onclick="wa('Roll-Up Banner Stands')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg></div>
-          <div class="item-name">Roll-Up Banner Stands</div>
-          <div class="item-desc">Portable retractable stands ideal for exhibitions, trade fairs, and offices.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Roll-Up Banner Stands</div>
+            <div class="item-desc">Portable retractable stands ideal for exhibitions, trade fairs, and offices.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
-        <div class="svc-item" style="--card-bg:url('images/service_cards/banners_xbanner_stand.jpg')" onclick="wa('X-Banner Stands')">
+
+        <div class="svc-item"
+             data-bg="images/services/banners_&_signage/X-Banner_stands.jpg"
+             data-keywords="x banner xbanner lightweight indoor promotion cheap affordable"
+             onclick="wa('X-Banner Stands')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 6L6 18M6 6l12 12"/></svg></div>
-          <div class="item-name">X-Banner Stands</div>
-          <div class="item-desc">Lightweight and cost-effective display stands for indoor promotions.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">X-Banner Stands</div>
+            <div class="item-desc">Lightweight and cost-effective display stands for indoor promotions.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
-        <div class="svc-item" style="--card-bg:url('images/service_cards/banners_teardrop_flag.jpg')" onclick="wa('Teardrop Banners')">
+
+        <div class="svc-item"
+             data-bg="images/services/banners_&_signage/teardrop_&_feather_banners.jpg"
+             data-keywords="teardrop feather flag banner outdoor shop front wind dancing flag"
+             onclick="wa('Teardrop Banners')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2C6.48 2 2 8 2 14a10 10 0 0 0 20 0C22 8 17.52 2 12 2z"/></svg></div>
-          <div class="item-name">Teardrop &amp; Feather Banners</div>
-          <div class="item-desc">Eye-catching flag banners for outdoor events and shop fronts.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Teardrop &amp; Feather Banners</div>
+            <div class="item-desc">Eye-catching flag banners for outdoor events and shop fronts.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
-        <div class="svc-item" style="--card-bg:url('images/service_cards/banners_billboard_hoarding.jpg')" onclick="wa('Billboard Printing')">
+
+        <div class="svc-item"
+             data-bg="images/services/banners_&_signage/billboard-&-hoarding_printing.jpg"
+             data-keywords="billboard hoarding large scale street advertising outdoor signage"
+             onclick="wa('Billboard Printing')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="3" width="20" height="13" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="16" x2="12" y2="21"/></svg></div>
-          <div class="item-name">Billboard &amp; Hoarding Printing</div>
-          <div class="item-desc">Large-scale prints for street-facing billboards and hoardings.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Billboard &amp; Hoarding Printing</div>
+            <div class="item-desc">Large-scale prints for street-facing billboards and hoardings.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
-        <div class="svc-item" style="--card-bg:url('images/service_cards/banners_step_repeat_backdrop.jpg')" onclick="wa('Step and Repeat Banner')">
+
+        <div class="svc-item"
+             data-bg="images/services/banners_&_signage/step-and-repeat_backdrops.jpg"
+             data-keywords="step repeat backdrop photo wall press event red carpet launch media"
+             onclick="wa('Step and Repeat Banner')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg></div>
-          <div class="item-name">Step-and-Repeat Backdrops</div>
-          <div class="item-desc">Photo-wall backdrops for press events, red carpets, and corporate launches.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Step-and-Repeat Backdrops</div>
+            <div class="item-desc">Photo-wall backdrops for press events, red carpets, and corporate launches.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
-        <div class="svc-item" style="--card-bg:url('images/service_cards/banners_vehicle_wrap_branding.jpg')" onclick="wa('Vehicle Branding')">
+
+        <div class="svc-item"
+             data-bg="images/services/banners_&_signage/vehicle_branding_&_wraps.jpg"
+             data-keywords="vehicle wrap car van bus fleet branding decal sticker graphics"
+             onclick="wa('Vehicle Branding')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="3" width="15" height="13" rx="2"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
-          <div class="item-name">Vehicle Branding &amp; Wraps</div>
-          <div class="item-desc">Full and partial vehicle wraps for fleet branding across Nairobi and beyond.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Vehicle Branding &amp; Wraps</div>
+            <div class="item-desc">Full and partial vehicle wraps for fleet branding across Nairobi and beyond.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
-        <div class="svc-item" style="--card-bg:url('images/service_cards/banners_window_wall_graphics.jpg')" onclick="wa('Window Sticker Printing')">
+
+        <div class="svc-item"
+             data-bg="images/services/banners_&_signage/window_&_wall_graphics.jpg"
+             data-keywords="window sticker frosted perforated wall mural decal glass graphics"
+             onclick="wa('Window Sticker Printing')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h18"/></svg></div>
-          <div class="item-name">Window &amp; Wall Graphics</div>
-          <div class="item-desc">Frosted, perforated, and full-colour prints for glass and wall surfaces.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Window &amp; Wall Graphics</div>
+            <div class="item-desc">Frosted, perforated, and full-colour prints for glass and wall surfaces.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
+
       </div>
     </div>
 
@@ -650,55 +809,91 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
         <div class="cat-count">7 services</div>
       </div>
       <div class="items-grid">
-        <div class="svc-item" style="--card-bg:url('images/service_cards/corporate_business_cards.jpg')" onclick="wa('Business Cards')">
+
+        <div class="svc-item"
+             data-bg="images/services/corporate_branding/business_card.jpg"
+             data-keywords="business card cards visiting name card spot uv embossed foil die cut"
+             onclick="wa('Business Cards')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg></div>
-          <div class="item-name">Business Cards</div>
-          <div class="item-desc">Standard, spot-UV, embossed, foiled, and die-cut business cards.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Business Cards</div>
+            <div class="item-desc">Standard, spot-UV, embossed, foiled, and die-cut business cards.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
-        <div class="svc-item" style="--card-bg:url('images/service_cards/corporate_company_profile.jpg')" onclick="wa('Company Profile Printing')">
+
+        <div class="svc-item"
+             data-bg="images/services/corporate_branding/premium brand rollout.jpg"
+             data-keywords="company profile brochure booklet saddle stitch perfect bound annual report"
+             onclick="wa('Company Profile Printing')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-          <div class="item-name">Company Profiles &amp; Brochures</div>
-          <div class="item-desc">Full-colour saddle-stitched and perfect-bound company booklets.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Company Profiles &amp; Brochures</div>
+            <div class="item-desc">Full-colour saddle-stitched and perfect-bound company booklets.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
-        <div class="svc-item" style="--card-bg:url('images/service_cards/corporate_letterheads_envelopes.jpg')" onclick="wa('Letterheads and Envelopes')">
+
+        <div class="svc-item"
+             data-bg="images/services/corporate_branding/letterheads-&-envelopes.jpg"
+             data-keywords="letterhead envelope branded stationery official letter correspondence"
+             onclick="wa('Letterheads and Envelopes')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-          <div class="item-name">Letterheads &amp; Envelopes</div>
-          <div class="item-desc">Branded stationery that reinforces professionalism in every communication.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Letterheads &amp; Envelopes</div>
+            <div class="item-desc">Branded stationery that reinforces professionalism in every communication.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
-        <div class="svc-item" style="--card-bg:url('images/service_cards/corporate_presentation_folders.jpg')" onclick="wa('Presentation Folders')">
+
+        <div class="svc-item"
+             data-bg="images/services/corporate_branding/presentation_folder.jpg"
+             data-keywords="folder presentation document portfolio branded slot pocket"
+             onclick="wa('Presentation Folders')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
-          <div class="item-name">Presentation Folders</div>
-          <div class="item-desc">Branded document folders with business card slots and insert pockets.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Presentation Folders</div>
+            <div class="item-desc">Branded document folders with business card slots and insert pockets.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
-        <div class="svc-item" style="--card-bg:url('images/service_cards/corporate_id_cards_lanyards.jpg')" onclick="wa('ID Cards and Lanyards')">
+
+        <div class="svc-item"
+             data-bg="images/services/corporate_branding/IDcards-&-lanyards.jpg"
+             data-keywords="id card staff badge lanyard holder pvc retractable clip"
+             onclick="wa('ID Cards and Lanyards')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="3" width="14" height="18" rx="2"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="9" y1="12" x2="12" y2="12"/></svg></div>
-          <div class="item-name">ID Cards &amp; Lanyards</div>
-          <div class="item-desc">PVC staff ID cards, retractable holders, and branded lanyards.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">ID Cards &amp; Lanyards</div>
+            <div class="item-desc">PVC staff ID cards, retractable holders, and branded lanyards.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
-        <div class="svc-item" style="--card-bg:url('images/service_cards/corporate_gifts_giveaways.jpg')" onclick="wa('Corporate Gifts')">
+
+        <div class="svc-item"
+             data-bg="images/services/corporate_branding/corporate_gifts-&-giveaways.jpg"
+             data-keywords="gift giveaway corporate branded appreciation recognition hamper"
+             onclick="wa('Corporate Gifts')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg></div>
-          <div class="item-name">Corporate Gifts &amp; Giveaways</div>
-          <div class="item-desc">Customised branded gifts for client appreciation and team recognition.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Corporate Gifts &amp; Giveaways</div>
+            <div class="item-desc">Customised branded gifts for client appreciation and team recognition.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
-        <div class="svc-item" style="--card-bg:url('images/service_cards/corporate_branded_notebooks.jpg')" onclick="wa('Notepads and Notebooks')">
+
+        <div class="svc-item"
+             data-bg="images/services/corporate_branding/branded_notepads-&-notebooks.jpg"
+             data-keywords="notepad notebook branded logo conference office custom print"
+             onclick="wa('Notepads and Notebooks')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg></div>
-          <div class="item-name">Branded Notepads &amp; Notebooks</div>
-          <div class="item-desc">Custom-printed notepads with your logo — great for conferences and offices.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Branded Notepads &amp; Notebooks</div>
+            <div class="item-desc">Custom-printed notepads with your logo — great for conferences and offices.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
+
       </div>
     </div>
 
@@ -710,41 +905,67 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
         <div class="cat-count">5 services</div>
       </div>
       <div class="items-grid">
-        <div class="svc-item" style="--card-bg:url('images/service_cards/packaging_product_labels.jpg')" onclick="wa('Product Label Printing')">
+
+        <div class="svc-item"
+             data-bg="images/services/packaging_&_labels/product_labels.jpg"
+             data-keywords="label product die cut roll sheet bottle bag retail sticker adhesive"
+             onclick="wa('Product Label Printing')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></div>
-          <div class="item-name">Product Labels</div>
-          <div class="item-desc">Die-cut, roll, and sheet labels for bottles, bags, and retail products.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Product Labels</div>
+            <div class="item-desc">Die-cut, roll, and sheet labels for bottles, bags, and retail products.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
-        <div class="svc-item" style="--card-bg:url('images/service_cards/packaging_retail_carton_boxes.jpg')" onclick="wa('Retail Carton Boxes')">
+
+        <div class="svc-item"
+             data-bg="images/services/packaging_&_labels/retail_carton_boxes.jpg"
+             data-keywords="box carton retail packaging cardboard printed folding custom"
+             onclick="wa('Retail Carton Boxes')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>
-          <div class="item-name">Retail Carton Boxes</div>
-          <div class="item-desc">Custom printed and creased packaging boxes for consumer products.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Retail Carton Boxes</div>
+            <div class="item-desc">Custom printed and creased packaging boxes for consumer products.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
-        <div class="svc-item" style="--card-bg:url('images/service_cards/packaging_custom_stickers.jpg')" onclick="wa('Sticker Printing')">
+
+        <div class="svc-item"
+             data-bg="images/services/packaging_&_labels/custom_stickers.jpg"
+             data-keywords="sticker vinyl clear kraft holographic custom shape decal"
+             onclick="wa('Sticker Printing')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></div>
-          <div class="item-name">Custom Stickers</div>
-          <div class="item-desc">Vinyl, clear, kraft, and holographic stickers in any shape and size.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Custom Stickers</div>
+            <div class="item-desc">Vinyl, clear, kraft, and holographic stickers in any shape and size.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
-        <div class="svc-item" style="--card-bg:url('images/service_cards/packaging_branded_bags_pouches.jpg')" onclick="wa('Shopping Bag Printing')">
+
+        <div class="svc-item"
+             data-bg="images/services/packaging_&_labels/branded_bags-&-pouches.jpg"
+             data-keywords="bag pouch paper polythene canvas shopping branded custom printing"
+             onclick="wa('Shopping Bag Printing')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
-          <div class="item-name">Branded Bags &amp; Pouches</div>
-          <div class="item-desc">Paper bags, polythene bags, and canvas pouches with custom printing.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Branded Bags &amp; Pouches</div>
+            <div class="item-desc">Paper bags, polythene bags, and canvas pouches with custom printing.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
-        <div class="svc-item" style="--card-bg:url('images/service_cards/packaging_shrink_sleeves_bottles.jpg')" onclick="wa('Shrink Sleeves')">
+
+        <div class="svc-item"
+             data-bg="images/services/packaging_&_labels/shrink_sleeves.jpg"
+             data-keywords="shrink sleeve bottle wrap beverage food 360 container"
+             onclick="wa('Shrink Sleeves')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/></svg></div>
-          <div class="item-name">Shrink Sleeves</div>
-          <div class="item-desc">360° product wraps for bottles and containers in the food &amp; beverage sector.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Shrink Sleeves</div>
+            <div class="item-desc">360° product wraps for bottles and containers in the food &amp; beverage sector.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
+
       </div>
     </div>
 
@@ -756,55 +977,91 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
         <div class="cat-count">7 services</div>
       </div>
       <div class="items-grid">
-        <div class="svc-item" style="--card-bg:url('images/service_cards/events_tickets_graduation.jpg')" onclick="wa('Event Tickets')">
+
+        <div class="svc-item"
+             data-bg="images/services/Events_&_Decor/event_tickets.jpg"
+             data-keywords="ticket event concert graduation gala numbered perforated secure"
+             onclick="wa('Event Tickets')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v2z"/></svg></div>
-          <div class="item-name">Event Tickets</div>
-          <div class="item-desc">Numbered, perforated, and secure-print tickets for concerts, graduations, and galas.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Event Tickets</div>
+            <div class="item-desc">Numbered, perforated, and secure-print tickets for concerts, graduations, and galas.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
-        <div class="svc-item" style="--card-bg:url('images/service_cards/events_programme_booklets.jpg')" onclick="wa('Event Programmes')">
+
+        <div class="svc-item"
+             data-bg="images/services/Events_&_Decor/invitations-&-greeting_cards.jpg"
+             data-keywords="programme booklet order of service wedding conference agenda"
+             onclick="wa('Event Programmes')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg></div>
-          <div class="item-name">Event Programmes</div>
-          <div class="item-desc">Printed order-of-service booklets, wedding programmes, and conference agendas.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Event Programmes</div>
+            <div class="item-desc">Printed order-of-service booklets, wedding programmes, and conference agendas.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
-        <div class="svc-item" style="--card-bg:url('images/service_cards/events_table_runners_menus.jpg')" onclick="wa('Table Runners and Menus')">
+
+        <div class="svc-item"
+             data-bg="images/services/Events_&_Decor/table_runners-&-menus.jpg"
+             data-keywords="table runner menu place card fabric wedding dining decor"
+             onclick="wa('Table Runners and Menus')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg></div>
-          <div class="item-name">Table Runners &amp; Menus</div>
-          <div class="item-desc">Fabric runners, printed menus, and place cards for weddings and dining events.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Table Runners &amp; Menus</div>
+            <div class="item-desc">Fabric runners, printed menus, and place cards for weddings and dining events.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
-        <div class="svc-item" style="--card-bg:url('images/service_cards/events_photo_booth_props.jpg')" onclick="wa('Photo Booths and Props')">
+
+        <div class="svc-item"
+             data-bg="images/services/Events_&_Decor/large-format_backdrop.jpg"
+             data-keywords="photo booth prop backdrop instax selfie fun printed frame"
+             onclick="wa('Photo Booths and Props')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
-          <div class="item-name">Photo Booth Props &amp; Backdrops</div>
-          <div class="item-desc">Printed self-standing photo props, step-and-repeat walls, and Instax backdrops.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Photo Booth Props &amp; Backdrops</div>
+            <div class="item-desc">Printed self-standing photo props, step-and-repeat walls, and Instax backdrops.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
-        <div class="svc-item" style="--card-bg:url('images/service_cards/events_wedding_invitations.jpg')" onclick="wa('Invitations and Cards')">
+
+        <div class="svc-item"
+             data-bg="images/services/Events_&_Decor/weddings.jpg"
+             data-keywords="invitation wedding card greeting luxury rsvp announcement"
+             onclick="wa('Invitations and Cards')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-          <div class="item-name">Invitations &amp; Greeting Cards</div>
-          <div class="item-desc">Luxury wedding invitations, event cards, and corporate greeting cards.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Invitations &amp; Greeting Cards</div>
+            <div class="item-desc">Luxury wedding invitations, event cards, and corporate greeting cards.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
-        <div class="svc-item" style="--card-bg:url('images/service_cards/events_directional_signage.jpg')" onclick="wa('Directional Signage')">
+
+        <div class="svc-item"
+             data-bg="images/services/Events_&_Decor/directional-&-wayfinding_signage.jpg"
+             data-keywords="directional wayfinding signage arrow lobby campus navigation"
+             onclick="wa('Directional Signage')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="9 18 15 12 9 6"/></svg></div>
-          <div class="item-name">Directional &amp; Wayfinding Signage</div>
-          <div class="item-desc">Printed and mounted signs for event navigation, lobbies, and campuses.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Directional &amp; Wayfinding Signage</div>
+            <div class="item-desc">Printed and mounted signs for event navigation, lobbies, and campuses.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
-        <div class="svc-item" style="--card-bg:url('images/service_cards/events_fabric_display_stand.jpg')" onclick="wa('Fabric Display Stands')">
+
+        <div class="svc-item"
+             data-bg="images/services/Events_&_Decor/istockphoto-1070626376-1024x1024.jpg"
+             data-keywords="fabric tension display stand exhibition trade fair showcase"
+             onclick="wa('Fabric Display Stands')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
-          <div class="item-name">Fabric Display Stands</div>
-          <div class="item-desc">Tension fabric exhibition stands for trade fairs and product showcases.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Fabric Display Stands</div>
+            <div class="item-desc">Tension fabric exhibition stands for trade fairs and product showcases.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
+
       </div>
     </div>
 
@@ -816,48 +1073,79 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
         <div class="cat-count">6 services</div>
       </div>
       <div class="items-grid">
-        <div class="svc-item" style="--card-bg:url('images/service_cards/merch_branded_tshirts.jpg')" onclick="wa('Branded T-Shirts')">
+
+        <div class="svc-item"
+             data-bg="images/services/promotional_merchandise/tshirts.jpg"
+             data-keywords="shirt t-shirt tshirt hoodie apparel uniform branded screen dtg heat transfer clothing"
+             onclick="wa('Branded T-Shirts')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z"/></svg></div>
-          <div class="item-name">Branded T-Shirts &amp; Hoodies</div>
-          <div class="item-desc">Screen-print, DTG, and heat-transfer on cotton and blended fabrics.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Branded T-Shirts &amp; Hoodies</div>
+            <div class="item-desc">Screen-print, DTG, and heat-transfer on cotton and blended fabrics.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
-        <div class="svc-item" style="--card-bg:url('images/service_cards/merch_branded_caps.jpg')" onclick="wa('Branded Caps and Hats')">
+
+        <div class="svc-item"
+             data-bg="images/services/promotional_merchandise/caps.jpg"
+             data-keywords="cap hat beanie bucket embroidered screen print branded headwear"
+             onclick="wa('Branded Caps and Hats')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>
-          <div class="item-name">Branded Caps &amp; Hats</div>
-          <div class="item-desc">Embroidered and screen-printed caps, bucket hats, and beanies.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Branded Caps &amp; Hats</div>
+            <div class="item-desc">Embroidered and screen-printed caps, bucket hats, and beanies.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
-        <div class="svc-item" style="--card-bg:url('images/service_cards/merch_branded_mugs_bottles.jpg')" onclick="wa('Branded Mugs and Water Bottles')">
+
+        <div class="svc-item"
+             data-bg="images/services/promotional_merchandise/mugs.jpg"
+             data-keywords="mug cup bottle water flask travel sublimation branded"
+             onclick="wa('Branded Mugs and Water Bottles')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 8h1a4 4 0 0 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg></div>
-          <div class="item-name">Branded Mugs &amp; Bottles</div>
-          <div class="item-desc">Sublimation-printed mugs, travel cups, and stainless-steel bottles.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Branded Mugs &amp; Bottles</div>
+            <div class="item-desc">Sublimation-printed mugs, travel cups, and stainless-steel bottles.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
-        <div class="svc-item" style="--card-bg:url('images/service_cards/merch_branded_tote_bags.jpg')" onclick="wa('Branded Tote Bags')">
+
+        <div class="svc-item"
+             data-bg="images/services/promotional_merchandise/pexels-lara-jameson-9324408.jpg"
+             data-keywords="tote bag drawstring canvas event corporate gifting eco"
+             onclick="wa('Branded Tote Bags')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
-          <div class="item-name">Branded Tote &amp; Drawstring Bags</div>
-          <div class="item-desc">Canvas tote bags and drawstring sacks for events and corporate gifting.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Branded Tote &amp; Drawstring Bags</div>
+            <div class="item-desc">Canvas tote bags and drawstring sacks for events and corporate gifting.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
-        <div class="svc-item" style="--card-bg:url('images/service_cards/merch_branded_umbrellas.jpg')" onclick="wa('Branded Umbrellas')">
+
+        <div class="svc-item"
+             data-bg="images/services/promotional_merchandise/umbrellas.jpg"
+             data-keywords="umbrella golf folding custom branded event giveaway rain"
+             onclick="wa('Branded Umbrellas')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M23 12a11.05 11.05 0 0 0-22 0zm-5 7a3 3 0 0 1-6 0v-7"/></svg></div>
-          <div class="item-name">Branded Umbrellas</div>
-          <div class="item-desc">Custom-printed golf and folding umbrellas for events and giveaways.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Branded Umbrellas</div>
+            <div class="item-desc">Custom-printed golf and folding umbrellas for events and giveaways.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
-        <div class="svc-item" style="--card-bg:url('images/service_cards/merch_pens_usb_desk_items.jpg')" onclick="wa('Branded Pens and USB Drives')">
+
+        <div class="svc-item"
+             data-bg="images/services/promotional_merchandise/desk_items.jpg"
+             data-keywords="pen usb flash drive mouse pad desk accessory branded office"
+             onclick="wa('Branded Pens and USB Drives')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg></div>
-          <div class="item-name">Pens, USB Drives &amp; Desk Items</div>
-          <div class="item-desc">Branded pens, flash drives, mouse pads, and desk accessories.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Pens, USB Drives &amp; Desk Items</div>
+            <div class="item-desc">Branded pens, flash drives, mouse pads, and desk accessories.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
+
       </div>
     </div>
 
@@ -869,41 +1157,67 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
         <div class="cat-count">5 services</div>
       </div>
       <div class="items-grid">
-        <div class="svc-item" style="--card-bg:url('images/service_cards/stationery_compliment_slips.jpg')" onclick="wa('Compliment Slips')">
+
+        <div class="svc-item"
+             data-bg="images/services/Stationery_&_Office_Supplies/pexels-olenka-pasichnyk-325097313-14275725.jpg"
+             data-keywords="compliment slip note branded delivery correspondence small"
+             onclick="wa('Compliment Slips')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/></svg></div>
-          <div class="item-name">Compliment Slips</div>
-          <div class="item-desc">Small branded notes for accompanying deliveries and correspondence.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Compliment Slips</div>
+            <div class="item-desc">Small branded notes for accompanying deliveries and correspondence.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
-        <div class="svc-item" style="--card-bg:url('images/service_cards/stationery_ncr_receipt_books.jpg')" onclick="wa('Carbonless NCR Forms')">
+
+        <div class="svc-item"
+             data-bg="images/services/Stationery_&_Office_Supplies/pexels-pixabay-159519.jpg"
+             data-keywords="ncr carbonless receipt book invoice delivery note duplicate triplicate form"
+             onclick="wa('Carbonless NCR Forms')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg></div>
-          <div class="item-name">Carbonless NCR Books &amp; Forms</div>
-          <div class="item-desc">Duplicate and triplicate receipt books, delivery notes, and invoices.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Carbonless NCR Books &amp; Forms</div>
+            <div class="item-desc">Duplicate and triplicate receipt books, delivery notes, and invoices.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
-        <div class="svc-item" style="--card-bg:url('images/service_cards/stationery_branded_diaries_calendars.jpg')" onclick="wa('Diaries and Calendars')">
+
+        <div class="svc-item"
+             data-bg="images/services/Stationery_&_Office_Supplies/calendars.jpg"
+             data-keywords="diary calendar wall desk branded annual year custom logo"
+             onclick="wa('Diaries and Calendars')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
-          <div class="item-name">Branded Diaries &amp; Calendars</div>
-          <div class="item-desc">Custom desk calendars, wall calendars, and branded annual diaries.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Branded Diaries &amp; Calendars</div>
+            <div class="item-desc">Custom desk calendars, wall calendars, and branded annual diaries.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
-        <div class="svc-item" style="--card-bg:url('images/service_cards/stationery_certificates_awards.jpg')" onclick="wa('Certificates and Awards')">
+
+        <div class="svc-item"
+             data-bg="images/services/Stationery_&_Office_Supplies/certificates.jpg"
+             data-keywords="certificate award recognition training graduation framed achievement"
+             onclick="wa('Certificates and Awards')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div>
-          <div class="item-name">Certificates &amp; Awards</div>
-          <div class="item-desc">Printed and framed certificates for graduations, recognition, and training.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Certificates &amp; Awards</div>
+            <div class="item-desc">Printed and framed certificates for graduations, recognition, and training.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
-        <div class="svc-item" style="--card-bg:url('images/service_cards/stationery_posters_flyers.jpg')" onclick="wa('Posters and Flyers')">
+
+        <div class="svc-item"
+             data-bg="images/services/Stationery_&_Office_Supplies/posters-&-flyers.jpg"
+             data-keywords="poster flyer leaflet a4 a5 a3 a0 marketing campaign event"
+             onclick="wa('Posters and Flyers')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg></div>
-          <div class="item-name">Posters &amp; Flyers</div>
-          <div class="item-desc">A5–A0 flyers, posters, and inserts for marketing campaigns and events.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Posters &amp; Flyers</div>
+            <div class="item-desc">A5–A0 flyers, posters, and inserts for marketing campaigns and events.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
+
       </div>
     </div>
 
@@ -915,41 +1229,67 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
         <div class="cat-count">5 services</div>
       </div>
       <div class="items-grid">
-        <div class="svc-item" style="--card-bg:url('images/service_cards/digital_brochures_leaflets.jpg')" onclick="wa('Brochure Printing')">
+
+        <div class="svc-item"
+             data-bg="images/services/Offset_&_Diigital_Printing/leaflets.jpg"
+             data-keywords="brochure leaflet trifold bifold multi page marketing information"
+             onclick="wa('Brochure Printing')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-          <div class="item-name">Brochures &amp; Leaflets</div>
-          <div class="item-desc">Tri-fold, bi-fold, and multi-page brochures for marketing and information.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Brochures &amp; Leaflets</div>
+            <div class="item-desc">Tri-fold, bi-fold, and multi-page brochures for marketing and information.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
-        <div class="svc-item" style="--card-bg:url('images/service_cards/digital_magazines_catalogues.jpg')" onclick="wa('Magazine and Catalogue Printing')">
+
+        <div class="svc-item"
+             data-bg="images/services/Offset_&_Diigital_Printing/catalogues.jpg"
+             data-keywords="magazine catalogue annual report saddle stitch perfect bound booklet"
+             onclick="wa('Magazine and Catalogue Printing')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
-          <div class="item-name">Magazines &amp; Catalogues</div>
-          <div class="item-desc">Saddle-stitched and perfect-bound magazines, annual reports, and catalogues.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Magazines &amp; Catalogues</div>
+            <div class="item-desc">Saddle-stitched and perfect-bound magazines, annual reports, and catalogues.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
-        <div class="svc-item" style="--card-bg:url('images/service_cards/digital_highvolume_flyers.jpg')" onclick="wa('Large Volume Flyer Printing')">
+
+        <div class="svc-item"
+             data-bg="images/services/Offset_&_Diigital_Printing/high_vol-flyer_printing.jpg"
+             data-keywords="flyer high volume bulk offset large quantity fast turnaround"
+             onclick="wa('Large Volume Flyer Printing')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></div>
-          <div class="item-name">High-Volume Flyer Printing</div>
-          <div class="item-desc">Offset printing for bulk flyer runs — 500 to 100,000+ copies with fast turnaround.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">High-Volume Flyer Printing</div>
+            <div class="item-desc">Offset printing for bulk flyer runs — 500 to 100,000+ copies with fast turnaround.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
-        <div class="svc-item" style="--card-bg:url('images/service_cards/digital_photo_printing.jpg')" onclick="wa('Photo Printing')">
+
+        <div class="svc-item"
+             data-bg="images/services/Offset_&_Diigital_Printing/photo_printing.jpg"
+             data-keywords="photo print photo enlargement wall portrait high resolution picture"
+             onclick="wa('Photo Printing')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
-          <div class="item-name">Photo Printing &amp; Enlargements</div>
-          <div class="item-desc">High-resolution photo prints from wallet size to large wall formats.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Photo Printing &amp; Enlargements</div>
+            <div class="item-desc">High-resolution photo prints from wallet size to large wall formats.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
-        <div class="svc-item" style="--card-bg:url('images/service_cards/digital_canvas_fine_art.jpg')" onclick="wa('Canvas and Fine Art Printing')">
+
+        <div class="svc-item"
+             data-bg="images/services/Offset_&_Diigital_Printing/canvas.jpg"
+             data-keywords="canvas fine art giclee framed print gallery wall art reproduction"
+             onclick="wa('Canvas and Fine Art Printing')">
           <div class="svc-item-overlay"></div>
-          <div class="item-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div>
-          <div class="item-name">Canvas &amp; Fine Art Prints</div>
-          <div class="item-desc">Giclée canvas prints, framed art reproductions, and gallery-quality prints.</div>
-          <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="svc-inner-content">
+            <div class="item-name">Canvas &amp; Fine Art Prints</div>
+            <div class="item-desc">Giclée canvas prints, framed art reproductions, and gallery-quality prints.</div>
+            <div class="item-cta">Enquire <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
         </div>
+
       </div>
     </div>
 
@@ -963,10 +1303,10 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
     <p>We print almost anything. Chat with us and we'll find a solution that fits your brief and budget.</p>
   </div>
   <div class="cta-right">
-    <!-- CHANGED: Phone number updated to 0796333279 -->
+    <!-- TASK 3: WhatsApp green CTA button consistent with index.html -->
     <a href="https://wa.me/254796333279?text=Hello%20Comprint%2C%20I%27d%20like%20a%20quote."
-       target="_blank" rel="noopener noreferrer" class="btn-white">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+       target="_blank" rel="noopener noreferrer" class="btn-wa-cta">
+      <img src="images/logos/socials/whatsapp_logo_icon_225645.png" alt="WhatsApp">
       WhatsApp Us
     </a>
     <a href="mailto:comprintconcepts@gmail.com" class="btn-ghost">
@@ -983,7 +1323,6 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
     <div class="foot-links">
       <a href="index.html">Home</a>
       <a href="clients.html">Clientele</a>
-      <!-- CHANGED: Phone number updated -->
       <a href="https://wa.me/254796333279" target="_blank" rel="noopener noreferrer">WhatsApp</a>
     </div>
   </div>
@@ -993,7 +1332,42 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
      JAVASCRIPT
      ══════════════════════════════════════════ -->
 <script>
-/* ── THEME TOGGLE — GLASS BUBBLE (same as index.html) ── */
+/* ══════════════════════════════════════════
+   TASK 2 + TASK 3 — LAZY IMAGE INJECTION
+   
+   Why inject via JS instead of putting <img> in HTML?
+   - HTML images load immediately, even cards far below the fold.
+   - JS injection lets us set loading="lazy" + decoding="async",
+     which defers off-screen images and uses async decode so
+     image processing never blocks the main thread.
+   - This is the key to smooth scrolling (TASK 3): the browser
+     never stalls on images the user hasn't reached yet.
+
+   How it works:
+   1. Find every .svc-item that has a data-bg attribute.
+   2. Create an <img> with loading="lazy" and decoding="async".
+   3. Insert it as the first child of the card (behind the overlay).
+   ══════════════════════════════════════════ */
+document.querySelectorAll('.svc-item[data-bg]').forEach(card => {
+  const src = card.getAttribute('data-bg');
+  if (!src) return;
+
+  /* Create the image element */
+  const img = document.createElement('img');
+  img.src         = src;
+  img.alt         = '';           /* Decorative — screen readers skip it */
+  img.className   = 'svc-item-bg';
+  img.loading     = 'lazy';       /* TASK 3: Defer loading until near viewport */
+  img.decoding    = 'async';      /* TASK 3: Decode off main thread — no jank */
+  /* TASK 3: width/height hints prevent layout shift (CLS) */
+  img.width       = 400;
+  img.height      = 260;
+
+  /* Insert before all other children so it sits at z-index:0 under the overlay */
+  card.insertBefore(img, card.firstChild);
+});
+
+/* ── THEME TOGGLE — GLASS BUBBLE ── */
 const htmlEl     = document.documentElement;
 const btnLight   = document.getElementById('btnLight');
 const btnDark    = document.getElementById('btnDark');
@@ -1029,7 +1403,7 @@ window.addEventListener('resize', () => positionBubble(currentTheme === 'light' 
 /* ── NAV SCROLL SHADOW ── */
 window.addEventListener('scroll', () => {
   document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 40);
-});
+}, { passive: true }); /* TASK 6: passive listener avoids scroll blocking */
 
 /* ── MOBILE DRAWER ── */
 const ham    = document.getElementById('hamburger');
@@ -1054,16 +1428,12 @@ const ro = new IntersectionObserver(entries => {
 }, { threshold: 0.06 });
 document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
 
-/* ── SIDEBAR + QUICK-LINK FILTER ──
-   Clicking a sidebar item or a quick-link pill shows only that category block. */
+/* ── SIDEBAR + QUICK-LINK FILTER ── */
 function filterTo(target) {
-  /* Update active state on both sidebar and top-bar buttons */
   document.querySelectorAll('.sidebar-item').forEach(i =>
     i.classList.toggle('active', i.dataset.target === target));
   document.querySelectorAll('.ql-btn').forEach(b =>
     b.classList.toggle('active', b.dataset.target === target));
-
-  /* Show or hide category blocks based on selection */
   document.querySelectorAll('.cat-block').forEach(block => {
     if (target === 'all') {
       block.classList.remove('hidden');
@@ -1071,11 +1441,8 @@ function filterTo(target) {
       block.classList.toggle('hidden', block.dataset.cat !== target);
     }
   });
-
-  /* Scroll the content panel back to the top */
   document.getElementById('contentPanel').scrollTop = 0;
-
-  /* Clear any active search so filter works cleanly */
+  /* Clear search when a filter is applied */
   document.getElementById('searchInput').value = '';
   document.querySelectorAll('.svc-item').forEach(i => i.style.display = '');
   document.getElementById('noResults').style.display = 'none';
@@ -1086,60 +1453,116 @@ document.querySelectorAll('.sidebar-item').forEach(item =>
 document.querySelectorAll('.ql-btn').forEach(btn =>
   btn.addEventListener('click', () => filterTo(btn.dataset.target)));
 
-/* ── SEARCH — FUZZY / PARTIAL MATCHING ──
-   CHANGE: Upgraded to fuzzy partial matching.
+/* ══════════════════════════════════════════
+   TASK 4 — ENHANCED SEARCH WITH KEYWORD EXPANSION
 
-   How it works:
-   1. Split the search query into individual words.
-   2. For each service item, check if EVERY word from the query
-      appears somewhere in the item's name + description text.
-      (This is "fuzzy" because words don't have to be in order
-       or adjacent — they just need to appear somewhere.)
-   3. Items that don't match are hidden; items that do are shown.
-   4. Category blocks with zero visible items are hidden too.
-   5. A "no results" message shows if everything is hidden.
-*/
+   Improvements over the original:
+   1. Now searches title + description + data-keywords attribute.
+      The data-keywords on each card holds related terms not visible
+      to the user (e.g. "shirt" → finds t-shirts via keyword "shirt").
+   2. Singular/plural handling: the query is stemmed simply by also
+      testing the query with and without a trailing 's', catching
+      most English plural variations without a full stemmer library.
+   3. Synonym expansion: a small synonym map expands common queries
+      before matching (e.g. "apparel" → also searches "clothing shirt tshirt").
+   4. Partial word matching: every query word only needs to appear
+      anywhere in the combined text — not as a full word boundary.
+      This catches "banner" inside "PVC Vinyl Banners".
+   ══════════════════════════════════════════ */
+
+/* Synonym map: if the user types any of these keys, we expand
+   the search to also include the associated extra terms. */
+const SYNONYMS = {
+  'shirt':     ['tshirt', 't-shirt', 'apparel', 'clothing', 'uniform'],
+  'apparel':   ['shirt', 'tshirt', 'clothing', 'uniform', 'hoodie'],
+  'clothing':  ['shirt', 'tshirt', 'apparel', 'uniform'],
+  'uniform':   ['shirt', 'apparel', 'clothing', 'branded'],
+  'label':     ['packaging', 'product label', 'sticker', 'tag'],
+  'labels':    ['packaging', 'product label', 'sticker', 'tag'],
+  'banner':    ['pvc', 'rollup', 'roll-up', 'x-banner', 'billboard', 'signage', 'backdrop'],
+  'banners':   ['pvc', 'rollup', 'roll-up', 'x-banner', 'billboard', 'signage', 'backdrop'],
+  'flag':      ['teardrop', 'feather', 'outdoor', 'banner'],
+  'sign':      ['signage', 'banner', 'hoarding', 'billboard', 'window', 'wall'],
+  'signage':   ['banner', 'billboard', 'hoarding', 'directional', 'wayfinding'],
+  'wedding':   ['invitation', 'programme', 'table runner', 'decor', 'event'],
+  'event':     ['ticket', 'programme', 'backdrop', 'banner', 'decor', 'invitation'],
+  'print':     ['offset', 'digital', 'large format', 'photo', 'canvas'],
+  'photo':     ['photo printing', 'photo booth', 'canvas', 'enlargement'],
+  'gift':      ['corporate gift', 'giveaway', 'branded', 'mug', 'pen', 'usb'],
+  'mug':       ['branded mugs', 'sublimation', 'cup', 'bottle'],
+  'bag':       ['tote', 'drawstring', 'branded bags', 'pouch', 'shopping'],
+  'flyer':     ['flyers', 'leaflet', 'a4', 'a5', 'bulk', 'offset'],
+  'leaflet':   ['flyer', 'brochure', 'marketing'],
+  'card':      ['business card', 'id card', 'invitation', 'greeting'],
+  'book':      ['booklet', 'ncr', 'receipt', 'notebook', 'notepad'],
+  'box':       ['carton', 'packaging', 'retail box'],
+  'pen':       ['pens', 'branded pen', 'desk', 'stationery'],
+};
+
+/* Simple stemmer: strips trailing 's' to match singular/plural.
+   e.g. "banners" → also tests "banner"; "labels" → also tests "label" */
+function stem(word) {
+  return word.length > 3 && word.endsWith('s') ? [word, word.slice(0, -1)] : [word];
+}
+
 const searchInput = document.getElementById('searchInput');
 const noResults   = document.getElementById('noResults');
 
 searchInput.addEventListener('input', function () {
   const rawQuery = this.value.toLowerCase().trim();
 
-  /* If the search box is empty, restore everything */
-  if (!rawQuery) {
-    clearSearch();
-    return;
-  }
+  if (!rawQuery) { clearSearch(); return; }
 
-  /* Split the query into individual words for fuzzy matching.
-     e.g. "roll banner" → ['roll', 'banner'] */
-  const queryWords = rawQuery.split(/\s+/).filter(Boolean);
+  /* Build expanded query words:
+     1. Split into words.
+     2. Add stem variants.
+     3. Add synonyms for any word that has them. */
+  const baseWords = rawQuery.split(/\s+/).filter(Boolean);
+  const expandedWords = new Set();
+  baseWords.forEach(word => {
+    /* Add the word and its stem variants */
+    stem(word).forEach(w => expandedWords.add(w));
+    /* Add synonyms if defined */
+    (SYNONYMS[word] || []).forEach(syn => {
+      syn.split(' ').forEach(s => expandedWords.add(s));
+    });
+  });
+  const queryTerms = [...expandedWords];
 
-  /* Show ALL category blocks while searching (ignore active filter) */
+  /* Show all blocks while searching */
   document.querySelectorAll('.cat-block').forEach(b => b.classList.remove('hidden'));
 
   let anyVisible = false;
 
   document.querySelectorAll('.svc-item').forEach(item => {
-    /* Combine the item's name and description into one searchable string */
-    const nameEl = item.querySelector('.item-name');
-    const descEl = item.querySelector('.item-desc');
-    const text   = ((nameEl ? nameEl.textContent : '') + ' ' + (descEl ? descEl.textContent : '')).toLowerCase();
+    /* Build the searchable text: name + description + data-keywords attribute.
+       TASK 4: data-keywords adds extra terms not visible in the card UI. */
+    const name     = item.querySelector('.item-name')?.textContent  || '';
+    const desc     = item.querySelector('.item-desc')?.textContent  || '';
+    const keywords = item.getAttribute('data-keywords')             || '';
+    const text     = (name + ' ' + desc + ' ' + keywords).toLowerCase();
 
-    /* The item matches if ALL query words appear in the combined text */
-    const matches = queryWords.every(word => text.includes(word));
+    /* Match: at least one of the original base words must appear
+       (ensures the match is topically relevant), OR all expanded terms match.
+       Practical approach: the item matches if ALL base words or their
+       synonyms/stems appear somewhere in the combined text. */
+    const matches = baseWords.every(baseWord => {
+      /* Check if the base word, its stem, or any synonym appears in the text */
+      const variants = [...stem(baseWord), ...(SYNONYMS[baseWord] || [])];
+      return variants.some(v => text.includes(v));
+    });
 
     item.style.display = matches ? '' : 'none';
     if (matches) anyVisible = true;
   });
 
-  /* Hide category blocks that have no visible items */
+  /* Hide empty category blocks */
   document.querySelectorAll('.cat-block').forEach(block => {
     const hasVisible = [...block.querySelectorAll('.svc-item')].some(i => i.style.display !== 'none');
     block.classList.toggle('hidden', !hasVisible);
   });
 
-  /* Show / hide the "no results" message */
+  /* TASK 5: Show premium no-results panel if nothing matches */
   noResults.style.display = anyVisible ? 'none' : 'block';
 });
 
