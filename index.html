@@ -233,6 +233,9 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
   transition:opacity 1s ease;
   pointer-events:none; /* Hidden slides shouldn't catch mouse events */
   z-index:1;
+  /* PERF: promote each slide to its own compositor layer so fade transitions
+     are handled by the GPU and don't trigger main-thread repaints. */
+  will-change:opacity;
 }
 /* The currently active slide is fully visible */
 .hero-slide.active{
@@ -292,6 +295,13 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 .slide-overlay{
   position:absolute;inset:0;z-index:1;
   background:linear-gradient(to right,rgba(10,6,10,0.72) 0%,transparent 70%);
+}
+/* LIGHT MODE HERO FIX: In light mode the dark overlay is too transparent and
+   the light background washes out the white text. We strengthen the overlay
+   so the headline/sub text remains clearly legible in both themes.
+   Only the gradient opacity is changed — layout and typography are untouched. */
+[data-theme="light"] .slide-overlay{
+  background:linear-gradient(to right,rgba(10,6,10,0.82) 0%,rgba(10,6,10,0.45) 60%,transparent 100%);
 }
 
 /* Content area within each slide */
@@ -420,6 +430,10 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
   width:max-content;
   /* The scroll animation: "logo-scroll" is defined with @keyframes below */
   animation:logo-scroll 28s linear infinite;
+  /* PERF: promote the scrolling track to its own compositor layer.
+     This ensures the CSS animation runs on the GPU without causing
+     repaints or layout work on every frame. */
+  will-change:transform;
 }
 /* Pause scrolling when the user hovers over the strip */
 .trusted-strip:hover .logo-track{animation-play-state:paused;}
@@ -558,6 +572,9 @@ section{padding:100px 6vw;}
   transition:all var(--tr);cursor:pointer;
   position:relative;overflow:hidden;
   min-height:260px; /* Slightly taller to accommodate image breathing room */
+  /* PERF: contain:layout stops this card's internal changes (image load, hover) from
+     triggering layout recalculations in sibling or parent elements. */
+  contain:layout;
 }
 .svc-card::after{
   content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
@@ -691,6 +708,9 @@ section{padding:100px 6vw;}
   transition:border-color var(--tr), transform var(--tr), box-shadow var(--tr);
   /* Minimum height so short cards don't collapse */
   min-height:200px;
+  /* PERF: contain:layout isolates card layout from the surrounding grid
+     so hover-triggered transforms don't cause global layout work. */
+  contain:layout;
 }
 .pf-card:hover{
   border-color:var(--border-h);
