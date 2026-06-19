@@ -4,6 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Portfolio — Comprint Concepts Limited</title>
+<!-- PERF: preconnect + display=swap — fonts swap in from system fallback, never block render. -->
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet"/>
@@ -25,7 +26,10 @@
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.6;transition:background var(--tr),color var(--tr);}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.6;transition:background var(--tr),color var(--tr);
+  /* PERF: prevent scroll chaining on mobile. */
+  overscroll-behavior:none;
+}
 img{display:block;max-width:100%;}
 a{text-decoration:none;color:inherit;}
 button{cursor:pointer;border:none;background:none;font-family:inherit;}
@@ -78,11 +82,18 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 
 .portfolio-section{padding:48px 6vw 100px;}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
-.work{position:relative;overflow:hidden;border-radius:20px;background:var(--card);border:1px solid var(--border);min-height:340px;transition:all var(--tr);cursor:pointer;}
+.work{position:relative;overflow:hidden;border-radius:20px;background:var(--card);border:1px solid var(--border);min-height:340px;transition:all var(--tr);cursor:pointer;
+  /* PERF: layout containment prevents each card's image load from forcing
+     a full grid relayout. */
+  contain:layout;
+}
 .work:hover{transform:translateY(-6px);border-color:var(--border-h);box-shadow:0 20px 50px var(--brand-glow);}
 .work.large{grid-column:span 2;min-height:420px;}
 .work.tall{grid-row:span 2;min-height:auto;}
-.work img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .7s ease;}
+.work img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .7s ease;
+  /* PERF: GPU layer so scale on hover is compositor-only. */
+  will-change:transform;
+}
 .work:hover img{transform:scale(1.07);}
 .bg1{background:linear-gradient(135deg,#170417,#560256);}
 .bg2{background:linear-gradient(135deg,#081322,#13497b);}
@@ -132,7 +143,8 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
 <nav id="mainNav">
   <a href="index.html" class="nav-logo">
     <div class="logo-box">
-      <img src="images/logos/clientelle_n_trustedby/logo.png" alt="Comprint" style="width:100%;height:100%;object-fit:cover;">
+      <!-- PERF: fetchpriority="high" — logo is above fold, load first. -->
+      <img src="images/logos/clientelle_n_trustedby/logo.png" alt="Comprint" style="width:100%;height:100%;object-fit:cover;" fetchpriority="high">
     </div>
     <div class="logo-text">Comprint<span>Concepts Limited</span></div>
   </a>
@@ -203,7 +215,8 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
 
     <!-- Card 1: tall + corporate branding -->
     <div class="work tall reveal" data-category="corporate branding">
-      <img src="images/portfolio/corporate/premium brand rollout.jpg" alt="Corporate Brand Rollout">
+      <!-- PERF: Card 1 is near the top — load eagerly but decode async. -->
+      <img src="images/portfolio/corporate/premium brand rollout.jpg" alt="Corporate Brand Rollout" decoding="async">
       <div class="overlay">
         <div class="pf-tag">Corporate Branding</div>
         <div class="work-title">Premium Brand Rollout</div>
@@ -214,7 +227,8 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
 
     <!-- Card 2: large + large-format -->
     <div class="work large reveal rd1" data-category="large-format">
-      <img src="images/portfolio/large_format/event banner.jpg" alt="Event Stage Backdrop">
+      <!-- PERF: loading="lazy" + decoding="async" on all remaining cards — they're below fold. -->
+      <img src="images/portfolio/large_format/event banner.jpg" alt="Event Stage Backdrop" loading="lazy" decoding="async">
       <div class="overlay">
         <div class="pf-tag">Large Format</div>
         <div class="work-title">Event Stage &amp; Backdrop Printing</div>
@@ -225,7 +239,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
 
     <!-- Card 3: packaging -->
     <div class="work reveal rd2" data-category="packaging">
-      <img src="images/portfolio/packaging/product label.jpg" alt="Luxury Product Labels">
+      <img src="images/portfolio/packaging/product label.jpg" alt="Luxury Product Labels" loading="lazy" decoding="async">
       <div class="overlay">
         <div class="pf-tag">Packaging</div>
         <div class="work-title">Luxury Product Labels</div>
@@ -236,7 +250,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
 
     <!-- Card 4: branding / vehicle wrap -->
     <div class="work reveal" data-category="branding">
-      <img src="images/portfolio/branding/fleet vehicle.jpg" alt="Fleet Vehicle Wrap">
+      <img src="images/portfolio/branding/fleet vehicle.jpg" alt="Fleet Vehicle Wrap" loading="lazy" decoding="async">
       <div class="overlay">
         <div class="pf-tag">Branding</div>
         <div class="work-title">Fleet Vehicle Wrap</div>
@@ -247,7 +261,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
 
     <!-- Card 5: large + events -->
     <div class="work large reveal rd1" data-category="events">
-      <img src="images/portfolio/events/weddings.jpg" alt="Wedding Event Suite">
+      <img src="images/portfolio/events/weddings.jpg" alt="Wedding Event Suite" loading="lazy" decoding="async">
       <div class="overlay">
         <div class="pf-tag">Events</div>
         <div class="work-title">Wedding &amp; VIP Event Suite</div>
@@ -258,7 +272,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
 
     <!-- Card 6: merchandise -->
     <div class="work reveal rd2" data-category="merchandise">
-      <img src="images/portfolio/merchandise/tshirts for RUN Nairobi.webp" alt="Promo Merchandise">
+      <img src="images/portfolio/merchandise/tshirts for RUN Nairobi.webp" alt="Promo Merchandise" loading="lazy" decoding="async">
       <div class="overlay">
         <div class="pf-tag">Merchandise</div>
         <div class="work-title">Apparel &amp; Promo Merchandise</div>
@@ -269,7 +283,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
 
     <!-- Card 7: corporate / business cards -->
     <div class="work reveal" data-category="corporate">
-      <img src="images/portfolio/corporate/business_card.jpg" alt="Business Cards">
+      <img src="images/portfolio/corporate/business_card.jpg" alt="Business Cards" loading="lazy" decoding="async">
       <div class="overlay">
         <div class="pf-tag">Corporate</div>
         <div class="work-title">Premium Business Cards</div>
@@ -280,7 +294,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
 
     <!-- Card 8: large format backdrop -->
     <div class="work reveal rd1" data-category="large-format events">
-      <img src="images/portfolio/large_format/large-format_backdrop.jpg" alt="Large Format Backdrop">
+      <img src="images/portfolio/large_format/large-format_backdrop.jpg" alt="Large Format Backdrop" loading="lazy" decoding="async">
       <div class="overlay">
         <div class="pf-tag">Large Format</div>
         <div class="work-title">Step-and-Repeat Backdrop</div>
@@ -291,7 +305,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
 
     <!-- Card 9: merchandise hoodies -->
     <div class="work reveal rd2" data-category="merchandise">
-      <img src="images/portfolio/merchandise/branded hoodies.webp" alt="Branded Hoodies">
+      <img src="images/portfolio/merchandise/branded hoodies.webp" alt="Branded Hoodies" loading="lazy" decoding="async">
       <div class="overlay">
         <div class="pf-tag">Merchandise</div>
         <div class="work-title">Branded Hoodies &amp; Uniforms</div>
@@ -302,7 +316,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
 
     <!-- Card 10: packaging bags -->
     <div class="work reveal" data-category="packaging">
-      <img src="images/portfolio/packaging/bags.jpg" alt="Branded Bags">
+      <img src="images/portfolio/packaging/bags.jpg" alt="Branded Bags" loading="lazy" decoding="async">
       <div class="overlay">
         <div class="pf-tag">Packaging</div>
         <div class="work-title">Branded Packaging Bags</div>
@@ -313,7 +327,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
 
     <!-- Card 11: merchandise umbrella -->
     <div class="work reveal rd1" data-category="merchandise">
-      <img src="images/portfolio/merchandise/branded umbrella.jpg" alt="Branded Umbrellas">
+      <img src="images/portfolio/merchandise/branded umbrella.jpg" alt="Branded Umbrellas" loading="lazy" decoding="async">
       <div class="overlay">
         <div class="pf-tag">Merchandise</div>
         <div class="work-title">Branded Umbrellas</div>
@@ -324,7 +338,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
 
     <!-- Card 12: packaging boxes -->
     <div class="work reveal rd2" data-category="packaging">
-      <img src="images/portfolio/packaging/boxes labelling.jpg" alt="Retail Packaging Boxes">
+      <img src="images/portfolio/packaging/boxes labelling.jpg" alt="Retail Packaging Boxes" loading="lazy" decoding="async">
       <div class="overlay">
         <div class="pf-tag">Packaging</div>
         <div class="work-title">Retail Carton Boxes &amp; Labels</div>
@@ -335,7 +349,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
 
     <!-- Card 13: merchandise mug -->
     <div class="work reveal" data-category="merchandise">
-      <img src="images/portfolio/merchandise/Mug.webp" alt="Branded Mugs">
+      <img src="images/portfolio/merchandise/Mug.webp" alt="Branded Mugs" loading="lazy" decoding="async">
       <div class="overlay">
         <div class="pf-tag">Merchandise</div>
         <div class="work-title">Branded Mugs &amp; Drinkware</div>
@@ -346,7 +360,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
 
     <!-- Card 14: merchandise matching set -->
     <div class="work reveal rd1" data-category="merchandise">
-      <img src="images/portfolio/merchandise/matching hat and hoodie.webp" alt="Matching Hat and Hoodie">
+      <img src="images/portfolio/merchandise/matching hat and hoodie.webp" alt="Matching Hat and Hoodie" loading="lazy" decoding="async">
       <div class="overlay">
         <div class="pf-tag">Merchandise</div>
         <div class="work-title">Matching Cap &amp; Hoodie Sets</div>
@@ -357,7 +371,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
 
     <!-- Card 15: merchandise bottle -->
     <div class="work reveal rd2" data-category="merchandise packaging">
-      <img src="images/portfolio/merchandise/bottle.webp" alt="Branded Bottle">
+      <img src="images/portfolio/merchandise/bottle.webp" alt="Branded Bottle" loading="lazy" decoding="async">
       <div class="overlay">
         <div class="pf-tag">Merchandise</div>
         <div class="work-title">Branded Water Bottles</div>
@@ -368,7 +382,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
 
     <!-- Card 16: presentation folder -->
     <div class="work reveal" data-category="corporate">
-      <img src="images/portfolio/corporate/presentation_folder.jpg" alt="Presentation Folders">
+      <img src="images/portfolio/corporate/presentation_folder.jpg" alt="Presentation Folders" loading="lazy" decoding="async">
       <div class="overlay">
         <div class="pf-tag">Corporate</div>
         <div class="work-title">Presentation Folders</div>
@@ -431,11 +445,18 @@ function positionBubble(activeBtn) {
 btnLight.addEventListener('click', () => applyTheme('light'));
 btnDark.addEventListener('click',  () => applyTheme('dark'));
 applyTheme(currentTheme);
-window.addEventListener('resize', () => positionBubble(currentTheme === 'light' ? btnLight : btnDark));
+/* PERF: Debounce resize to avoid rapid getBoundingClientRect calls. */
+let _resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(_resizeTimer);
+  _resizeTimer = setTimeout(() => positionBubble(currentTheme === 'light' ? btnLight : btnDark), 80);
+});
 
+/* PERF: {passive:true} — tells the browser this scroll listener will never
+   call preventDefault(), so it can process touch/scroll without waiting for JS. */
 window.addEventListener('scroll', () => {
   document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 40);
-});
+}, { passive: true });
 
 const ham    = document.getElementById('hamburger');
 const drawer = document.getElementById('mobileDrawer');
