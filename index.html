@@ -5,22 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Comprint Concepts Limited — Print Beyond Limits</title>
 
-<!--
-  SECURITY: All external resources loaded over HTTPS.
+<!--SECURITY: All external resources loaded over HTTPS.
   Google Fonts: preconnect helps the browser set up the connection early (faster load).
   PERF: &display=swap added — fonts render with a system fallback immediately,
-  then swap to the web font when loaded. Prevents invisible text (FOIT).
--->
+  then swap to the web font when loaded. Prevents invisible text (FOIT) -->
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet"/>
 
 <style>
-/* ══════════════════════════════════════════
-   DESIGN TOKENS (CSS Variables)
-   These are like "brand settings" — change
-   one variable here and it updates everywhere.
-   ══════════════════════════════════════════ */
 :root {
   --brand:       #4b024b;
   --brand-mid:   #6b026b;
@@ -71,7 +64,7 @@
   --nav-bg: rgba(250,247,250,0.84);
 }
 
-/* ══ RESET — removes browser default spacing/sizing ══ */
+/* RESET — removes browser default spacing/sizing*/
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;font-size:16px;}
 body{
@@ -79,8 +72,7 @@ body{
   background:var(--bg);color:var(--text);
   overflow-x:hidden;line-height:1.6;
   transition:background var(--tr),color var(--tr);
-  /* PERF: Prevents the page from "rubber-banding" into parent scroll contexts
-     (common cause of frozen-feeling scroll on mobile browsers). */
+  /* PERF: Prevents the page from "rubber-banding" into parent scroll contexts (common cause of frozen-feeling scroll on mobile browsers). */
   overscroll-behavior:none;
 }
 img{display:block;max-width:100%;}
@@ -90,9 +82,7 @@ button{cursor:pointer;border:none;background:none;font-family:inherit;}
 ::-webkit-scrollbar-track{background:var(--bg);}
 ::-webkit-scrollbar-thumb{background:var(--brand);border-radius:99px;}
 
-/* ══ PRINTER PAGE-LOAD BAR ══
-   The thin coloured bar that sweeps across the top
-   when the page first loads — like a printer scanning. */
+/*PRINTER PAGE-LOAD BAR: The thin coloured bar that sweeps across the top when the page first loads — like a printer scanning. */
 #printer-bar{
   position:fixed;top:0;left:0;right:0;z-index:1000;
   height:3px;background:transparent;pointer-events:none;
@@ -106,7 +96,7 @@ button{cursor:pointer;border:none;background:none;font-family:inherit;}
 @keyframes pfill{0%{width:0}45%{width:60%}85%{width:88%}100%{width:100%}}
 @keyframes pshine{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
-/* ══ NAVIGATION BAR ══ */
+/* NAVIGATION BAR */
 nav{
   position:fixed;top:0;left:0;right:0;z-index:200;
   display:flex;align-items:center;justify-content:space-between;
@@ -151,10 +141,7 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 }
 .btn-nav:hover{background:var(--brand-mid);transform:translateY(-1px);box-shadow:0 6px 20px var(--brand-glow);}
 
-/* ══ THEME TOGGLE BUTTON — GLASS BUBBLE STYLE ══
-   Both sun and moon icons are shown simultaneously.
-   A sliding "glass bubble" highlights which theme is active.
-   The bubble uses backdrop-filter for a frosted-glass look. */
+/* THEME TOGGLE BUTTON — GLASS BUBBLE STYLE: Both sun and moon icons are shown simultaneously. A sliding "glass bubble" highlights which theme is active. The bubble uses backdrop-filter for a frosted-glass look. */
 .theme-toggle-wrap{
   /* The outer pill container that holds both icons */
   display:flex;align-items:center;
@@ -215,9 +202,7 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 .mobile-drawer.open{transform:translateY(0);}
 .mobile-drawer .nav-link{font-size:1rem;}
 
-/* ══ HERO CAROUSEL ══
-   The hero banner is a 5-slide carousel with
-   smooth fade transitions between slides. */
+/* HERO CAROUSEL: The hero banner is a 5-slide carousel with smooth fade transitions between slides. */
 #hero{
   min-height:100vh;position:relative;
   display:flex;flex-direction:column;
@@ -226,8 +211,7 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
   overflow:hidden;
 }
 
-/* Each slide stacks on top of each other using absolute positioning.
-   Only the active one has opacity:1 — others are invisible. */
+/* Each slide stacks on top of each other using absolute positioning. Only the active one has opacity:1 — others are invisible. */
 .hero-slide{
   position:absolute;inset:0;
   display:flex;flex-direction:column;
@@ -238,8 +222,7 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
   transition:opacity 1s ease;
   pointer-events:none; /* Hidden slides shouldn't catch mouse events */
   z-index:1;
-  /* PERF: promote each slide to its own GPU compositing layer so the
-     opacity fade is handled entirely by the compositor — zero repaint cost. */
+  /* PERF: promote each slide to its own GPU compositing layer so the opacity fade is handled entirely by the compositor — zero repaint cost. */
   will-change:opacity;
 }
 /* The currently active slide is fully visible */
@@ -301,10 +284,7 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
   position:absolute;inset:0;z-index:1;
   background:linear-gradient(to right,rgba(10,6,10,0.72) 0%,transparent 70%);
 }
-/* LIGHT MODE HERO FIX: In light mode the page background is near-white (#faf7fa),
-   so the semi-transparent dark overlay alone isn't strong enough to keep the
-   white hero text readable. We strengthen the overlay specifically in light mode
-   without changing the layout, typography, or dark-mode appearance. */
+/* LIGHT MODE HERO FIX: In light mode the page background is near-white (#faf7fa), so the semi-transparent dark overlay alone isn't strong enough to keep the white hero text readable. We strengthen the overlay specifically in light mode without changing the layout, typography, or dark-mode appearance. */
 [data-theme="light"] .slide-overlay{
   background:linear-gradient(to right,rgba(10,6,10,0.82) 0%,rgba(10,6,10,0.28) 60%,transparent 100%);
 }
@@ -320,7 +300,7 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
   opacity:0.15; /* Subtle — doesn't overpower text */
 }
 
-/* ── CAROUSEL NAVIGATION ── Prev/Next arrow buttons added flanking the dots. */
+/* CAROUSEL NAVIGATION ─ Prev/Next arrow buttons added flanking the dots. */
 
 /* Wrapper that holds arrows + dots together at the top-center */
 .carousel-nav{
@@ -364,13 +344,11 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
   transform:scale(1.08);
 }
 
-/* ── HERO TYPOGRAPHY (shared across slides) ── */
-/* The .hero-eyebrow class is hidden via display:none — HTML stays in
-   the markup for easy restoration but produces zero visual output. */
+/* HERO TYPOGRAPHY (shared across slides)*/
+/* The .hero-eyebrow class is hidden via display:none — HTML stays in the markup for easy restoration but produces zero visual output. */
 .hero-eyebrow{display:none;}
 
-/* Desktop headline reduced (max 7rem vs old 9.5rem) for better
-   readability on laptops.*/
+/* Desktop headline reduced (max 7rem vs old 9.5rem) for better readability on laptops.*/
 .hero-headline{
   font-family:'Cormorant Garamond',serif;
   font-size:clamp(3rem,6.5vw,7rem);
@@ -410,9 +388,7 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 }
 @keyframes pulse{0%,100%{opacity:.3;transform:scale(.8)}50%{opacity:1;transform:scale(1.2)}}
 
-/* ══ TRUSTED BY / CLIENTELE LOGO BAR ══
-   Uses infinite scroll animation instead of a static flex row.
-   The logos scroll continuously from right to left and loop seamlessly. */
+/* TRUSTED BY / CLIENTELE LOGO BAR ═ Uses infinite scroll animation instead of a static flex row. The logos scroll continuously from right to left and loop seamlessly. */
 .trusted-strip{
   padding:28px 0;
   border-top:1px solid var(--border);
@@ -426,25 +402,20 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
   text-align:center;padding:0 6vw;margin-bottom:18px;
 }
 
-/* The track that holds two copies of the logo set.
-   Having two copies means when the first set scrolls off-screen,
-   the second set is already in place — seamless loop. */
+/* The track that holds two copies of the logo set. Having two copies means when the first set scrolls off-screen, the second set is already in place — seamless loop. */
 .logo-track{
   display:flex;align-items:center;gap:48px;
   /* Width is auto so it can grow as wide as needed */
   width:max-content;
   /* The scroll animation: "logo-scroll" is defined with @keyframes below */
   animation:logo-scroll 28s linear infinite;
-  /* PERF: promote the track to its own GPU layer — the translateX animation
-     is handled entirely by the compositor, freeing the main thread. */
+  /* PERF: promote the track to its own GPU layer — the translateX animation is handled entirely by the compositor, freeing the main thread. */
   will-change:transform;
 }
 /* Pause scrolling when the user hovers over the strip */
 .trusted-strip:hover .logo-track{animation-play-state:paused;}
 
-/* The animation moves the whole track from x=0 to x=-50%.
-   Because we have 2 identical sets, at -50% the second set
-   is exactly where the first set started — perfect loop. */
+/* The animation moves the whole track from x=0 to x=-50%. Because we have 2 identical sets, at -50% the second set is exactly where the first set started — perfect loop. */
 @keyframes logo-scroll{
   0%{transform:translateX(0);}
   100%{transform:translateX(-50%);}
@@ -458,11 +429,10 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 }
 .logo-track img:hover{opacity:1;filter:grayscale(0%);}
 
-/* ══ SECTION SHARED STYLES ══ */
+/* SECTION SHARED STYLES */
 section{padding:100px 6vw;}
 
-/* Ink-line sweep animation — a coloured bar draws across the
-   top of each section as it scrolls into view */
+/* Ink-line sweep animation — a coloured bar draws across the top of each section as it scrolls into view */
 .ink-section{position:relative;}
 .ink-section::before{
   content:'';position:absolute;top:0;left:0;right:0;height:2px;
@@ -489,15 +459,13 @@ section{padding:100px 6vw;}
 }
 .divider{width:36px;height:2px;background:linear-gradient(90deg,var(--brand),var(--gold));border-radius:99px;margin:18px 0;}
 
-/* ══ SCROLL REVEAL ANIMATION ══
-   Elements start invisible and slightly lower,
-   then fade up into place when they enter the viewport. */
+/*  SCROLL REVEAL ANIMATION ═ Elements start invisible and slightly lower, then fade up into place when they enter the viewport. */
 .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease;}
 .reveal.visible{opacity:1;transform:translateY(0);}
 /* Delay classes stagger multiple elements in sequence */
 .rd1{transition-delay:.08s;}.rd2{transition-delay:.16s;}.rd3{transition-delay:.24s;}.rd4{transition-delay:.32s;}
 
-/* ══ ABOUT SECTION ══ */
+/* ABOUT SECTION */
 #about{background:var(--bg2);}
 .about-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:80px;align-items:center;}
 .about-visual{position:relative;}
@@ -543,19 +511,11 @@ section{padding:100px 6vw;}
 .feat-text h4{font-size:.86rem;font-weight:500;color:var(--text);margin-bottom:2px;}
 .feat-text p{font-size:.78rem;color:var(--text-3);line-height:1.55;}
 
-/* ══ SERVICES SECTION ══
-   Service cards use background images with dark overlay for
-   a more premium, visually engaging feel. Images are revealed fully on hover.
-   Text remains highly legible thanks to the gradient overlay.
-   "Enquire via WhatsApp" CTA uses WhatsApp green. */
+/*SERVICES SECTION ═ Service cards use background images with dark overlay for a more premium, visually engaging feel. Images are revealed fully on hover. Text remains highly legible thanks to the gradient overlay. "Enquire via WhatsApp" CTA uses WhatsApp green. */
 #services{
   background:var(--bg);
   position:relative;
-  /* PERF: content-visibility:auto lets the browser skip painting this section
-     entirely until it's near the viewport — reduces initial paint work
-     significantly on long-scroll pages. contain-intrinsic-size gives the
-     browser an approximate size hint so it can reserve scroll space correctly
-     even before painting (prevents CLS / layout jumps). */
+  /* PERF: content-visibility:auto lets the browser skip painting this section entirely until it's near the viewport — reduces initial paint work significantly on long-scroll pages. contain-intrinsic-size gives the browser an approximate size hint so it can reserve scroll space correctly even before painting (prevents CLS / layout jumps). */
   content-visibility:auto;
   contain-intrinsic-size:0 1200px;
 }
@@ -573,9 +533,7 @@ section{padding:100px 6vw;}
 
 .svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
 
-/* ── SERVICE CARD ──
-   Cards now have a real background image that becomes more visible on hover.
-   The card still uses a gradient overlay so text stays readable at all times. */
+/* SERVICE CARD ─ Cards now have a real background image that becomes more visible on hover. The card still uses a gradient overlay so text stays readable at all times. */
 .svc-card{
   background:var(--card);border:1px solid var(--border);
   border-radius:16px;padding:0; /* Padding moved inside .svc-inner for overlay stacking */
@@ -583,9 +541,7 @@ section{padding:100px 6vw;}
   transition:all var(--tr);cursor:pointer;
   position:relative;overflow:hidden;
   min-height:260px; /* Slightly taller to accommodate image breathing room */
-  /* PERF: contain:layout prevents this card from causing full-page layout
-     recalculations when the image loads or hover triggers — critical for
-     smooth scrolling on a grid of 6+ cards. */
+  /* PERF: contain:layout prevents this card from causing full-page layout recalculations when the image loads or hover triggers — critical for smooth scrolling on a grid of 6+ cards. */
   contain:layout;
 }
 .svc-card::after{
@@ -727,8 +683,7 @@ section{padding:100px 6vw;}
   transition:border-color var(--tr), transform var(--tr), box-shadow var(--tr);
   /* Minimum height so short cards don't collapse */
   min-height:200px;
-  /* PERF: layout containment isolates each card — image loads don't
-     ripple out and cause the entire grid to recalculate. */
+  /* PERF: layout containment isolates each card — image loads don't ripple out and cause the entire grid to recalculate. */
   contain:layout;
 }
 .pf-card:hover{
@@ -865,8 +820,7 @@ section{padding:100px 6vw;}
 .why-card h4{font-size:.87rem;font-weight:500;color:var(--text);margin-bottom:5px;}
 .why-card p{font-size:.78rem;color:var(--text-3);line-height:1.6;}
 
-/* ══ FAQ SECTION ══
-   Toggle icon is a chevron/arrow pointing down, the arrow rotates to point up when open. */
+/*  FAQ SECTION : Toggle icon is a chevron/arrow pointing down, the arrow rotates to point up when open. */
 #faq{
   background:var(--bg);
   /* PERF: Skip painting until near viewport. */
@@ -1160,15 +1114,10 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
      style="width:fit-content;margin-top:6px;">Get a Quote</a>
 </div>
 
-<!-- ══════════════════════════════════════════
-     HERO CAROUSEL — 5 slides
-     Slides fade in/out automatically every 5 seconds.
-     Users can also click the dot indicators to jump to a slide.
-     Each slide has its own gradient bg, eyebrow text, headline, and subtext.
-     ══════════════════════════════════════════ -->
+<!-- HERO CAROUSEL — 5 slides Slides fade in/out automatically every 5 seconds. Users can also click the dot indicators to jump to a slide. Each slide has its own gradient bg, eyebrow text, headline, and subtext. -->
 <section id="hero">
 
-  <!-- ── SLIDE 1: Core brand message ── -->
+  <!-- SLIDE 1: Core brand message -->
   <div class="hero-slide active" id="slide-1">
     <!-- Gradient background layer + real photo overlay -->
     <div class="slide-bg slide-bg-1">
@@ -1201,7 +1150,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
     </div>
   </div>
 
-  <!-- ── SLIDE 2: Large Format focus ── -->
+  <!-- SLIDE 2: Large Format focus-->
   <div class="hero-slide" id="slide-2">
     <!-- Gradient background — no photo on this slide -->
     <div class="slide-bg slide-bg-2"></div>
@@ -1271,10 +1220,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
     </div>
   </div>
 
-  <!-- ══ CAROUSEL NAVIGATION ══
-       TASK 4b: Dots moved to top-center.
-       TASK 4c: Prev/Next arrow buttons added for easier navigation.
-       The wrapper (.carousel-nav) positions everything together above the hero content. -->
+  <!-- CAROUSEL NAVIGATION: Dots moved to top-center. Prev/Next arrow buttons added for easier navigation. The wrapper (.carousel-nav) positions everything together above the hero content. -->
   <div class="carousel-nav" id="carouselNav" aria-label="Slide navigation">
 
     <!-- Previous slide arrow -->
@@ -1309,10 +1255,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
   </div>
 </section>
 
-<!-- ══ TRUSTED BY / CLIENTELE LOGO BAR ══
-     The logo set is duplicated so scrolling loops seamlessly.
-     When the animation moves the track by -50%, the second copy perfectly
-     aligns where the first started — creating a seamless infinite loop. -->
+<!-- TRUSTED BY / CLIENTELE LOGO BAR ═ The logo set is duplicated so scrolling loops seamlessly. When the animation moves the track by -50%, the second copy perfectly aligns where the first started — creating a seamless infinite loop. -->
 <section class="trusted-strip" aria-label="Trusted by leading organisations">
   <p class="trusted-label">Trusted by leading organisations</p>
 
@@ -1334,7 +1277,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
     <img src="images/logos/clientelle_n_trustedby/General adusters.jpg" alt="General Adjusters" width="80" height="34" loading="lazy" decoding="async">
     <img src="images/logos/clientelle_n_trustedby/crown slns.jpg" alt="Crown Solutions Ltd" width="80" height="34" loading="lazy" decoding="async">
 
-    <!-- ── Second copy (identical) — needed for seamless loop ── -->
+    <!-- Second copy (identical) — needed for seamless loop -->
     <img src="images/logos/clientelle_n_trustedby/NITA.png"       alt="NITA"              width="80" height="34" loading="lazy" decoding="async">
     <img src="images/logos/clientelle_n_trustedby/NAC.png"        alt="New Apostolic Church" width="80" height="34" loading="lazy" decoding="async">
     <img src="images/logos/clientelle_n_trustedby/410.png"        alt="410 Bridge"        width="80" height="34" loading="lazy" decoding="async">
@@ -1346,7 +1289,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
     <img src="images/logos/clientelle_n_trustedby/General adusters.jpg" alt="General Adjusters" width="80" height="34" loading="lazy" decoding="async">
     <img src="images/logos/clientelle_n_trustedby/crown slns.jpg" alt="Crown Solutions Ltd" width="80" height="34" loading="lazy" decoding="async">
 
-    <!-- ── Third copy (identical) — needed for seamless loop on larger monitors ── -->
+    <!-- Third copy (identical) — needed for seamless loop on larger monitors -->
     <img src="images/logos/clientelle_n_trustedby/NITA.png"       alt="NITA"              width="80" height="34" loading="lazy" decoding="async">
     <img src="images/logos/clientelle_n_trustedby/NAC.png"        alt="New Apostolic Church" width="80" height="34" loading="lazy" decoding="async">
     <img src="images/logos/clientelle_n_trustedby/410.png"        alt="410 Bridge"        width="80" height="34" loading="lazy" decoding="async">
@@ -1362,16 +1305,13 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
   </div>
 </section>
 
-<!-- ══ ABOUT SECTION ══
-     NOTE: On mobile (< 900px), CSS flex-direction:column-reverse
-     makes the image appear BELOW the text, not above it. -->
+<!-- ABOUT SECTION ═ NOTE: On mobile (< 900px), CSS flex-direction:column-reverse makes the image appear BELOW the text, not above it. -->
 <section id="about" class="ink-section">
   <div class="about-grid">
 
     <!-- VISUAL / IMAGE — appears second on mobile due to column-reverse -->
     <div class="about-visual reveal">
       <div class="about-img-wrap">
-        <!-- CHANGED: Image path updated to images/about/ directory -->
         <!-- PERF: loading="lazy" defers until near viewport. width/height prevent CLS
              because the browser can reserve space before the image arrives. -->
         <img src="images/about/about.webp" alt="Comprint team" width="800" height="1000" style="width:100%;height:100%;object-fit:cover;" loading="lazy" decoding="async">
@@ -1429,10 +1369,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
   </div>
 </section>
 
-<!-- ══ SERVICES SECTION ══
-     Background uses a subtle image layer (via CSS ::before) — see styles above.
-     Card background images are intentionally disabled — cards stay clean.
-     Each card click opens a pre-filled WhatsApp message for that service. -->
+<!--  SERVICES SECTION = Background uses a subtle image layer (via CSS ::before) — see styles above. Card background images are intentionally disabled — cards stay clean. Each card click opens a pre-filled WhatsApp message for that service. -->
 <section id="services" class="ink-section">
   <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:48px;flex-wrap:wrap;gap:16px;">
     <div class="reveal">
@@ -1447,9 +1384,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
 
   <div class="svc-grid">
 
-    <!-- ── SERVICE CARD 1: Large Format Printing ──
-         TASK 2: Background image from images/services/featured/ gives the card visual richness.
-         Hover reveals more of the image. Text stays readable via the gradient overlay. -->
+    <!-- SERVICE CARD 1: Large Format Printing Hover reveals more of the image. Text stays readable via the gradient overlay. -->
     <div class="svc-card reveal" data-svc="Large Format Printing">
       <div class="svc-card-bg" style="background-image:url('images/services/featured/large_format_printing.jpg');"></div>
       <div class="svc-inner">
@@ -1460,7 +1395,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
         </div>
         <div class="svc-name">Large Format Printing</div>
         <div class="svc-desc">Large-scale banners, billboards, roll-ups, and signage for advertising, exhibitions, and events.</div>
-        <!-- TASK 3: WhatsApp green CTA with logo icon -->
+        <!-- WhatsApp green CTA with logo icon -->
         <div class="svc-cta">
           <span class="svc-cta-icon"><img src="images/logos/socials/whatsapp_logo_icon_225645.png" alt=""></span>
           Enquire via WhatsApp
@@ -1469,7 +1404,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
       </div>
     </div>
 
-    <!-- ── SERVICE CARD 2: Corporate Branding ── -->
+    <!-- SERVICE CARD 2: Corporate Branding -->
     <div class="svc-card reveal rd1" data-svc="Corporate Branding">
       <div class="svc-card-bg" style="background-image:url('images/services/featured/corporate_branding.jpg');"></div>
       <div class="svc-inner">
@@ -1488,7 +1423,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
       </div>
     </div>
 
-    <!-- ── SERVICE CARD 3: Packaging & Labels ── -->
+    <!-- SERVICE CARD 3: Packaging & Labels -->
     <div class="svc-card reveal rd2" data-svc="Packaging &amp; Labels">
       <div class="svc-card-bg" style="background-image:url('images/services/featured/packaging_&_labels.jpg');"></div>
       <div class="svc-inner">
@@ -1508,7 +1443,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
       </div>
     </div>
 
-    <!-- ── SERVICE CARD 4: Offset & Digital Print ── -->
+    <!-- SERVICE CARD 4: Offset & Digital Print -->
     <div class="svc-card reveal rd1" data-svc="Offset &amp; Digital Print">
       <div class="svc-card-bg" style="background-image:url('images/services/featured/offset_&_digital_print.jpg');"></div>
       <div class="svc-inner">
@@ -1528,7 +1463,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
       </div>
     </div>
 
-    <!-- ── SERVICE CARD 5: Event & Décor Printing ── -->
+    <!--SERVICE CARD 5: Event & Décor Printing-->
     <div class="svc-card reveal rd2" data-svc="Event &amp; Décor Printing">
       <div class="svc-card-bg" style="background-image:url('images/services/featured/event_&_decor_printing.jpg');"></div>
       <div class="svc-inner">
@@ -1547,7 +1482,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
       </div>
     </div>
 
-    <!-- ── SERVICE CARD 6: Promotional Merchandise ── -->
+    <!-- SERVICE CARD 6: Promotional Merchandise -->
     <div class="svc-card reveal rd3" data-svc="Promotional Merchandise">
       <div class="svc-card-bg" style="background-image:url('images/services/featured/promotional_merchandise.jpg');"></div>
       <div class="svc-inner">
@@ -1569,10 +1504,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
   </div>
 </section>
 
-<!-- ══ PORTFOLIO SECTION ══
-     A masonry-style grid showing 4 portfolio pieces.
-     Card 1 spans 2 rows (tall), Card 4 spans 2 columns (wide).
-     Each card has a colour gradient fallback in case images fail to load. -->
+<!-- PORTFOLIO SECTION = A masonry-style grid showing 4 portfolio pieces. Card 1 spans 2 rows (tall), Card 4 spans 2 columns (wide). Each card has a colour gradient fallback in case images fail to load. -->
 <section id="portfolio" class="ink-section">
   <div class="pf-header">
     <div class="reveal">
@@ -1586,12 +1518,9 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
   </div>
   <div class="pf-grid">
 
-    <!-- ══ CARD 1 (Featured / Tall) — Meridian Insurance Group ══
-         Corporate branding project. Spans full left column height.
-         Shows testimonial glassmorphism chip for trust building. -->
+    <!-- ═CARD 1 (Featured / Tall) — Meridian Insurance Group ═ Corporate branding project. Spans full left column height. Shows testimonial glassmorphism chip for trust building. -->
     <div class="pf-card pf-grad-1 reveal">
-      <!-- PERF: loading="lazy" defers until near viewport; decoding="async" avoids
-           main-thread blocking. width/height reserve space and prevent CLS. -->
+      <!-- PERF: loading="lazy" defers until near viewport; decoding="async" avoids main-thread blocking. width/height reserve space and prevent CLS. -->
       <img src="images/portfolio/preview/Creative _ Corporate Business Card.webp"
            alt="Meridian Insurance — Corporate Identity" class="pf-img"
            width="800" height="560" loading="lazy" decoding="async"
@@ -1663,7 +1592,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
   </div>
 </section>
 
-<!-- ══ WHY US ══ -->
+<!-- WHY US -->
 <section id="why" class="ink-section">
   <div class="why-grid">
     <div class="reveal">
@@ -1697,7 +1626,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
   </div>
 </section>
 
-<!-- ══ FAQ SECTION ══ -->
+<!-- FAQ SECTION -->
 <section id="faq" class="ink-section">
   <div class="faq-grid">
     <div class="reveal">
@@ -1718,8 +1647,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
 
     <div class="faq-list reveal rd1">
 
-      <!-- FAQ items: clicking the question toggles the answer open/closed.
-           The icon is a chevron SVG — it rotates via CSS when .open class is added. -->
+      <!-- FAQ items: clicking the question toggles the answer open/closed. The icon is a chevron SVG — it rotates via CSS when .open class is added. -->
 
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFAQ(this)">
@@ -1809,14 +1737,14 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
   </div>
 </section>
 
-<!-- ══ CTA STRIP ══ -->
+<!-- CTA STRIP -->
 <div class="cta-strip">
   <div class="cta-left">
     <h2>Ready to bring your<br/>brand to life?</h2>
     <p>Talk to our team today — we'll quote you within the hour and get your project moving.</p>
   </div>
   <div class="cta-right">
-    <!-- TASK 3: WhatsApp button uses brand green (#25D366) with logo for instant recognition -->
+    <!-- WhatsApp button uses brand green (#25D366) with logo for instant recognition -->
     <a href="https://wa.me/254796333279?text=Hello%20Comprint%2C%20I%27d%20like%20a%20quote."
        target="_blank"
        rel="noopener noreferrer"
@@ -1831,9 +1759,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
   </div>
 </div>
 
-<!-- ══ FOOTER ══
-     Four-column grid: brand info, services list, company links, contact details.
-     Collapses to 2 columns on tablet and 1 column on mobile. -->
+<!-- FOOTER : Four-column grid: brand info, services list, company links, contact details. Collapses to 2 columns on tablet and 1 column on mobile. -->
 <footer>
   <div class="foot-grid">
 
@@ -1841,7 +1767,6 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
     <div class="foot-brand">
       <div class="nav-logo">
         <div class="logo-box">
-          <!-- CHANGED: Logo path updated to match working directory -->
           <img src="images/logos/clientelle_n_trustedby/logo.png" alt="Comprint Logo" style="width:100%;height:100%;object-fit:cover;">
         </div>
         <div class="logo-text">Comprint<span>Concepts Limited</span></div>
@@ -1928,29 +1853,23 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
   </div>
 </footer>
 
-<!-- ══════════════════════════════════════════
-     JAVASCRIPT
-     All interactive behaviour is explained below.
-     ══════════════════════════════════════════ -->
+<!-- JAVASCRIPT: All interactive behaviour is explained below. -->
 <script>
-/* ── PAGE LOAD BAR ──
-   Fade out the top loading bar 2 seconds after page load. */
+/* PAGE LOAD BAR = Fade out the top loading bar 2 seconds after page load. */
 window.addEventListener('load', () => {
   const bar = document.getElementById('printer-bar');
   setTimeout(() => { bar.style.transition = 'opacity .5s'; bar.style.opacity = '0'; }, 2000);
   setTimeout(() => { bar.style.display = 'none'; }, 2600);
 });
 
-/* ══════════════════════════════════════════
-   THEME TOGGLE — GLASS BUBBLE
-
-   How it works:
+/* THEME TOGGLE — GLASS BUBBLE
+How it works:
    1. We read the saved preference from localStorage.
    2. We set the initial theme on the <html> element.
    3. The glass bubble (#themeBubble) is positioned using JS
       to cover whichever icon is currently "active".
    4. Clicking either icon switches the theme and moves the bubble.
-   ══════════════════════════════════════════ */
+  */
 const htmlEl     = document.documentElement;
 const btnLight   = document.getElementById('btnLight');  /* Sun button */
 const btnDark    = document.getElementById('btnDark');   /* Moon button */
@@ -2000,9 +1919,7 @@ btnDark.addEventListener('click', () => applyTheme('dark'));
 /* Set theme on load (immediately applies to avoid flash) */
 applyTheme(currentTheme);
 
-/* Re-position bubble if window is resized (layout may shift).
-   PERF: Debounced so we don't trigger dozens of getBoundingClientRect
-   calls per second while the user is dragging the browser window edge. */
+/* Re-position bubble if window is resized (layout may shift). PERF: Debounced so we don't trigger dozens of getBoundingClientRect calls per second while the user is dragging the browser window edge. */
 let _resizeTimer;
 window.addEventListener('resize', () => {
   clearTimeout(_resizeTimer);
@@ -2012,10 +1929,7 @@ window.addEventListener('resize', () => {
   }, 80);
 });
 
-/* ── HERO CAROUSEL ──
-   TASK 4a: Auto-advances every 10 seconds (was 5s) — gives visitors more
-   time to read the headline and take action before the slide changes.
-   TASK 4c: Prev/Next arrows also control the carousel. */
+/* HERO CAROUSEL : Auto-advances to next slide every 10 seconds Prev/Next arrows also control the carousel. */
 const slides     = document.querySelectorAll('.hero-slide');
 const dots       = document.querySelectorAll('.carousel-dots .dot');
 let currentSlide = 0;
@@ -2039,7 +1953,7 @@ function nextSlide() { goToSlide(currentSlide + 1); }
 /* Move backward one slide */
 function prevSlide() { goToSlide(currentSlide - 1); }
 
-/* TASK 4a: 10 000ms = 10 seconds per slide */
+/* 10 000ms = 10 seconds per slide */
 function startAutoAdvance() { autoAdvance = setInterval(nextSlide, 10000); }
 
 /* Helper: stop, jump, restart — used by both dots and arrows */
@@ -2054,18 +1968,15 @@ dots.forEach((dot, i) => {
   dot.addEventListener('click', () => manualNav(() => goToSlide(i)));
 });
 
-/* TASK 4c: Prev / Next arrow click handlers */
+/* Prev / Next arrow click handlers */
 document.getElementById('prevBtn').addEventListener('click', () => manualNav(prevSlide));
 document.getElementById('nextBtn').addEventListener('click', () => manualNav(nextSlide));
 
 /* Begin the carousel on page load */
 startAutoAdvance();
 
-/* ── NAV SCROLL SHADOW ──
-   Adds a shadow to the nav bar once the user has scrolled down a bit.
-   PERF: {passive:true} tells the browser this listener will never call
-   preventDefault() — so it's safe to process touch/scroll in parallel
-   with JS, eliminating the most common source of scroll jank. */
+/* NAV SCROLL SHADOW: Adds a shadow to the nav bar once the user has scrolled down a bit.
+   PERF: {passive:true} tells the browser this listener will never call preventDefault() — so it's safe to process touch/scroll in parallel with JS, eliminating the most common source of scroll jank. */
 window.addEventListener('scroll', () => {
   document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 40);
 }, { passive: true });
@@ -2089,9 +2000,7 @@ document.addEventListener('click', e => {
   if (!drawer.contains(e.target) && !ham.contains(e.target)) closeDrawer();
 });
 
-/* ── SCROLL REVEAL ──
-   Elements with the "reveal" class start invisible and slide up into view
-   once they enter the visible portion of the screen (using IntersectionObserver). */
+/* ── SCROLL REVEAL : Elements with the "reveal" class start invisible and slide up into view once they enter the visible portion of the screen (using IntersectionObserver). */
 const revealObserver = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) {
@@ -2102,8 +2011,7 @@ const revealObserver = new IntersectionObserver(entries => {
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-/* ── INK-LINE ANIMATION ──
-   Triggers the brand-coloured line that sweeps across the top of each section. */
+/* INK-LINE ANIMATION ─ Triggers the brand-coloured line that sweeps across the top of each section. */
 const inkObserver = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) {
@@ -2114,9 +2022,7 @@ const inkObserver = new IntersectionObserver(entries => {
 }, { threshold: 0.04 });
 document.querySelectorAll('.ink-section').forEach(s => inkObserver.observe(s));
 
-/* ── FAQ ACCORDION ──
-   Opens one FAQ item at a time.
-   Clicking an already-open item closes it. */
+/* FAQ ACCORDION ─ Opens one FAQ item at a time. Clicking an already-open item closes it. */
 function toggleFAQ(btn) {
   const item    = btn.parentElement;
   const isOpen  = item.classList.contains('open');
@@ -2126,9 +2032,7 @@ function toggleFAQ(btn) {
   if (!isOpen) item.classList.add('open');
 }
 
-/* ── SERVICE CARD WHATSAPP CLICK ──
-   Clicking any service card opens a WhatsApp message pre-filled with that service name.
-   NOTE: .svc-name is now inside .svc-inner but querySelector still finds it as a descendant. */
+/* ─ SERVICE CARD WHATSAPP CLICK ─ Clicking any service card opens a WhatsApp message pre-filled with that service name. NOTE: .svc-name is now inside .svc-inner but querySelector still finds it as a descendant. */
 document.querySelectorAll('.svc-card').forEach(card => {
   const svcName = card.querySelector('.svc-name')?.textContent || 'your service';
   card.addEventListener('click', () => {
