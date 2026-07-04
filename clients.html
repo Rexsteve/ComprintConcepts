@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Clientele — Comprint Concepts Limited</title>
+<title>Our Clientele in Nairobi | Trusted Brands & Organisations — Comprint Concepts</title>
+<meta name="description" content="See our trusted clientele in Nairobi, Kenya. Comprint has served 500+ organisations across corporate, NGO, government, and manufacturing sectors. Join our growing list of happy clients.">
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet"/>
@@ -67,8 +68,6 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 .btn-nav:hover{background:var(--brand-mid);transform:translateY(-1px);box-shadow:0 6px 20px var(--brand-glow);}
 
 /* ══ GLASS BUBBLE THEME TOGGLE
-   CHANGE: Replaces the old single-icon toggle.
-   Both sun AND moon icons are always visible.
    A frosted-glass bubble slides over whichever is currently active. ══ */
 .theme-toggle-wrap{
   display:flex;align-items:center;
@@ -104,8 +103,6 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 .mobile-drawer .nav-link{font-size:1rem;}
 
 /* ══ HERO SECTION
-   CHANGES:
-   - min-height: 58vh reduced to 36vh (significantly more compact)
    - hero-inner padding: 60px top/bottom cut to 28px
    - hero-title font-size: clamp(3rem,7vw,6rem) cut to clamp(1.8rem,4vw,3rem)
    - hero-sub font-size: 0.96rem reduced to 0.86rem
@@ -133,14 +130,12 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
   color:var(--gold);margin-bottom:16px;
 }
 .hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:22px;height:1px;background:var(--gold);}
-/* CHANGED: font-size reduced from clamp(3rem,7vw,6rem) to clamp(1.8rem,4vw,3rem) */
 .hero-title{
   font-family:'Cormorant Garamond',serif;
   font-size:clamp(1.8rem,4vw,3rem);
   line-height:1.05;font-weight:700;margin-bottom:14px;color:var(--text);
 }
 .hero-title em{color:transparent;-webkit-text-stroke:1.5px rgba(200,169,110,0.7);font-style:normal;}
-/* CHANGED: font-size reduced from 0.96rem to 0.86rem */
 .hero-sub{color:var(--text-2);line-height:1.75;font-size:0.86rem;max-width:480px;margin:0 auto;}
 
 /* ══ STATS STRIP — also slightly reduced padding ══ */
@@ -213,9 +208,7 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 }
 
 /* ══ LOGO IMAGE — the only thing that scales on hover ══
-   A single clean CSS transform:scale() replaces the old
-   conflicting SVG filter + scale combination.
-   The parent overflow:hidden clips any overflow. */
+   A single clean CSS transform:scale(). The parent overflow:hidden clips any overflow. */
 .logo-img{
   width:75%;
   height:75%;
@@ -284,16 +277,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════
-     NAVIGATION
-     CHANGES vs original:
-     - Added "Home" link (was missing)
-     - "Clients" renamed to "Clientele" in the active link
-     - Portfolio link goes to portfolio.html (not #portfolio)
-     - Old single-icon theme button replaced with glass-bubble toggle
-     - Phone: 0722470190 replaced with 0796333279 everywhere
-     - rel="noopener noreferrer" added to all external links
-     ══════════════════════════════════════════ -->
+<!-- ═══ NAVIGATION - rel="noopener noreferrer" added to all external links ═══-->
 <nav id="mainNav">
   <a href="index.html" class="nav-logo">
     <div class="logo-box">
@@ -303,7 +287,6 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
   </a>
 
   <div class="nav-links">
-    <!-- ADDED: Home link -->
     <a href="index.html"       class="nav-link">Home</a>
     <a href="index.html#about" class="nav-link">About</a>
     <a href="services.html"    class="nav-link">Services</a>
@@ -357,8 +340,8 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
 <section class="clients-hero">
   <div class="hero-inner reveal">
     <div class="hero-eyebrow">Trusted Across Kenya</div>
-    <h1 class="hero-title">Brands &amp; Organisations<br/>We've <em>Worked With</em></h1>
-    <p class="hero-sub">From churches and NGOs to manufacturers and corporate institutions — clients across every industry trust Comprint for quality that shows.</p>
+    <h1 class="hero-title">Brands &amp; Organisations<br/>We've <em>Worked With in Kenya</em></h1>
+    <p class="hero-sub">From churches and NGOs to manufacturers and corporate institutions — clients across Kenya and every industry trust Comprint for quality that shows.</p>
   </div>
 </section>
 
@@ -380,20 +363,11 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     CLIENT GRID
-     LOGO HOVER BUG FIX:
-     The original bug: .logo-wrap grew from 88px to 120px AND changed
-     border-radius to 50%, WHILE the img inside also scaled via SVG filter.
-     This caused two visual layers to animate simultaneously — the growing
-     square AND the scaling image — creating a "double image" ghost artifact.
-
-     THE FIX applied here:
+<!-- ══CLIENT GRID 
      1. .logo-wrap: fixed at 88x88px, border-radius stays 22px — never animates
      2. img.logo-img: uses transform:scale(1.28) only — one clean animation
      3. SVG feDisplacementMap filters: removed entirely (caused ghosting)
-     4. overflow:hidden on .logo-wrap clips the scaled image inside perfectly
-     ══════════════════════════════════════════ -->
+     4. overflow:hidden on .logo-wrap clips the scaled image inside perfectly ══════ -->
 <section class="clients-section">
   <div class="clients-head reveal">
     <span class="section-label">Our Clients</span>
@@ -561,15 +535,10 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
   </div>
 </footer>
 
-<!-- ══════════════════════════════════════════
-     JAVASCRIPT
-     Fully rewritten with clear comments.
-     Old theme toggle (single icon swap) replaced with glass bubble system.
-     ══════════════════════════════════════════ -->
+<!-- ═══════════ JAVASCRIPT ═══════════ -->
 <script>
 /* ── GLASS BUBBLE THEME TOGGLE ──
-   Logic: read saved theme, apply it, slide the bubble over the active icon.
-   Clicking either icon switches the theme and re-positions the bubble. */
+   Logic: read saved theme, apply it, slide the bubble over the active icon. Clicking either icon switches the theme and re-positions the bubble. */
 const htmlEl     = document.documentElement;
 const btnLight   = document.getElementById('btnLight');
 const btnDark    = document.getElementById('btnDark');
@@ -627,8 +596,7 @@ document.addEventListener('click', e => {
 });
 
 /* ── SCROLL REVEAL ──
-   Elements with .reveal start invisible and slide up into view
-   when they enter the viewport using IntersectionObserver. */
+   Elements with .reveal start invisible and slide up into view when they enter the viewport using IntersectionObserver. */
 const ro = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) {
