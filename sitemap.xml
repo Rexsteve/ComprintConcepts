@@ -5,23 +5,15 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://comprint-concepts.vercel.app/large-format-printing</loc>
+    <loc>https://comprint-concepts.vercel.app/services.html</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://comprint-concepts.vercel.app/corporate-gifts</loc>
+    <loc>https://comprint-concepts.vercel.app/portfolio.html</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://comprint-concepts.vercel.app/event-decor</loc>
+    <loc>https://comprint-concepts.vercel.app/clients.html</loc>
     <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://comprint-concepts.vercel.app/contact</loc>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://comprint-concepts.vercel.app/about</loc>
-    <priority>0.6</priority>
   </url>
 </urlset>
