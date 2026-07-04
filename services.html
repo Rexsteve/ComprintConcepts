@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Services — Comprint Concepts Limited</title>
+<title>Printing Services in Nairobi | Comprint Concepts — 50+ Solutions</title>
+<meta name="description" content="Explore 50+ printing services in Nairobi, Kenya. Large format, corporate branding, packaging, event décor, and promotional merch. Fast turnaround. Get a free quote today!">
 
 <!--
   SECURITY: All external resources use HTTPS.
@@ -243,22 +244,10 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 /* Service items grid */
 .items-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
 
-/* ══════════════════════════════════════════
-   SERVICE ITEM CARDS — TASKS 1, 2, 3
-
-   TASK 1: Icons removed. No .item-icon rendered inside cards.
-   TASK 2: Each card uses a real background image (set via data-bg attribute
-           in HTML, applied by JS on DOMContentLoaded). The image is always
-           partially visible and becomes more prominent on hover.
-   TASK 3: Images use loading="lazy" + decoding="async" on the <img> tags
-           inside the card. The card itself uses contain:layout style and
-           will-change:transform only on hover (applied via JS) to prevent
-           layout shifts and keep scrolling GPU-smooth.
-   ══════════════════════════════════════════ */
 .svc-item{
   background:var(--card);border:1px solid var(--border);
   border-radius:14px;
-  /* TASK 3: contain:layout prevents this card from affecting the layout
+  /* contain:layout prevents this card from affecting the layout
      of neighbouring elements during load — avoids content jumping. */
   contain:layout;
   display:flex;flex-direction:column;gap:0;
@@ -270,14 +259,14 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 }
 
 /* ── Card background image layer ──
-   TASK 2: A real <img> is injected by JS (see bottom of file).
+   A real <img> is injected by JS (see bottom of file).
    Using an <img> rather than background-image allows lazy loading + async decode.
    The image sits behind all text content at z-index:0. */
 .svc-item-bg{
   position:absolute;inset:0;
   width:100%;height:100%;
   object-fit:cover;object-position:center;
-  /* TASK 3: opacity transition is the only animated property on this element —
+  /* opacity transition is the only animated property on this element —
      GPU-composited, no layout work needed. */
   opacity:0.28;
   transition:opacity 0.45s ease, transform 0.55s ease;
@@ -297,7 +286,7 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
    Guarantees text legibility regardless of image brightness. */
 .svc-item-overlay{
   position:absolute;inset:0;
-  /* TASK 2: Dark mode and light mode overlays are handled via CSS variables
+  /* Dark mode and light mode overlays are handled via CSS variables
      so both themes remain readable over any image. */
   background:linear-gradient(
     to top,
@@ -339,13 +328,12 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
   height:100%;
 }
 
-/* TASK 1: .item-icon class is kept in CSS for backward compatibility but
-   no longer rendered in markup. Cards look cleaner without the icon. */
+/* .item-icon class is kept in CSS for backward compatibility but no longer rendered in markup. Cards look cleaner without the icon. */
 
 /* Item text elements — all above the image/overlay layers */
 .item-name{
   font-size:0.87rem;font-weight:500;
-  /* TASK 2: White text is always legible over the dark gradient overlay */
+  /* White text is always legible over the dark gradient overlay */
   color:#fff;
   text-shadow:0 1px 6px rgba(0,0,0,0.5);
   line-height:1.3;
@@ -360,7 +348,6 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 }
 [data-theme="light"] .item-desc{color:var(--text-3);text-shadow:none;}
 
-/* TASK 3: WhatsApp green CTA — same convention as index.html for consistency */
 .item-cta{
   display:inline-flex;align-items:center;gap:5px;
   font-size:0.7rem;font-weight:500;
@@ -388,12 +375,6 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 }
 .pill:hover{background:var(--brand);color:#fff;border-color:var(--brand);}
 
-/* ══════════════════════════════════════════
-   NO RESULTS — TASK 5
-   Premium, conversion-focused experience.
-   Not a flat "no results" message — instead a
-   reassuring CTA that drives WhatsApp enquiries.
-   ══════════════════════════════════════════ */
 #noResults{
   display:none; /* Hidden by default; JS reveals it when search finds nothing */
   padding:56px 32px;
@@ -497,16 +478,11 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════
-     NAVIGATION
-     • "Home" link added
-     • "Clients" renamed to "Clientele"
-     • Dual-icon glass-bubble theme toggle
-     ══════════════════════════════════════════ -->
+<!-- NAVIGATION
+     • Dual-icon glass-bubble theme toggle-->
 <nav id="mainNav">
   <a href="index.html" class="nav-logo">
     <div class="logo-box">
-      <!-- CHANGED: Updated logo path to match canonical image directory -->
       <!-- PERF: fetchpriority="high" — logo is above-fold, load first. -->
       <img src="images/logos/clientelle_n_trustedby/logo.png" alt="Comprint" style="width:100%;height:100%;object-fit:cover;" fetchpriority="high">
     </div>
@@ -566,8 +542,8 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
 <div class="page-header">
   <div class="page-header-inner">
     <div class="ph-eyebrow">Everything We Offer</div>
-    <h1 class="ph-title">50+ Services. <em>One Address.</em></h1>
-    <p class="ph-sub">From a single business card to a national campaign — browse every service and get a quote in minutes.</p>
+    <h1 class="ph-title">50+ Printing Services <br/><em>in Nairobi, Kenya.</em></h1>
+    <p class="ph-sub">From a single business card to a national campaign — browse every service available in Nairobi and across Kenya, and get a quote in minutes.</p>
   </div>
 </div>
 
@@ -642,11 +618,8 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
   <!-- ── RIGHT CONTENT PANEL ── -->
   <div class="content-panel" id="contentPanel">
 
-    <!-- ══════════════════════════════════════════
-         NO RESULTS — TASK 5
-         Premium, conversion-focused experience shown when
-         search finds no matches. Drives WhatsApp enquiries.
-         ══════════════════════════════════════════ -->
+    <!-- NO RESULTS —
+         Premium, conversion-focused experience shown when search finds no matches. Drives WhatsApp enquiries. -->
     <div id="noResults">
       <div class="no-results-icon">
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
@@ -677,7 +650,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
     <div class="featured-band reveal">
       <div class="featured-band-label">Most Popular</div>
       <h3>Top-Requested Services</h3>
-      <p>Our most ordered services — fast turnaround, competitive pricing, and print-ready support included.</p>
+      <p>Our most ordered services in Nairobi — fast turnaround, competitive pricing, and print-ready support included.</p>
       <div class="featured-pills">
         <button class="pill" onclick="wa('PVC Banners')">PVC Banners</button>
         <button class="pill" onclick="wa('Business Cards')">Business Cards</button>
@@ -690,17 +663,10 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
       </div>
     </div>
 
-    <!-- ═══════════════════════════════════════
-         CATEGORY: BANNERS & SIGNAGE
-
-         TASK 1: No .item-icon div rendered inside cards.
-         TASK 2: data-bg attribute holds the image path.
-                 JS reads this and injects a lazy <img> at runtime.
-         TASK 4: data-keywords holds extra search terms so
-                 searching "outdoor", "flag", "backdrop", etc.
-                 finds the right card even if those words aren't
-                 in the visible title or description.
-         ═══════════════════════════════════════ -->
+    <!-- ════════CATEGORY: BANNERS & SIGNAGE
+          No .item-icon div rendered inside cards. data-bg attribute holds the image path. JS reads this and injects a lazy <img> at runtime.
+         data-keywords holds extra search terms so searching "outdoor", "flag", "backdrop", etc. finds the right card even if those words aren't in the visible title or description.
+         ════════ -->
     <div class="cat-block reveal" data-cat="banners">
       <div class="cat-header">
         <div class="cat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg></div>
