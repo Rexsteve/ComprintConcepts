@@ -532,14 +532,14 @@ section{padding:100px 6vw;}
 .svc-card-bg{
   position:absolute;inset:0;
   background-size:cover;background-position:center;
-  opacity:0.28; /* Visible at rest — card feels rich but text stays legible */
+  opacity:0.5; /* Visible at rest — card feels rich but text stays legible */
   transition:opacity 0.45s ease;
   z-index:0;border-radius:16px;
   /* PERF: GPU layer so the scale on hover is handled by the compositor only. */
   will-change:transform;
 }
 .svc-card:hover .svc-card-bg{
-  opacity:0.48; /* More vivid on hover */
+  opacity:0.7; /* More vivid on hover */
   transform:scale(1.04); /* Subtle zoom for depth */
   transition:opacity 0.45s ease, transform 0.6s ease;
 }
@@ -550,9 +550,9 @@ section{padding:100px 6vw;}
   content:'';position:absolute;inset:0;
   background:linear-gradient(
     to top,
-    rgba(10,6,10,0.94) 0%,
-    rgba(10,6,10,0.75) 45%,
-    rgba(10,6,10,0.30) 100%
+    rgba(10,6,10,0.82) 0%,
+    rgba(10,6,10,0.55) 45%,
+    rgba(10,6,10,0.15) 100%
   );
   z-index:1;border-radius:16px;pointer-events:none;
 }
