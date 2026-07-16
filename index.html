@@ -1114,11 +1114,10 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
 
   <!-- SLIDE 1: Core brand message -->
   <div class="hero-slide active" id="slide-1">
-    <!-- Gradient background layer + real photo overlay -->
     <div class="slide-bg slide-bg-1">
       <!-- PERF: fetchpriority="high" tells the browser this is the LCP image — load it first.
            decoding="async" keeps decode off the main thread so rendering isn't blocked. -->
-      <img src="images/hero_slides/many services.jpg" class="slide-img" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.15;" fetchpriority="high" decoding="async">
+      <img src="images/hero_slides/hero_slide1.png" class="slide-img" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.15;" fetchpriority="high" decoding="async">
     </div>
     <!-- Dark gradient overlay for text readability -->
     <div class="slide-overlay"></div>
@@ -1146,8 +1145,9 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
 
   <!-- SLIDE 2: Large Format focus-->
   <div class="hero-slide" id="slide-2">
-    <!-- Gradient background — no photo on this slide -->
-    <div class="slide-bg slide-bg-2"></div>
+    <div class="slide-bg slide-bg-2">
+      <img src="images/hero_slides/hero_slide2.png" class="slide-img" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.15;" fetchpriority="high" decoding="async">
+    </div>
     <div class="slide-overlay"></div>
     <div class="slide-content">
       <div class="hero-eyebrow">Large Format Specialists</div>
@@ -1165,7 +1165,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
   <div class="hero-slide" id="slide-3">
     <div class="slide-bg slide-bg-3">
       <!-- PERF: loading="lazy" defers this until near-viewport. decoding="async" avoids main-thread decode stall. -->
-      <img src="images/hero_slides/slide3.jpg" class="slide-img" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.15;" loading="lazy" decoding="async">
+      <img src="images/hero_slides/hero_slide3.png" class="slide-img" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.15;" loading="lazy" decoding="async">
     </div>
     <div class="slide-overlay"></div>
     <div class="slide-content">
@@ -1181,8 +1181,9 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:64px 6vw
 
   <!-- ── SLIDE 4: Events & Décor focus ── -->
   <div class="hero-slide" id="slide-4">
-    <!-- Gradient background — no photo on this slide -->
-    <div class="slide-bg slide-bg-4"></div>
+    <div class="slide-bg slide-bg-4">
+      <img src="images/hero_slides/hero_slide4.png" class="slide-img" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.15;" fetchpriority="high" decoding="async">
+    </div>
     <div class="slide-overlay"></div>
     <div class="slide-content">
       <div class="hero-eyebrow">Events &amp; Décor Printing</div>
