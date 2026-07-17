@@ -38,7 +38,6 @@
   --gold:#9a6f2a; --nav-bg:rgba(250,247,250,0.84);
 }
 
-/* ══ RESET ══ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.6;transition:background var(--tr),color var(--tr);
@@ -52,7 +51,6 @@ button{cursor:pointer;border:none;background:none;font-family:inherit;}
 ::-webkit-scrollbar-track{background:var(--bg);}
 ::-webkit-scrollbar-thumb{background:var(--brand);border-radius:99px;}
 
-/* ══ NAVIGATION ══ */
 nav{
   position:fixed;top:0;left:0;right:0;z-index:200;
   display:flex;align-items:center;justify-content:space-between;
@@ -77,7 +75,7 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 .btn-nav{padding:8px 20px;border-radius:99px;background:var(--brand);color:#fff;font-size:0.78rem;font-weight:500;transition:all var(--tr);}
 .btn-nav:hover{background:var(--brand-mid);transform:translateY(-1px);box-shadow:0 6px 20px var(--brand-glow);}
 
-/* ── Theme toggle: glass bubble pill (same pattern as index.html) ── */
+/* Theme toggle: glass bubble pill (same pattern as index.html) */
 .theme-toggle-wrap{
   display:flex;align-items:center;
   background:var(--card);border:1px solid var(--border);
@@ -102,19 +100,17 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 }
 .theme-icon-btn.active-icon{color:var(--brand-light);}
 
-/* Hamburger button for mobile */
 .hamburger{display:none;flex-direction:column;gap:5px;width:38px;height:38px;border-radius:9px;background:var(--card);border:1px solid var(--border);align-items:center;justify-content:center;}
 .hamburger span{display:block;width:16px;height:1.5px;background:var(--text-2);border-radius:99px;transition:all .3s;}
 .hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
 .hamburger.open span:nth-child(2){opacity:0;}
 .hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
 
-/* Mobile slide-down drawer */
 .mobile-drawer{position:fixed;top:66px;left:0;right:0;z-index:190;background:var(--bg2);border-bottom:1px solid var(--border);padding:24px 5vw;display:flex;flex-direction:column;gap:18px;transform:translateY(-110%);transition:transform .35s cubic-bezier(.4,0,.2,1);}
 .mobile-drawer.open{transform:translateY(0);}
 .mobile-drawer .nav-link{font-size:1rem;}
 
-/* ── COMPACT PAGE HEADER (replaces removed hero) ── */
+/* Compact page header — replaces the removed hero carousel used on index.html */
 .page-header{
   padding:100px 6vw 28px;
   background:var(--bg2);
@@ -142,7 +138,6 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 .ph-title em{color:transparent;-webkit-text-stroke:1.5px rgba(200,169,110,0.7);font-style:normal;}
 .ph-sub{font-size:0.88rem;color:var(--text-3);line-height:1.65;max-width:480px;}
 
-/* ══ SEARCH BAR / TOP-BAR ══ */
 .top-bar{
   background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);
   padding:18px 6vw;
@@ -169,7 +164,6 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 }
 .search-box input::placeholder{color:var(--text-3);}
 
-/* Quick-filter pill buttons */
 .quick-links{display:flex;gap:8px;flex-wrap:wrap;}
 .ql-btn{
   padding:8px 16px;border-radius:99px;
@@ -179,7 +173,6 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 }
 .ql-btn:hover,.ql-btn.active{background:var(--brand);color:#fff;border-color:var(--brand);}
 
-/* ══ MAIN LAYOUT: sidebar + content ══ */
 .services-body{
   display:grid;
   grid-template-columns:260px 1fr;
@@ -187,7 +180,6 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
   min-height:70vh;
 }
 
-/* ── LEFT SIDEBAR ── */
 .sidebar{
   background:var(--bg2);border-right:1px solid var(--border);
   padding:36px 0;
@@ -221,10 +213,8 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 }
 .sidebar-cta a:hover{opacity:0.9;}
 
-/* ── CONTENT PANEL ── */
 .content-panel{padding:48px 5vw 80px;overflow-y:auto;}
 
-/* Category block (groups of service items) */
 .cat-block{margin-bottom:56px;}
 .cat-block:last-child{margin-bottom:0;}
 .cat-block.hidden{display:none;}
@@ -241,7 +231,6 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 .cat-name{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;color:var(--text);}
 .cat-count{font-size:0.72rem;color:var(--text-3);background:var(--brand-pale);border:1px solid var(--border);border-radius:99px;padding:2px 10px;margin-left:auto;}
 
-/* Service items grid */
 .items-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
 
 .svc-item{
@@ -258,7 +247,7 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
   min-height:190px;
 }
 
-/* ── Card background image layer ──
+/* Card background image layer.
    A real <img> is injected by JS (see bottom of file).
    Using an <img> rather than background-image allows lazy loading + async decode.
    The image sits behind all text content at z-index:0. */
@@ -268,7 +257,7 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
   object-fit:cover;object-position:center;
   /* opacity transition is the only animated property on this element —
      GPU-composited, no layout work needed. */
-  opacity:0.28;
+  opacity:0.42;
   transition:opacity 0.45s ease, transform 0.55s ease;
   z-index:0;
   border-radius:14px;
@@ -277,22 +266,19 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 }
 /* On hover: image becomes slightly more vivid and scales in very subtly */
 .svc-item:hover .svc-item-bg{
-  opacity:0.48;
+  opacity:0.60;
   transform:scale(1.04);
 }
 
-/* ── Gradient overlay ──
-   Fades from solid card colour at bottom (where text lives) to transparent at top.
-   Guarantees text legibility regardless of image brightness. */
+/* Gradient overlay — fades from solid card colour at bottom (where text lives)
+   to transparent at top. Guarantees text legibility regardless of image brightness. */
 .svc-item-overlay{
   position:absolute;inset:0;
-  /* Dark mode and light mode overlays are handled via CSS variables
-     so both themes remain readable over any image. */
   background:linear-gradient(
     to top,
-    rgba(10,6,10,0.95) 0%,
-    rgba(10,6,10,0.70) 45%,
-    rgba(10,6,10,0.22) 100%
+    rgba(10,6,10,0.88) 0%,
+    rgba(10,6,10,0.52) 45%,
+    rgba(10,6,10,0.16) 100%
   );
   z-index:1;border-radius:14px;pointer-events:none;
 }
@@ -300,9 +286,9 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 [data-theme="light"] .svc-item-overlay{
   background:linear-gradient(
     to top,
-    rgba(255,255,255,0.96) 0%,
-    rgba(255,255,255,0.82) 40%,
-    rgba(255,255,255,0.28) 100%
+    rgba(255,255,255,0.88) 0%,
+    rgba(255,255,255,0.62) 40%,
+    rgba(255,255,255,0.20) 100%
   );
 }
 
@@ -328,9 +314,6 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
   height:100%;
 }
 
-/* .item-icon class is kept in CSS for backward compatibility but no longer rendered in markup. Cards look cleaner without the icon. */
-
-/* Item text elements — all above the image/overlay layers */
 .item-name{
   font-size:0.87rem;font-weight:500;
   /* White text is always legible over the dark gradient overlay */
@@ -357,7 +340,6 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 }
 .svc-item:hover .item-cta{gap:8px;color:#4ae07e;}
 
-/* Featured / Popular band at the top of the content panel */
 .featured-band{
   background:linear-gradient(135deg,var(--bg3),var(--card));
   border:1px solid var(--border);border-radius:18px;
@@ -403,7 +385,6 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
   font-size:0.88rem;color:var(--text-2);
   line-height:1.78;max-width:420px;margin:0 auto 28px;
 }
-/* WhatsApp green CTA button in the no-results panel */
 .no-results-wa{
   display:inline-flex;align-items:center;gap:9px;
   padding:14px 28px;border-radius:99px;
@@ -414,7 +395,6 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 }
 .no-results-wa:hover{background:#1ebe5d;transform:translateY(-2px);box-shadow:0 10px 26px rgba(37,211,102,0.35);}
 .no-results-wa img{width:18px;height:18px;object-fit:contain;filter:brightness(0) invert(1);}
-/* Secondary "browse all" link */
 .no-results-browse{
   display:inline-flex;align-items:center;gap:6px;
   font-size:0.82rem;color:var(--brand-light);
@@ -424,7 +404,6 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 }
 .no-results-browse:hover{color:var(--brand-mid);border-color:var(--brand-mid);}
 
-/* ══ CTA STRIP ══ */
 .cta-strip{
   background:var(--brand);padding:80px 6vw;
   display:flex;justify-content:space-between;align-items:center;
@@ -436,7 +415,7 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 .cta-left h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.8vw,3.2rem);font-weight:700;color:#fff;line-height:1.05;}
 .cta-left p{font-size:.92rem;color:rgba(255,255,255,.6);margin-top:10px;max-width:420px;line-height:1.72;}
 .cta-right{position:relative;display:flex;gap:12px;flex-wrap:wrap;}
-/* TASK 3: CTA strip WhatsApp button uses the green convention */
+/* CTA strip WhatsApp button uses the brand-green convention */
 .btn-wa-cta{
   display:inline-flex;align-items:center;gap:8px;
   padding:14px 28px;border-radius:99px;
@@ -448,7 +427,6 @@ nav.scrolled{box-shadow:0 1px 24px rgba(0,0,0,0.4);}
 .btn-ghost{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:99px;background:transparent;color:rgba(255,255,255,.82);font-size:.85rem;border:1px solid rgba(255,255,255,.28);transition:all var(--tr);}
 .btn-ghost:hover{border-color:rgba(255,255,255,.65);color:#fff;}
 
-/* ══ FOOTER ══ */
 footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw 28px;}
 .foot-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
 .foot-bottom p{font-size:.74rem;color:var(--muted);}
@@ -456,12 +434,9 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
 .foot-links a{font-size:.74rem;color:var(--muted);transition:color var(--tr);}
 .foot-links a:hover{color:var(--text);}
 
-/* ══ REVEAL ANIMATION ══ */
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease;}
 .reveal.visible{opacity:1;transform:translateY(0);}
-.rd1{transition-delay:.07s;}.rd2{transition-delay:.14s;}.rd3{transition-delay:.21s;}
 
-/* ══ RESPONSIVE ══ */
 @media(max-width:1100px){.items-grid{grid-template-columns:1fr 1fr;}}
 @media(max-width:900px){
   .nav-links,.btn-nav{display:none;}
@@ -478,8 +453,6 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
 </head>
 <body>
 
-<!-- NAVIGATION
-     • Dual-icon glass-bubble theme toggle-->
 <nav id="mainNav">
   <a href="index.html" class="nav-logo">
     <div class="logo-box">
@@ -526,7 +499,6 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
   </div>
 </nav>
 
-<!-- Mobile drawer -->
 <div class="mobile-drawer" id="mobileDrawer">
   <a href="index.html"      class="nav-link" onclick="closeDrawer()">Home</a>
   <a href="index.html#about" class="nav-link" onclick="closeDrawer()">About</a>
@@ -538,7 +510,6 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
      class="btn-nav" style="width:fit-content;margin-top:6px;">Get a Quote</a>
 </div>
 
-<!-- ══ COMPACT PAGE HEADER ══ -->
 <div class="page-header">
   <div class="page-header-inner">
     <div class="ph-eyebrow">Everything We Offer</div>
@@ -547,7 +518,6 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
   </div>
 </div>
 
-<!-- ══ TOP BAR — SEARCH + QUICK FILTERS ══ -->
 <div class="top-bar">
   <div class="search-box">
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -567,10 +537,8 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
   </div>
 </div>
 
-<!-- ══ MAIN: SIDEBAR + CONTENT ══ -->
 <div class="services-body">
 
-  <!-- ── LEFT SIDEBAR ── -->
   <aside class="sidebar">
     <div class="sidebar-label">Browse by Category</div>
 
@@ -615,11 +583,9 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
     </div>
   </aside>
 
-  <!-- ── RIGHT CONTENT PANEL ── -->
   <div class="content-panel" id="contentPanel">
 
-    <!-- NO RESULTS —
-         Premium, conversion-focused experience shown when search finds no matches. Drives WhatsApp enquiries. -->
+    <!-- Premium, conversion-focused panel shown when search finds no matches. Drives WhatsApp enquiries. -->
     <div id="noResults">
       <div class="no-results-icon">
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
@@ -633,7 +599,6 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
         and we specialise in projects that go beyond the standard catalogue.
         Describe your brief and our team will recommend the ideal service, material, and finish.
       </p>
-      <!-- WhatsApp green CTA with logo -->
       <a class="no-results-wa"
          href="https://wa.me/254796333279?text=Hello%20Comprint%2C%20I%20couldn%27t%20find%20the%20service%20I%20need.%20Can%20you%20help%3F"
          target="_blank" rel="noopener noreferrer">
@@ -646,7 +611,6 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
       </span>
     </div>
 
-    <!-- FEATURED / MOST POPULAR BAND -->
     <div class="featured-band reveal">
       <div class="featured-band-label">Most Popular</div>
       <h3>Top-Requested Services</h3>
@@ -663,10 +627,9 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
       </div>
     </div>
 
-    <!-- ════════CATEGORY: BANNERS & SIGNAGE
-          No .item-icon div rendered inside cards. data-bg attribute holds the image path. JS reads this and injects a lazy <img> at runtime.
-         data-keywords holds extra search terms so searching "outdoor", "flag", "backdrop", etc. finds the right card even if those words aren't in the visible title or description.
-         ════════ -->
+    <!-- data-bg holds the image path; JS reads this and injects a lazy <img> at runtime (see script below).
+         data-keywords holds extra search terms so queries like "outdoor", "flag", or "backdrop" match a card
+         even when those words aren't in the visible title or description. -->
     <div class="cat-block reveal" data-cat="banners">
       <div class="cat-header">
         <div class="cat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg></div>
@@ -774,7 +737,6 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
       </div>
     </div>
 
-    <!-- ═══ CATEGORY: CORPORATE BRANDING ═══ -->
     <div class="cat-block reveal" data-cat="corporate">
       <div class="cat-header">
         <div class="cat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
@@ -870,7 +832,6 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
       </div>
     </div>
 
-    <!-- ═══ CATEGORY: PACKAGING & LABELS ═══ -->
     <div class="cat-block reveal" data-cat="packaging">
       <div class="cat-header">
         <div class="cat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>
@@ -942,7 +903,6 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
       </div>
     </div>
 
-    <!-- ═══ CATEGORY: EVENTS & DÉCOR ═══ -->
     <div class="cat-block reveal" data-cat="events">
       <div class="cat-header">
         <div class="cat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
@@ -1038,7 +998,6 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
       </div>
     </div>
 
-    <!-- ═══ CATEGORY: PROMOTIONAL MERCH ═══ -->
     <div class="cat-block reveal" data-cat="merch">
       <div class="cat-header">
         <div class="cat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z"/></svg></div>
@@ -1122,7 +1081,6 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
       </div>
     </div>
 
-    <!-- ═══ CATEGORY: STATIONERY ═══ -->
     <div class="cat-block reveal" data-cat="stationery">
       <div class="cat-header">
         <div class="cat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
@@ -1194,7 +1152,6 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
       </div>
     </div>
 
-    <!-- ═══ CATEGORY: OFFSET & DIGITAL PRINT ═══ -->
     <div class="cat-block reveal" data-cat="digital">
       <div class="cat-header">
         <div class="cat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></div>
@@ -1269,14 +1226,12 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
   </div><!-- end content panel -->
 </div><!-- end services-body -->
 
-<!-- ══ CTA STRIP ══ -->
 <div class="cta-strip">
   <div class="cta-left">
     <h2>Can't find what<br/>you're looking for?</h2>
     <p>We print almost anything. Chat with us and we'll find a solution that fits your brief and budget.</p>
   </div>
   <div class="cta-right">
-    <!-- TASK 3: WhatsApp green CTA button consistent with index.html -->
     <a href="https://wa.me/254796333279?text=Hello%20Comprint%2C%20I%27d%20like%20a%20quote."
        target="_blank" rel="noopener noreferrer" class="btn-wa-cta">
       <img src="images/logos/socials/whatsapp_logo_icon_225645.png" alt="WhatsApp">
@@ -1289,7 +1244,6 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
   </div>
 </div>
 
-<!-- ══ FOOTER ══ -->
 <footer>
   <div class="foot-bottom">
     <p>© 2026 Comprint Concepts Limited. All rights reserved.</p>
@@ -1301,20 +1255,17 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:44px 6vw
   </div>
 </footer>
 
-<!-- ══════════════════════════════════════════
-     JAVASCRIPT
-     ══════════════════════════════════════════ -->
 <script>
 /* ══════════════════════════════════════════
-   TASK 2 + TASK 3 — LAZY IMAGE INJECTION
-   
+   LAZY IMAGE INJECTION
+
    Why inject via JS instead of putting <img> in HTML?
    - HTML images load immediately, even cards far below the fold.
    - JS injection lets us set loading="lazy" + decoding="async",
      which defers off-screen images and uses async decode so
      image processing never blocks the main thread.
-   - This is the key to smooth scrolling (TASK 3): the browser
-     never stalls on images the user hasn't reached yet.
+   - This is the key to smooth scrolling: the browser never stalls
+     on images the user hasn't reached yet.
 
    How it works:
    1. Find every .svc-item that has a data-bg attribute.
@@ -1325,14 +1276,13 @@ document.querySelectorAll('.svc-item[data-bg]').forEach(card => {
   const src = card.getAttribute('data-bg');
   if (!src) return;
 
-  /* Create the image element */
   const img = document.createElement('img');
   img.src         = src;
   img.alt         = '';           /* Decorative — screen readers skip it */
   img.className   = 'svc-item-bg';
-  img.loading     = 'lazy';       /* TASK 3: Defer loading until near viewport */
-  img.decoding    = 'async';      /* TASK 3: Decode off main thread — no jank */
-  /* TASK 3: width/height hints prevent layout shift (CLS) */
+  img.loading     = 'lazy';       /* Defer loading until near viewport */
+  img.decoding    = 'async';      /* Decode off main thread — no jank */
+  /* width/height hints prevent layout shift (CLS) */
   img.width       = 400;
   img.height      = 260;
 
@@ -1340,7 +1290,6 @@ document.querySelectorAll('.svc-item[data-bg]').forEach(card => {
   card.insertBefore(img, card.firstChild);
 });
 
-/* ── THEME TOGGLE — GLASS BUBBLE ── */
 const htmlEl     = document.documentElement;
 const btnLight   = document.getElementById('btnLight');
 const btnDark    = document.getElementById('btnDark');
@@ -1378,12 +1327,10 @@ window.addEventListener('resize', () => {
   _resizeTimer = setTimeout(() => positionBubble(currentTheme === 'light' ? btnLight : btnDark), 80);
 });
 
-/* ── NAV SCROLL SHADOW ── */
 window.addEventListener('scroll', () => {
   document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 40);
-}, { passive: true }); /* TASK 6: passive listener avoids scroll blocking */
+}, { passive: true }); /* passive listener avoids scroll blocking */
 
-/* ── MOBILE DRAWER ── */
 const ham    = document.getElementById('hamburger');
 const drawer = document.getElementById('mobileDrawer');
 ham.addEventListener('click', () => {
@@ -1398,7 +1345,6 @@ document.addEventListener('click', e => {
   if (!drawer.contains(e.target) && !ham.contains(e.target)) closeDrawer();
 });
 
-/* ── SCROLL REVEAL ── */
 const ro = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); }
@@ -1406,7 +1352,6 @@ const ro = new IntersectionObserver(entries => {
 }, { threshold: 0.06 });
 document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
 
-/* ── SIDEBAR + QUICK-LINK FILTER ── */
 function filterTo(target) {
   document.querySelectorAll('.sidebar-item').forEach(i =>
     i.classList.toggle('active', i.dataset.target === target));
@@ -1432,10 +1377,9 @@ document.querySelectorAll('.ql-btn').forEach(btn =>
   btn.addEventListener('click', () => filterTo(btn.dataset.target)));
 
 /* ══════════════════════════════════════════
-   TASK 4 — ENHANCED SEARCH WITH KEYWORD EXPANSION
+   ENHANCED SEARCH WITH KEYWORD EXPANSION
 
-   Improvements over the original:
-   1. Now searches title + description + data-keywords attribute.
+   1. Searches title + description + data-keywords attribute.
       The data-keywords on each card holds related terms not visible
       to the user (e.g. "shirt" → finds t-shirts via keyword "shirt").
    2. Singular/plural handling: the query is stemmed simply by also
@@ -1498,9 +1442,7 @@ searchInput.addEventListener('input', function () {
   const baseWords = rawQuery.split(/\s+/).filter(Boolean);
   const expandedWords = new Set();
   baseWords.forEach(word => {
-    /* Add the word and its stem variants */
     stem(word).forEach(w => expandedWords.add(w));
-    /* Add synonyms if defined */
     (SYNONYMS[word] || []).forEach(syn => {
       syn.split(' ').forEach(s => expandedWords.add(s));
     });
@@ -1513,8 +1455,7 @@ searchInput.addEventListener('input', function () {
   let anyVisible = false;
 
   document.querySelectorAll('.svc-item').forEach(item => {
-    /* Build the searchable text: name + description + data-keywords attribute.
-       TASK 4: data-keywords adds extra terms not visible in the card UI. */
+    /* data-keywords adds extra terms not visible in the card UI. */
     const name     = item.querySelector('.item-name')?.textContent  || '';
     const desc     = item.querySelector('.item-desc')?.textContent  || '';
     const keywords = item.getAttribute('data-keywords')             || '';
@@ -1525,7 +1466,6 @@ searchInput.addEventListener('input', function () {
        Practical approach: the item matches if ALL base words or their
        synonyms/stems appear somewhere in the combined text. */
     const matches = baseWords.every(baseWord => {
-      /* Check if the base word, its stem, or any synonym appears in the text */
       const variants = [...stem(baseWord), ...(SYNONYMS[baseWord] || [])];
       return variants.some(v => text.includes(v));
     });
@@ -1540,7 +1480,7 @@ searchInput.addEventListener('input', function () {
     block.classList.toggle('hidden', !hasVisible);
   });
 
-  /* TASK 5: Show premium no-results panel if nothing matches */
+  /* Show no-results panel if nothing matches */
   noResults.style.display = anyVisible ? 'none' : 'block';
 });
 
@@ -1552,7 +1492,6 @@ function clearSearch() {
   noResults.style.display = 'none';
 }
 
-/* ── WHATSAPP ENQUIRY ── */
 function wa(service) {
   const msg = encodeURIComponent(
     `Hello Comprint, I'm interested in: ${service}. Please send me more details and pricing.`
